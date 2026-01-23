@@ -90,20 +90,38 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Sunday Planning CTA */}
-        <Card className="bg-orange-50 border-orange-200">
-          <div className="space-y-4">
-            <div>
-              <h2 className="text-xl font-serif text-royal-500">📅 plan your week</h2>
-              <p className="text-royal-600">
-                set flexible intentions for movement, connection, growth, and rest. takes 5 minutes.
-              </p>
+        {/* Quick Actions */}
+        <div className="grid md:grid-cols-2 gap-4">
+          {/* Sunday Planning CTA */}
+          <Card className="bg-orange-50 border-orange-200">
+            <div className="space-y-4">
+              <div>
+                <h2 className="text-lg font-serif text-royal-500">📅 plan your week</h2>
+                <p className="text-sm text-royal-600">
+                  set flexible intentions for the week ahead.
+                </p>
+              </div>
+              <Button onClick={() => router.push('/planning')}>
+                start planning
+              </Button>
             </div>
-            <Button onClick={() => router.push('/planning')} size="lg">
-              start planning ritual
-            </Button>
-          </div>
-        </Card>
+          </Card>
+
+          {/* Morning Brief CTA */}
+          <Card className="bg-royal-50 border-royal-200">
+            <div className="space-y-4">
+              <div>
+                <h2 className="text-lg font-serif text-royal-500">☀️ today's brief</h2>
+                <p className="text-sm text-royal-600">
+                  gentle guidance for the day ahead.
+                </p>
+              </div>
+              <Button variant="secondary" onClick={() => router.push('/brief')}>
+                view brief
+              </Button>
+            </div>
+          </Card>
+        </div>
 
         {/* Your Settings Overview */}
         <Card>
