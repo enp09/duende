@@ -1,0 +1,300 @@
+'use client';
+
+import { useState } from 'react';
+
+interface CalendarBlock {
+  id: string;
+  type: 'existing' | 'proposed';
+  title: string;
+  day: string;
+  startTime: string;
+  endTime: string;
+  color: string;
+  setting?: string;
+  intention?: string;
+}
+
+interface WeekCalendarProps {
+  blocks: CalendarBlock[];
+  onBlocksChange: (blocks: CalendarBlock[]) => void;
+}
+
+const defaultSettings = {
+  movement: { color: '#FF5C00', label: 'movement' },
+  nutrition: { color: '#00239D', label: 'nutrition' },
+  relationships: { color: '#FF5C00', label: 'connection' },
+  stress: { color: '#00239D', label: 'buffers' },
+  transcendence: { color: '#FF5C00', label: 'growth' },
+};
+
+export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarProps) {
+  const [view, setView] = useState<'week' | 'month'>('week');
+  const [draggedBlock, setDraggedBlock] = useState<CalendarBlock | null>(null);
+
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const hours = Array.from({ length: 15 }, (_, i) => i + 7); // 7am to 9pm
+
+  const timeToPosition = (time: string) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    return ((hours - 7) * 60 + minutes) / 60;
+  };
+
+  const getBlockHeight = (startTime: string, endTime: string) => {
+    const start = timeToPosition(startTime);
+    const end = timeToPosition(endTime);
+    return (end - start) * 80;
+  };
+
+  const getBlocksForDay = (day: string) => {
+    return blocks.filter(block => block.day === day);
+  };
+
+  const handleDragStart = (e: React.DragEvent, block: CalendarBlock) => {
+    setDraggedBlock(block);
+    e.dataTransfer.effectAllowed = 'move';
+    (e.currentTarget as HTMLElement).style.opacity = '0.5';
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    (e.currentTarget as HTMLElement).style.opacity = '1';
+    setDraggedBlock(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e: React.DragEvent, targetDay: string, targetHour: number) => {
+    e.preventDefault();
+    if (!draggedBlock) return;
+
+    const updatedBlocks = blocks.map(block => {
+      if (block.id === draggedBlock.id) {
+        const duration = timeToPosition(block.endTime) - timeToPosition(block.startTime);
+        const newStartTime = `${targetHour.toString().padStart(2, '0')}:00`;
+        const endHour = targetHour + Math.round(duration);
+        const newEndTime = `${endHour.toString().padStart(2, '0')}:00`;
+
+        return {
+          ...block,
+          day: targetDay,
+          startTime: newStartTime,
+          endTime: newEndTime
+        };
+      }
+      return block;
+    });
+
+    onBlocksChange(updatedBlocks);
+  };
+
+  const WeekView = () => (
+    <div className="flex bg-white rounded-xl overflow-hidden shadow-sm">
+      <div className="w-20 border-r border-royal-100 bg-cloud-300">
+        <div className="h-16 border-b border-royal-100"></div>
+        {hours.map(hour => (
+          <div key={hour} className="h-20 flex items-center justify-center text-xs text-royal-400 border-b border-cloud-300">
+            {hour === 12 ? '12pm' : hour > 12 ? `${hour-12}pm` : `${hour}am`}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-1">
+        {days.map((day, dayIndex) => (
+          <div key={day} className="flex-1 border-r border-royal-100 last:border-r-0 relative">
+            <div className="h-16 flex flex-col items-center justify-center border-b border-royal-100 bg-gradient-to-b from-cloud-300 to-white">
+              <div className="text-xs text-royal-400 uppercase tracking-wide font-medium">{day.substring(0, 3)}</div>
+              <div className="text-lg text-royal-500 font-light mt-0.5">{26 + dayIndex}</div>
+            </div>
+
+            <div className="relative" style={{ height: '1200px' }}>
+              {hours.map(hour => (
+                <div
+                  key={hour}
+                  className="h-20 border-b border-cloud-300 hover:bg-cloud-300 transition-colors"
+                  onDragOver={handleDragOver}
+                  onDrop={(e) => handleDrop(e, day, hour)}
+                ></div>
+              ))}
+
+              {getBlocksForDay(day).map(block => (
+                <div
+                  key={block.id}
+                  className={`absolute left-1 right-1 rounded-lg p-3 cursor-move transition-all hover:-translate-y-0.5 hover:shadow-md ${
+                    block.type === 'existing' ? 'opacity-60 border border-royal-200' : 'border-2 border-dashed border-white/60'
+                  }`}
+                  draggable={true}
+                  onDragStart={(e) => handleDragStart(e, block)}
+                  onDragEnd={handleDragEnd}
+                  style={{
+                    top: `${timeToPosition(block.startTime) * 80}px`,
+                    height: `${getBlockHeight(block.startTime, block.endTime)}px`,
+                    backgroundColor: block.color
+                  }}
+                >
+                  <div className="text-white h-full flex flex-col gap-1">
+                    <div className="font-medium text-sm leading-tight">{block.title}</div>
+                    <div className="text-xs opacity-90 font-light">{block.startTime} - {block.endTime}</div>
+                    {block.type === 'proposed' && (
+                      <div className="text-xs uppercase tracking-wide opacity-80 font-medium mt-auto">duende suggests</div>
+                    )}
+                    {block.setting && (
+                      <div className="text-xs opacity-75 italic lowercase">{defaultSettings[block.setting as keyof typeof defaultSettings]?.label}</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const MonthView = () => {
+    const monthDays = Array.from({ length: 28 }, (_, i) => ({
+      date: 26 + i > 31 ? i - 5 : 26 + i,
+      day: days[i % 5] || 'Saturday'
+    }));
+
+    const getBlocksForMonthDay = (dayName: string) => {
+      if (days.includes(dayName)) {
+        return blocks.filter(b => b.day === dayName);
+      }
+      return [];
+    };
+
+    return (
+      <div className="bg-white rounded-xl p-6 shadow-sm">
+        <div className="grid grid-cols-7 gap-px bg-royal-100">
+          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
+            <div key={day} className="bg-cloud-300 p-4 text-center text-xs uppercase tracking-wide text-royal-400 font-medium">
+              {day}
+            </div>
+          ))}
+          {monthDays.map(({date, day}, i) => {
+            const dayBlocks = getBlocksForMonthDay(day);
+
+            return (
+              <div
+                key={`${day}-${date}-${i}`}
+                className="bg-white p-3 min-h-[140px] cursor-pointer hover:bg-cloud-300 transition-colors"
+                onDragOver={handleDragOver}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  if (!draggedBlock) return;
+                  const updatedBlocks = blocks.map(block => {
+                    if (block.id === draggedBlock.id) {
+                      return { ...block, day: day };
+                    }
+                    return block;
+                  });
+                  onBlocksChange(updatedBlocks);
+                }}
+              >
+                <div className="text-sm text-royal-400 font-light mb-2">{date}</div>
+                <div className="flex flex-col gap-1.5">
+                  {dayBlocks.map((block) => (
+                    <div
+                      key={block.id}
+                      className="p-2 rounded cursor-move transition-all hover:translate-x-0.5 hover:shadow-md text-white text-xs"
+                      draggable={true}
+                      onDragStart={(e) => handleDragStart(e, block)}
+                      onDragEnd={handleDragEnd}
+                      style={{
+                        backgroundColor: block.color,
+                        borderLeft: block.type === 'proposed' ? `3px solid ${block.color}` : 'none',
+                        opacity: block.type === 'proposed' ? 0.9 : 0.6
+                      }}
+                      title={`${block.title} (${block.startTime}-${block.endTime})`}
+                    >
+                      <div className="text-[10px] opacity-90 mb-0.5">{block.startTime}</div>
+                      <div className="font-medium leading-tight">{block.title}</div>
+                      {block.setting && (
+                        <div className="text-[10px] opacity-75 italic mt-0.5">{defaultSettings[block.setting as keyof typeof defaultSettings]?.label}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const proposedCount = blocks.filter(b => b.type === 'proposed').length;
+
+  return (
+    <div className="space-y-6">
+      {/* Header with view toggle */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-serif text-royal-500">week of january 26</h2>
+
+        <div className="flex gap-1 bg-white/60 p-1 rounded-full backdrop-blur-sm">
+          <button
+            className={`px-4 py-2 rounded-full text-sm transition-all ${
+              view === 'week'
+                ? 'bg-white text-royal-500 shadow-sm'
+                : 'text-royal-400 hover:text-royal-500'
+            }`}
+            onClick={() => setView('week')}
+          >
+            week
+          </button>
+          <button
+            className={`px-4 py-2 rounded-full text-sm transition-all ${
+              view === 'month'
+                ? 'bg-white text-royal-500 shadow-sm'
+                : 'text-royal-400 hover:text-royal-500'
+            }`}
+            onClick={() => setView('month')}
+          >
+            month
+          </button>
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className="flex flex-wrap gap-4 text-xs text-royal-600">
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-royal-400"></div>
+          <span>existing</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+          <span>movement</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#00239D' }}></div>
+          <span>nutrition</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+          <span>connection</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#00239D' }}></div>
+          <span>buffers</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+          <span>growth</span>
+        </div>
+      </div>
+
+      {/* Calendar */}
+      {view === 'week' ? <WeekView /> : <MonthView />}
+
+      {/* Status */}
+      <div className="text-center">
+        <p className="text-royal-600 text-sm">
+          <span className="font-medium text-royal-500">{proposedCount} protections</span> ready to sync
+          <span className="text-royal-400"> • drag blocks to adjust timing</span>
+        </p>
+      </div>
+    </div>
+  );
+}
