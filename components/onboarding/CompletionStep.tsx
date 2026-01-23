@@ -32,8 +32,7 @@ export function CompletionStep({ data }: CompletionStepProps) {
             <div>
               <p className="font-medium text-sage-800">sunday evening</p>
               <p className="text-sage-600 text-sm">
-                i'll help you plan your week — setting intentions for movement,
-                connection, growth, and rest. nothing rigid, just flexible goals.
+                i'll help you plan your week. setting intentions for movement, connection, growth, and rest. flexible goals, never rigid.
               </p>
             </div>
           </div>
@@ -43,8 +42,7 @@ export function CompletionStep({ data }: CompletionStepProps) {
             <div>
               <p className="font-medium text-sage-800">every morning</p>
               <p className="text-sage-600 text-sm">
-                you'll get a gentle brief — today's shape, what i'm watching,
-                and one intention to hold.
+                you'll get a gentle brief. today's shape, what i'm watching, and one intention to hold.
               </p>
             </div>
           </div>

@@ -25,26 +25,20 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
         </p>
 
         <p className="text-sage-700 leading-relaxed">
-          we're not here to make you more productive. we're here to protect
-          your humanity — movement, nourishment, connection, calm, growth.
+          we're here to protect your humanity. movement, nourishment, connection, calm, growth.
         </p>
 
         <div className="space-y-2 text-sage-700">
-          <p>no scoring.</p>
-          <p>no tracking.</p>
-          <p>no guilt.</p>
+          <p>only suggestions.</p>
+          <p>you always decide.</p>
+          <p>kindness as the default.</p>
         </div>
-
-        <p className="text-sage-700 leading-relaxed">
-          just suggestions — you always decide.
-        </p>
       </Card>
 
       {/* Transparency statement */}
       <Card className="bg-terracotta-50 border-terracotta-200">
         <p className="text-sage-800 italic leading-relaxed">
-          "duende isn't optimizing for your productivity. it's optimizing for
-          your humanity — movement, nourishment, connection, calm, growth."
+          "duende optimizes for your humanity. movement, nourishment, connection, calm, growth."
         </p>
       </Card>
 

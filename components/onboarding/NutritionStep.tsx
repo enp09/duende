@@ -71,7 +71,7 @@ export function NutritionStep({ data, onUpdate, onNext, onBack }: NutritionStepP
               onChange={(e) => updateField('wantsProtectedLunch', e.target.value)}
             />
             <Radio
-              label="no, i'm fine eating whenever"
+              label="i'm fine eating whenever"
               name="protectedLunch"
               value="no"
               checked={localData.wantsProtectedLunch === 'no'}
@@ -152,8 +152,7 @@ export function NutritionStep({ data, onUpdate, onNext, onBack }: NutritionStepP
 
           <Card className="bg-sage-50 border-sage-200">
             <p className="text-sage-700 text-sm leading-relaxed">
-              this isn't about what's "right" — just helping me understand your
-              current patterns so i can suggest gently.
+              this is about understanding your current patterns so i can suggest gently.
             </p>
           </Card>
         </>

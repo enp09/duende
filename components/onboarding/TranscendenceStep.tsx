@@ -91,9 +91,7 @@ export function TranscendenceStep({ data, onUpdate, onNext, onBack }: Transcende
 
           <Card className="bg-sage-50 border-sage-200">
             <p className="text-sage-700 text-sm leading-relaxed">
-              humans are the only species that must grow to feel alive. comfort
-              isn't enough for us. this life is lived once — protecting time for
-              becoming isn't indulgent, it's essential.
+              humans are the only species that must grow to feel alive. comfort alone leaves us numb. this life is lived once. protecting time for becoming is essential.
             </p>
           </Card>
         </>

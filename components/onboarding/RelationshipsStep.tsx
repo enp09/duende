@@ -75,8 +75,7 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
 
           <Card>
             <p className="text-sm text-sage-600 mb-4">
-              you don't have to list everyone — just the people you want to make
-              sure you stay connected with
+              just the people you want to make sure you stay connected with
             </p>
 
             <div className="space-y-4">

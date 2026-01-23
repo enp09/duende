@@ -42,8 +42,7 @@ export function LocationStep({ data, onUpdate, onNext, onBack }: LocationStepPro
 
       <Card className="bg-sage-50 border-sage-200">
         <p className="text-sage-700 text-sm leading-relaxed">
-          this helps me watch the weather and suggest outdoor moments when it's
-          nice. i won't use your exact location — just your city for weather data.
+          this helps me watch the weather and suggest outdoor moments when conditions are nice. just your city for weather data.
         </p>
       </Card>
 

@@ -98,9 +98,7 @@ export function MovementStep({ data, onUpdate, onNext, onBack }: MovementStepPro
 
           <Card className="bg-sage-50 border-sage-200">
             <p className="text-sage-700 text-sm leading-relaxed">
-              your body and mind are one system. movement isn't just physical —
-              it's how your brain processes emotions and stress. we'll help you
-              find natural moments to move.
+              your body and mind are one system. movement is how your brain processes emotions and stress. we'll help you find natural moments to move.
             </p>
           </Card>
         </>
@@ -232,8 +230,7 @@ export function MovementStep({ data, onUpdate, onNext, onBack }: MovementStepPro
 
           <Card className="bg-sage-50 border-sage-200">
             <p className="text-sage-700 text-sm leading-relaxed">
-              walking side-by-side actually makes hard conversations easier —
-              less eye contact pressure, more blood flow to the brain.
+              walking side by side makes hard conversations easier. less eye contact pressure, more blood flow to the brain.
             </p>
           </Card>
         </>

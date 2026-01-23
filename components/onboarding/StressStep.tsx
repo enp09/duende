@@ -171,7 +171,7 @@ export function StressStep({ data, onUpdate, onNext, onBack }: StressStepProps) 
               }}
             />
             <Radio
-              label="no, back-to-backs are fine"
+              label="back to backs are fine"
               name="buffer"
               value="no"
               checked={localData.wantsBufferTime === 'no'}
@@ -184,8 +184,7 @@ export function StressStep({ data, onUpdate, onNext, onBack }: StressStepProps) 
 
           <Card className="bg-sage-50 border-sage-200">
             <p className="text-sage-700 text-sm leading-relaxed">
-              back-to-back meetings keep you in fight-or-flight. you never get
-              the signal that it's safe. buffers help your stress hormones reset.
+              back to back meetings keep you in fight or flight. buffers help your stress hormones reset and signal safety.
             </p>
           </Card>
         </>

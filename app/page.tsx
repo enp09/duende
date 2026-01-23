@@ -12,7 +12,7 @@ export default function Home() {
         </p>
         <div className="mt-12 p-6 bg-cream-100 rounded-lg border border-sage-200">
           <p className="text-sage-700 italic">
-            duende isn't optimizing for your productivity. it's optimizing for your humanity — movement, nourishment, connection, calm, growth.
+            duende optimizes for your humanity. movement, nourishment, connection, calm, growth.
           </p>
         </div>
         <div className="pt-8">
