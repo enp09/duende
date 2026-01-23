@@ -4,30 +4,30 @@
 
 @layer base {
   :root {
-    --background: 44 35% 93%; /* cream-500 */
-    --foreground: 120 8% 20%;
+    --background: 0 0% 95%; /* cloud-300 */
+    --foreground: 231 100% 31%; /* royal-500 */
 
-    --primary: 13 59% 59%; /* terracotta-500 */
-    --primary-foreground: 44 35% 98%;
+    --primary: 24 100% 50%; /* orange-500 */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 120 10% 47%; /* sage-500 */
-    --secondary-foreground: 44 35% 98%;
+    --secondary: 231 100% 31%; /* royal-500 */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 44 35% 90%;
-    --muted-foreground: 120 8% 40%;
+    --muted: 0 0% 93%;
+    --muted-foreground: 231 100% 25%;
 
-    --accent: 13 59% 59%;
-    --accent-foreground: 44 35% 98%;
+    --accent: 24 100% 50%;
+    --accent-foreground: 0 0% 100%;
   }
 }
 
 @layer base {
   * {
-    @apply border-sage-200;
+    @apply border-royal-200;
   }
 
   body {
-    @apply bg-cream-500 text-sage-900 font-sans;
+    @apply bg-cloud-300 text-royal-900 font-sans;
   }
 
   h1, h2, h3, h4, h5, h6 {

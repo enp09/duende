@@ -65,16 +65,16 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
       {step === 1 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-sage-800">
+            <h2 className="text-2xl font-serif text-royal-800">
               who are your closest people?
             </h2>
-            <p className="text-sage-600">
+            <p className="text-royal-600">
               the ones who really matter to you
             </p>
           </div>
 
           <Card>
-            <p className="text-sm text-sage-600 mb-4">
+            <p className="text-sm text-royal-600 mb-4">
               just the people you want to make sure you stay connected with
             </p>
 
@@ -100,22 +100,22 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
                   {relationships.map((rel, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 bg-cream-200 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-cloud-200 rounded-lg"
                     >
-                      <span className="text-sage-800">{rel.name}</span>
+                      <span className="text-royal-800">{rel.name}</span>
                       <div className="flex gap-2">
                         <button
                           onClick={() => {
                             setEditingIndex(index);
                             setStep(2);
                           }}
-                          className="text-sage-600 hover:text-sage-800 text-sm"
+                          className="text-royal-600 hover:text-royal-800 text-sm"
                         >
                           edit
                         </button>
                         <button
                           onClick={() => removeRelationship(index)}
-                          className="text-terracotta-600 hover:text-terracotta-800 text-sm"
+                          className="text-orange-600 hover:text-orange-800 text-sm"
                         >
                           remove
                         </button>
@@ -127,8 +127,8 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
             </div>
           </Card>
 
-          <Card className="bg-sage-50 border-sage-200">
-            <p className="text-sage-700 text-sm leading-relaxed">
+          <Card className="bg-royal-50 border-royal-200">
+            <p className="text-royal-700 text-sm leading-relaxed">
               humans evolved in tribes of 50-150. your nervous system literally
               calms with people you trust. that's biology, not soft.
             </p>
@@ -140,14 +140,14 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
       {step === 2 && editingIndex !== null && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-sage-800">
+            <h2 className="text-2xl font-serif text-royal-800">
               tell me about {relationships[editingIndex].name}
             </h2>
           </div>
 
           <Card className="space-y-6">
             <div>
-              <p className="text-sm text-sage-700 mb-3">relationship:</p>
+              <p className="text-sm text-royal-700 mb-3">relationship:</p>
               <div className="space-y-3">
                 <Radio
                   label="friend"
@@ -181,7 +181,7 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
             </div>
 
             <div>
-              <p className="text-sm text-sage-700 mb-3">how often do you want to connect?</p>
+              <p className="text-sm text-royal-700 mb-3">how often do you want to connect?</p>
               <div className="space-y-3">
                 <Radio
                   label="weekly"
@@ -215,7 +215,7 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
             </div>
 
             <div>
-              <p className="text-sm text-sage-700 mb-3">how do you feel after spending time with them?</p>
+              <p className="text-sm text-royal-700 mb-3">how do you feel after spending time with them?</p>
               <div className="space-y-3">
                 <Radio
                   label="energized"

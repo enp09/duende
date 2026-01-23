@@ -105,7 +105,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cream-500 py-8 px-4">
+    <div className="min-h-screen bg-cloud-300 py-8 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Progress bar (hidden on welcome and completion) */}
         {currentStep > 1 && currentStep < TOTAL_STEPS && (

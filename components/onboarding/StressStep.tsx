@@ -52,10 +52,10 @@ export function StressStep({ data, onUpdate, onNext, onBack }: StressStepProps) 
       {step === 1 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-sage-800">
+            <h2 className="text-2xl font-serif text-royal-800">
               what helps you decompress after an intense day?
             </h2>
-            <p className="text-sage-600">pick all that apply</p>
+            <p className="text-royal-600">pick all that apply</p>
           </div>
 
           <Card className="space-y-4">
@@ -96,8 +96,8 @@ export function StressStep({ data, onUpdate, onNext, onBack }: StressStepProps) 
             />
           </Card>
 
-          <Card className="bg-sage-50 border-sage-200">
-            <p className="text-sage-700 text-sm leading-relaxed">
+          <Card className="bg-royal-50 border-royal-200">
+            <p className="text-royal-700 text-sm leading-relaxed">
               your stress response can't tell the difference between a tiger and
               an email. movement completes the stress cycle — your body needs the
               signal that you survived.
@@ -110,10 +110,10 @@ export function StressStep({ data, onUpdate, onNext, onBack }: StressStepProps) 
       {step === 2 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-sage-800">
+            <h2 className="text-2xl font-serif text-royal-800">
               what's your max comfortable meeting hours per day?
             </h2>
-            <p className="text-sage-600">most people start feeling drained around 6</p>
+            <p className="text-royal-600">most people start feeling drained around 6</p>
           </div>
 
           <Card className="space-y-6">
@@ -124,14 +124,14 @@ export function StressStep({ data, onUpdate, onNext, onBack }: StressStepProps) 
               step="1"
               value={localData.maxMeetingHoursPerDay}
               onChange={(e) => updateField('maxMeetingHoursPerDay', parseInt(e.target.value))}
-              className="w-full h-2 bg-sage-200 rounded-lg appearance-none cursor-pointer accent-terracotta-500"
+              className="w-full h-2 bg-royal-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
             />
             <div className="text-center">
-              <span className="text-3xl font-serif text-sage-800">
+              <span className="text-3xl font-serif text-royal-800">
                 {localData.maxMeetingHoursPerDay} hours
               </span>
             </div>
-            <div className="flex justify-between text-xs text-sage-500">
+            <div className="flex justify-between text-xs text-royal-500">
               <span>2h</span>
               <span>6h</span>
               <span>10h</span>
@@ -144,7 +144,7 @@ export function StressStep({ data, onUpdate, onNext, onBack }: StressStepProps) 
       {step === 3 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-sage-800">
+            <h2 className="text-2xl font-serif text-royal-800">
               do you want buffer time between meetings?
             </h2>
           </div>
@@ -182,8 +182,8 @@ export function StressStep({ data, onUpdate, onNext, onBack }: StressStepProps) 
             />
           </Card>
 
-          <Card className="bg-sage-50 border-sage-200">
-            <p className="text-sage-700 text-sm leading-relaxed">
+          <Card className="bg-royal-50 border-royal-200">
+            <p className="text-royal-700 text-sm leading-relaxed">
               back to back meetings keep you in fight or flight. buffers help your stress hormones reset and signal safety.
             </p>
           </Card>

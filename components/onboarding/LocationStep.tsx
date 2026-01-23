@@ -18,7 +18,7 @@ export function LocationStep({ data, onUpdate, onNext, onBack }: LocationStepPro
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="space-y-4">
-        <h2 className="text-2xl font-serif text-sage-800">
+        <h2 className="text-2xl font-serif text-royal-800">
           where are you based?
         </h2>
       </div>
@@ -40,8 +40,8 @@ export function LocationStep({ data, onUpdate, onNext, onBack }: LocationStepPro
         />
       </Card>
 
-      <Card className="bg-sage-50 border-sage-200">
-        <p className="text-sage-700 text-sm leading-relaxed">
+      <Card className="bg-royal-50 border-royal-200">
+        <p className="text-royal-700 text-sm leading-relaxed">
           this helps me watch the weather and suggest outdoor moments when conditions are nice. just your city for weather data.
         </p>
       </Card>

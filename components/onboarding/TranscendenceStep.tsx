@@ -43,10 +43,10 @@ export function TranscendenceStep({ data, onUpdate, onNext, onBack }: Transcende
       {step === 1 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-sage-800">
+            <h2 className="text-2xl font-serif text-royal-800">
               what are you working on outside of work obligations?
             </h2>
-            <p className="text-sage-600">
+            <p className="text-royal-600">
               passion projects, hobbies, creative pursuits, things that make you
               feel most alive
             </p>
@@ -61,8 +61,8 @@ export function TranscendenceStep({ data, onUpdate, onNext, onBack }: Transcende
             />
           </Card>
 
-          <Card className="bg-sage-50 border-sage-200">
-            <p className="text-sage-700 text-sm leading-relaxed">
+          <Card className="bg-royal-50 border-royal-200">
+            <p className="text-royal-700 text-sm leading-relaxed">
               growth happens at the edge of comfort. a calendar that's 100%
               maintenance is slowly numbing. we'll help you protect time for
               becoming, not just maintaining.
@@ -75,7 +75,7 @@ export function TranscendenceStep({ data, onUpdate, onNext, onBack }: Transcende
       {step === 2 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-sage-800">
+            <h2 className="text-2xl font-serif text-royal-800">
               what do you want to learn this year?
             </h2>
           </div>
@@ -89,8 +89,8 @@ export function TranscendenceStep({ data, onUpdate, onNext, onBack }: Transcende
             />
           </Card>
 
-          <Card className="bg-sage-50 border-sage-200">
-            <p className="text-sage-700 text-sm leading-relaxed">
+          <Card className="bg-royal-50 border-royal-200">
+            <p className="text-royal-700 text-sm leading-relaxed">
               humans are the only species that must grow to feel alive. comfort alone leaves us numb. this life is lived once. protecting time for becoming is essential.
             </p>
           </Card>

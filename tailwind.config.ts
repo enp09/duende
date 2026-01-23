@@ -9,42 +9,42 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Warm editorial palette inspired by humanbeyondtech.com
-        cream: {
-          50: '#fdfcfb',
-          100: '#faf8f5',
-          200: '#f5f1ea',
-          300: '#f0e9dd',
-          400: '#ebe0cf',
-          500: '#e6d7c1', // Main cream background
-          600: '#d4c1a8',
-          700: '#c2ab8f',
-          800: '#a08e75',
-          900: '#7e6f5c',
+        // Duende color palette
+        cloud: {
+          50: '#ffffff',
+          100: '#fafaf9',
+          200: '#f7f7f5',
+          300: '#f4f3ee', // Cloud Dancer - main background
+          400: '#eeeee8',
+          500: '#e5e4dd',
+          600: '#d4d3ca',
+          700: '#b8b7ad',
+          800: '#8f8e84',
+          900: '#6b6a62',
         },
-        sage: {
-          50: '#f6f7f6',
-          100: '#e8ebe8',
-          200: '#d1d7d1',
-          300: '#b1bcb1',
-          400: '#8f9e8f',
-          500: '#6b7c6b', // Main sage green
-          600: '#5a6a5a',
-          700: '#4a574a',
-          800: '#3a453a',
-          900: '#2b332b',
+        royal: {
+          50: '#e6eaf8',
+          100: '#ccd5f1',
+          200: '#99abe3',
+          300: '#6681d5',
+          400: '#3357c7',
+          500: '#00239D', // Deep royal blue - main color
+          600: '#001c7e',
+          700: '#00155e',
+          800: '#000e3f',
+          900: '#00071f',
         },
-        terracotta: {
-          50: '#fdf6f4',
-          100: '#fae8e3',
-          200: '#f5d1c7',
-          300: '#efb4a3',
-          400: '#e89177',
-          500: '#d97556', // Main terracotta accent
-          600: '#c45d3f',
-          700: '#a34b32',
-          800: '#853d2a',
-          900: '#6b3324',
+        orange: {
+          50: '#fff4ed',
+          100: '#ffe8db',
+          200: '#ffd1b7',
+          300: '#ffba93',
+          400: '#ffa36f',
+          500: '#FF5C00', // Orange - accent color
+          600: '#cc4a00',
+          700: '#993700',
+          800: '#662500',
+          900: '#331200',
         },
       },
       fontFamily: {

@@ -16,13 +16,13 @@ export function CompletionStep({ data }: CompletionStepProps) {
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="text-center space-y-4">
-        <h1 className="text-5xl font-serif text-sage-800">
+        <h1 className="text-5xl font-serif text-royal-800">
           you're all set.
         </h1>
       </div>
 
       <Card className="space-y-6">
-        <p className="text-lg text-sage-800 font-medium">
+        <p className="text-lg text-royal-800 font-medium">
           here's what happens next:
         </p>
 
@@ -30,8 +30,8 @@ export function CompletionStep({ data }: CompletionStepProps) {
           <div className="flex gap-4">
             <span className="text-2xl">📅</span>
             <div>
-              <p className="font-medium text-sage-800">sunday evening</p>
-              <p className="text-sage-600 text-sm">
+              <p className="font-medium text-royal-800">sunday evening</p>
+              <p className="text-royal-600 text-sm">
                 i'll help you plan your week. setting intentions for movement, connection, growth, and rest. flexible goals, never rigid.
               </p>
             </div>
@@ -40,8 +40,8 @@ export function CompletionStep({ data }: CompletionStepProps) {
           <div className="flex gap-4">
             <span className="text-2xl">☀️</span>
             <div>
-              <p className="font-medium text-sage-800">every morning</p>
-              <p className="text-sage-600 text-sm">
+              <p className="font-medium text-royal-800">every morning</p>
+              <p className="text-royal-600 text-sm">
                 you'll get a gentle brief. today's shape, what i'm watching, and one intention to hold.
               </p>
             </div>
@@ -50,8 +50,8 @@ export function CompletionStep({ data }: CompletionStepProps) {
           <div className="flex gap-4">
             <span className="text-2xl">💡</span>
             <div>
-              <p className="font-medium text-sage-800">throughout the week</p>
-              <p className="text-sage-600 text-sm">
+              <p className="font-medium text-royal-800">throughout the week</p>
+              <p className="text-royal-600 text-sm">
                 i'll suggest changes to protect your humanity. you always decide.
               </p>
             </div>
@@ -60,8 +60,8 @@ export function CompletionStep({ data }: CompletionStepProps) {
           <div className="flex gap-4">
             <span className="text-2xl">🗣️</span>
             <div>
-              <p className="font-medium text-sage-800">anytime</p>
-              <p className="text-sage-600 text-sm">
+              <p className="font-medium text-royal-800">anytime</p>
+              <p className="text-royal-600 text-sm">
                 talk to me to adjust how i work. i learn and adapt.
               </p>
             </div>
@@ -69,8 +69,8 @@ export function CompletionStep({ data }: CompletionStepProps) {
         </div>
       </Card>
 
-      <Card className="bg-terracotta-50 border-terracotta-200 text-center">
-        <p className="text-sage-800 italic">
+      <Card className="bg-orange-50 border-orange-200 text-center">
+        <p className="text-royal-800 italic">
           ready to protect your humanity?
         </p>
       </Card>
