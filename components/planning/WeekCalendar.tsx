@@ -20,11 +20,11 @@ interface WeekCalendarProps {
 }
 
 const defaultSettings = {
-  movement: { color: '#FF5C00', label: 'movement' },
-  nutrition: { color: '#00239D', label: 'nutrition' },
-  relationships: { color: '#FF5C00', label: 'connection' },
-  stress: { color: '#00239D', label: 'buffers' },
-  transcendence: { color: '#FF5C00', label: 'growth' },
+  movement: { color: '#fb923c', label: 'movement' },
+  nutrition: { color: '#4ade80', label: 'nutrition' },
+  relationships: { color: '#f472b6', label: 'connection' },
+  stress: { color: '#60a5fa', label: 'buffers' },
+  transcendence: { color: '#fbbf24', label: 'growth' },
 };
 
 export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarProps) {
@@ -52,11 +52,23 @@ export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarPro
   const handleDragStart = (e: React.DragEvent, block: CalendarBlock) => {
     setDraggedBlock(block);
     e.dataTransfer.effectAllowed = 'move';
-    (e.currentTarget as HTMLElement).style.opacity = '0.5';
+    e.dataTransfer.setData('text/plain', block.id);
+    const element = e.currentTarget as HTMLElement;
+    element.style.opacity = '0.4';
+
+    // Create a drag image
+    const dragImage = element.cloneNode(true) as HTMLElement;
+    dragImage.style.opacity = '0.8';
+    document.body.appendChild(dragImage);
+    dragImage.style.position = 'absolute';
+    dragImage.style.top = '-1000px';
+    e.dataTransfer.setDragImage(dragImage, 0, 0);
+    setTimeout(() => document.body.removeChild(dragImage), 0);
   };
 
   const handleDragEnd = (e: React.DragEvent) => {
-    (e.currentTarget as HTMLElement).style.opacity = '1';
+    const element = e.currentTarget as HTMLElement;
+    element.style.opacity = '1';
     setDraggedBlock(null);
   };
 
@@ -112,7 +124,9 @@ export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarPro
               {hours.map(hour => (
                 <div
                   key={hour}
-                  className="h-20 border-b border-cloud-300 hover:bg-cloud-300 transition-colors"
+                  className={`h-20 border-b border-cloud-300 transition-colors ${
+                    draggedBlock ? 'hover:bg-orange-100 hover:border-orange-300' : ''
+                  }`}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, day, hour)}
                 ></div>
@@ -121,16 +135,17 @@ export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarPro
               {getBlocksForDay(day).map(block => (
                 <div
                   key={block.id}
-                  className={`absolute left-1 right-1 rounded-lg p-3 cursor-move transition-all hover:-translate-y-0.5 hover:shadow-md ${
+                  className={`absolute left-1 right-1 rounded-lg p-3 cursor-grab active:cursor-grabbing transition-all hover:-translate-y-0.5 hover:shadow-lg ${
                     block.type === 'existing' ? 'opacity-60 border border-royal-200' : 'border-2 border-dashed border-white/60'
-                  }`}
-                  draggable={true}
+                  } ${draggedBlock?.id === block.id ? 'pointer-events-none' : ''}`}
+                  draggable={block.type === 'proposed'}
                   onDragStart={(e) => handleDragStart(e, block)}
                   onDragEnd={handleDragEnd}
                   style={{
                     top: `${timeToPosition(block.startTime) * 80}px`,
                     height: `${getBlockHeight(block.startTime, block.endTime)}px`,
-                    backgroundColor: block.color
+                    backgroundColor: block.color,
+                    zIndex: draggedBlock?.id === block.id ? 50 : 10
                   }}
                 >
                   <div className="text-white h-full flex flex-col gap-1">
@@ -260,27 +275,27 @@ export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarPro
       {/* Legend */}
       <div className="flex flex-wrap gap-4 text-xs text-royal-600">
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-royal-400"></div>
-          <span>existing</span>
+          <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+          <span>existing meetings</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+          <div className="w-3 h-3 rounded-full bg-orange-400"></div>
           <span>movement</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#00239D' }}></div>
+          <div className="w-3 h-3 rounded-full bg-green-400"></div>
           <span>nutrition</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+          <div className="w-3 h-3 rounded-full bg-pink-400"></div>
           <span>connection</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#00239D' }}></div>
+          <div className="w-3 h-3 rounded-full bg-blue-400"></div>
           <span>buffers</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+          <div className="w-3 h-3 rounded-full bg-amber-400"></div>
           <span>growth</span>
         </div>
       </div>

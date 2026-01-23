@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    // Redirect back to dashboard with success message
+    // Redirect to settings page after calendar connection
     return NextResponse.redirect(
       new URL('/settings?calendar=connected', request.url)
     );

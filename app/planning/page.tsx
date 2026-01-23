@@ -9,16 +9,6 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import WeekCalendar from '@/components/planning/WeekCalendar';
 
-interface IntentionProposal {
-  id: string;
-  defaultSetting: string;
-  description: string;
-  reasoning: string;
-  targetDay?: string;
-  requiresWeather: boolean;
-  status: 'pending' | 'accepted' | 'dismissed';
-}
-
 interface CalendarBlock {
   id: string;
   type: 'existing' | 'proposed';
@@ -28,88 +18,52 @@ interface CalendarBlock {
   endTime: string;
   color: string;
   setting?: string;
-  intention?: string;
+}
+
+interface DomainAnswers {
+  intentions: string;
+  movement: string;
+  nutrition: string;
+  relationships: string;
+  stress: string;
+  transcendence: string;
+  excludePeople: string;
 }
 
 export default function PlanningPage() {
   const router = useRouter();
-  const [userId, setUserId] = useState<string | null>(null);
-  const [intentions, setIntentions] = useState<IntentionProposal[]>([]);
+  const [answers, setAnswers] = useState<DomainAnswers>({
+    intentions: '',
+    movement: '',
+    nutrition: '',
+    relationships: '',
+    stress: '',
+    transcendence: '',
+    excludePeople: '',
+  });
   const [calendarBlocks, setCalendarBlocks] = useState<CalendarBlock[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [showManualInput, setShowManualInput] = useState(false);
-  const [manualIntention, setManualIntention] = useState('');
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('duende_user_id');
-    if (!storedUserId) {
-      router.push('/onboarding');
-      return;
+    // Load saved answers from localStorage if they exist
+    const savedAnswers = localStorage.getItem('duende_planning_answers');
+    if (savedAnswers) {
+      const parsed = JSON.parse(savedAnswers);
+      // Merge with default state to ensure all keys exist
+      setAnswers(prev => ({
+        ...prev,
+        ...parsed,
+      }));
     }
-    setUserId(storedUserId);
 
-    // Generate intentions and calendar blocks
-    generateIntentions();
-    generateCalendarBlocks();
-  }, [router]);
-
-  const generateIntentions = () => {
-    const sampleIntentions: IntentionProposal[] = [
-      {
-        id: '1',
-        defaultSetting: 'movement',
-        description: '30 minute walk on tuesday or wednesday',
-        reasoning: 'weather looks nice midweek. good opportunity to move outside and reset.',
-        targetDay: 'Tuesday',
-        requiresWeather: true,
-        status: 'pending',
-      },
-      {
-        id: '2',
-        defaultSetting: 'nutrition',
-        description: 'protected lunch thursday',
-        reasoning: 'thursday tends to be your heaviest meeting day. protecting lunch helps you stay grounded.',
-        targetDay: 'Thursday',
-        requiresWeather: false,
-        status: 'pending',
-      },
-      {
-        id: '3',
-        defaultSetting: 'relationships',
-        description: 'coffee with sarah wednesday afternoon',
-        reasoning: 'staying connected with people who matter keeps your nervous system regulated.',
-        targetDay: 'Wednesday',
-        requiresWeather: false,
-        status: 'pending',
-      },
-      {
-        id: '4',
-        defaultSetting: 'stress',
-        description: 'add 10 minute buffers between meetings',
-        reasoning: 'back to back meetings keep you in fight or flight. buffers signal safety to your body.',
-        requiresWeather: false,
-        status: 'pending',
-      },
-      {
-        id: '5',
-        defaultSetting: 'transcendence',
-        description: '2 hours friday afternoon for passion project',
-        reasoning: 'growth happens at edges. friday afternoon when meetings are lighter is perfect for becoming.',
-        targetDay: 'Friday',
-        requiresWeather: false,
-        status: 'pending',
-      },
-    ];
-
-    setIntentions(sampleIntentions);
+    // Generate initial calendar blocks (existing meetings)
+    generateExistingMeetings();
     setIsLoading(false);
-  };
+  }, []);
 
-  const generateCalendarBlocks = () => {
-    // Sample existing meetings and proposed blocks
-    const blocks: CalendarBlock[] = [
-      // Existing meetings
+  const generateExistingMeetings = () => {
+    const existingMeetings: CalendarBlock[] = [
       {
         id: 'meeting-1',
         type: 'existing',
@@ -128,127 +82,136 @@ export default function PlanningPage() {
         endTime: '15:30',
         color: '#9ca3af',
       },
-      // Movement
       {
-        id: 'duende-1',
-        type: 'proposed',
-        title: '30min Walk',
-        day: 'Tuesday',
-        startTime: '12:00',
-        endTime: '12:30',
-        color: '#FF5C00',
-        setting: 'movement',
-        intention: '30 minute walk on tuesday or wednesday'
-      },
-      // Nutrition
-      {
-        id: 'duende-2',
-        type: 'proposed',
-        title: 'Protected Lunch',
-        day: 'Thursday',
-        startTime: '12:30',
-        endTime: '13:30',
-        color: '#00239D',
-        setting: 'nutrition',
-        intention: 'protected lunch thursday'
-      },
-      // Relationships
-      {
-        id: 'duende-3',
-        type: 'proposed',
-        title: 'Coffee with Sarah',
+        id: 'meeting-3',
+        type: 'existing',
+        title: 'Client Call',
         day: 'Wednesday',
-        startTime: '15:00',
-        endTime: '16:00',
-        color: '#FF5C00',
-        setting: 'relationships',
-        intention: 'coffee with sarah wednesday afternoon'
+        startTime: '11:00',
+        endTime: '12:00',
+        color: '#9ca3af',
       },
-      // Transcendence
       {
-        id: 'duende-4',
-        type: 'proposed',
-        title: 'Deep Work: Side Project',
+        id: 'meeting-4',
+        type: 'existing',
+        title: 'Sprint Planning',
+        day: 'Thursday',
+        startTime: '10:00',
+        endTime: '11:30',
+        color: '#9ca3af',
+      },
+      {
+        id: 'meeting-5',
+        type: 'existing',
+        title: '1:1 with Manager',
         day: 'Friday',
-        startTime: '14:00',
-        endTime: '16:00',
-        color: '#FF5C00',
-        setting: 'transcendence',
-        intention: '2 hours friday afternoon for passion project'
+        startTime: '15:00',
+        endTime: '15:30',
+        color: '#9ca3af',
       },
     ];
 
-    setCalendarBlocks(blocks);
+    setCalendarBlocks(existingMeetings);
   };
 
-  const handleIntentionAction = (id: string, action: 'accepted' | 'dismissed') => {
-    setIntentions(prev =>
-      prev.map(i => (i.id === id ? { ...i, status: action } : i))
-    );
-  };
+  const generateProtections = () => {
+    const protections: CalendarBlock[] = [];
 
-  const handleAddManualIntention = () => {
-    if (!manualIntention.trim()) return;
-
-    const newIntention: IntentionProposal = {
-      id: `manual-${Date.now()}`,
-      defaultSetting: 'movement', // Could be selected by user
-      description: manualIntention,
-      reasoning: 'added manually',
-      requiresWeather: false,
-      status: 'accepted',
-    };
-
-    setIntentions(prev => [...prev, newIntention]);
-    setManualIntention('');
-    setShowManualInput(false);
-  };
-
-  const handleSave = async () => {
-    if (!userId) return;
-
-    setIsSaving(true);
-
-    const acceptedIntentions = intentions.filter(i => i.status === 'accepted');
-
-    try {
-      const response = await fetch('/api/planning/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          intentions: acceptedIntentions,
-        }),
+    // Movement protection
+    if (answers.movement.trim()) {
+      protections.push({
+        id: 'duende-movement',
+        type: 'proposed',
+        title: answers.movement.includes('walk') ? '30min Walk' :
+               answers.movement.includes('run') ? '30min Run' :
+               answers.movement.includes('yoga') ? 'Yoga Session' :
+               answers.movement.includes('stretch') ? 'Stretch Break' : 'Movement Time',
+        day: 'Tuesday',
+        startTime: '12:00',
+        endTime: '12:30',
+        color: '#fb923c', // orange-400
+        setting: 'movement',
       });
-
-      const result = await response.json();
-
-      if (result.success) {
-        // TODO: Sync calendar blocks to Google Calendar here
-        router.push('/settings');
-      } else {
-        alert('failed to save intentions');
-        setIsSaving(false);
-      }
-    } catch (error) {
-      console.error('Error saving intentions:', error);
-      alert('something went wrong');
-      setIsSaving(false);
     }
+
+    // Nutrition protection
+    if (answers.nutrition.trim()) {
+      const lunchTime = answers.nutrition.includes('12') ? '12:00' :
+                       answers.nutrition.includes('1') || answers.nutrition.includes('13') ? '13:00' : '12:30';
+      protections.push({
+        id: 'duende-nutrition',
+        type: 'proposed',
+        title: 'Protected Lunch',
+        day: 'Thursday',
+        startTime: lunchTime,
+        endTime: `${parseInt(lunchTime.split(':')[0]) + 1}:00`,
+        color: '#4ade80', // green-400
+        setting: 'nutrition',
+      });
+    }
+
+    // Relationships protection
+    if (answers.relationships.trim()) {
+      const names = answers.relationships.split(',').map(n => n.trim()).filter(n => n);
+      if (names.length > 0) {
+        protections.push({
+          id: 'duende-relationships',
+          type: 'proposed',
+          title: `Coffee with ${names[0]}`,
+          day: 'Wednesday',
+          startTime: '15:00',
+          endTime: '16:00',
+          color: '#f472b6', // pink-400
+          setting: 'relationships',
+        });
+      }
+    }
+
+    // Stress protection (buffers are handled differently, not shown as blocks)
+    // Could add visual indicators between meetings instead
+
+    // Transcendence protection
+    if (answers.transcendence.trim()) {
+      const truncated = answers.transcendence.length > 20
+        ? answers.transcendence.substring(0, 20) + '...'
+        : answers.transcendence;
+      protections.push({
+        id: 'duende-transcendence',
+        type: 'proposed',
+        title: 'Deep Work: ' + truncated,
+        day: 'Friday',
+        startTime: '14:00',
+        endTime: '16:00',
+        color: '#fbbf24', // amber-400
+        setting: 'transcendence',
+      });
+    }
+
+    // Combine existing meetings with protections
+    setCalendarBlocks(prev => {
+      const existingOnly = prev.filter(b => b.type === 'existing');
+      return [...existingOnly, ...protections];
+    });
   };
 
-  const getDefaultSettingColor = (setting: string) => {
-    switch (setting) {
-      case 'movement':
-      case 'relationships':
-      case 'transcendence':
-        return 'bg-orange-50 border-orange-200';
-      case 'nutrition':
-      case 'stress':
-        return 'bg-royal-50 border-royal-200';
-      default:
-        return 'bg-cloud-100 border-royal-200';
-    }
+  const handleAnswerChange = (domain: keyof DomainAnswers, value: string) => {
+    setAnswers(prev => ({ ...prev, [domain]: value }));
+  };
+
+  const handleGenerateProtections = () => {
+    generateProtections();
+    setHasGenerated(true);
+    // Save answers to localStorage
+    localStorage.setItem('duende_planning_answers', JSON.stringify(answers));
+  };
+
+  const handleSyncToCalendar = () => {
+    // Save calendar blocks to localStorage
+    const protections = calendarBlocks.filter(b => b.type === 'proposed');
+    localStorage.setItem('duende_calendar_blocks', JSON.stringify(protections));
+
+    // Redirect to onboarding to collect email and connect calendar
+    router.push('/onboarding');
   };
 
   if (isLoading) {
@@ -259,7 +222,7 @@ export default function PlanningPage() {
     );
   }
 
-  const acceptedCount = intentions.filter(i => i.status === 'accepted').length;
+  const protectionCount = calendarBlocks.filter(b => b.type === 'proposed').length;
 
   return (
     <div className="min-h-screen py-8 px-4 bg-gradient-to-b from-cloud-300 to-white">
@@ -267,136 +230,311 @@ export default function PlanningPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/settings">
+            <Link href="/">
               <Image src="/logo.svg" alt="duende" width={50} height={50} priority className="cursor-pointer" />
             </Link>
             <div>
-              <h1 className="text-3xl font-serif text-royal-500">sunday planning</h1>
-              <p className="text-royal-600 text-sm">setting intentions for your week</p>
+              <h1 className="text-3xl font-serif text-royal-500">plan your week</h1>
+              <p className="text-royal-600 text-sm">duende will advocate for what makes you human</p>
             </div>
           </div>
-          <Button variant="ghost" onClick={() => router.push('/settings')}>
-            settings
-          </Button>
         </div>
 
         {/* Intro */}
         <Card>
           <p className="text-royal-500 leading-relaxed">
-            duende analyzed your calendar and proposes these protections. review, adjust timing in the calendar below, or add your own intentions.
+            answer these questions and click generate to see your protections appear on the calendar below. duende will automatically send emails to protect your time. you can exclude specific people below.
           </p>
         </Card>
 
-        {/* Intention Proposals */}
+        {/* Domain Questions */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-serif text-royal-500">duende suggests</h2>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowManualInput(!showManualInput)}
-            >
-              + add your own
-            </Button>
-          </div>
+          <h2 className="text-xl font-serif text-royal-500">plan your week</h2>
 
-          {showManualInput && (
-            <Card>
+          <div className="grid md:grid-cols-3 gap-4">
+            {/* Intentions for the week */}
+            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-300">
               <div className="space-y-3">
-                <Input
-                  placeholder="e.g., 'protect lunch tuesday' or '2hr deep work friday morning'"
-                  value={manualIntention}
-                  onChange={(e) => setManualIntention(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleAddManualIntention()}
-                />
-                <div className="flex gap-2">
-                  <Button size="sm" onClick={handleAddManualIntention}>
-                    add intention
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => setShowManualInput(false)}>
-                    cancel
-                  </Button>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-purple-700 mb-1 font-semibold">this week</p>
+                  <p className="text-sm text-royal-600 mb-3">
+                    what do you want to accomplish or focus on this week?
+                  </p>
                 </div>
+                <Input
+                  placeholder="e.g., finish the proposal, be more present"
+                  value={answers.intentions || ''}
+                  onChange={(e) => handleAnswerChange('intentions', e.target.value)}
+                />
               </div>
             </Card>
-          )}
 
-          <div className="grid md:grid-cols-2 gap-4">
-            {intentions.map((intention) => (
-              <Card
-                key={intention.id}
-                className={`${getDefaultSettingColor(intention.defaultSetting)} ${
-                  intention.status === 'dismissed' ? 'opacity-50' : ''
-                }`}
-              >
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-xs uppercase tracking-wide text-royal-600 mb-1">
-                      {intention.defaultSetting}
-                    </p>
-                    <p className="text-base text-royal-500 font-medium">
-                      {intention.description}
-                    </p>
-                  </div>
-
-                  <p className="text-sm text-royal-600">{intention.reasoning}</p>
-
-                  {intention.status === 'pending' && (
-                    <div className="flex gap-2 pt-2">
-                      <Button
-                        onClick={() => handleIntentionAction(intention.id, 'accepted')}
-                        size="sm"
-                      >
-                        yes
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleIntentionAction(intention.id, 'dismissed')}
-                        size="sm"
-                      >
-                        skip
-                      </Button>
-                    </div>
-                  )}
-
-                  {intention.status === 'accepted' && (
-                    <p className="text-sm text-orange-600 font-medium">✓ accepted</p>
-                  )}
-
-                  {intention.status === 'dismissed' && (
-                    <p className="text-sm text-royal-400">skipped</p>
-                  )}
+            {/* Movement */}
+            <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-300">
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-orange-700 mb-1 font-semibold">movement</p>
+                  <p className="text-sm text-royal-600 mb-3">
+                    how do you like to move your body?
+                  </p>
                 </div>
-              </Card>
-            ))}
+                <Input
+                  placeholder="e.g., walk, run, yoga, stretch"
+                  value={answers.movement || ''}
+                  onChange={(e) => handleAnswerChange('movement', e.target.value)}
+                />
+              </div>
+            </Card>
+
+            {/* Nutrition */}
+            <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-300">
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-green-700 mb-1 font-semibold">nutrition</p>
+                  <p className="text-sm text-royal-600 mb-3">
+                    when do you want to protect lunch?
+                  </p>
+                </div>
+                <Input
+                  placeholder="e.g., 12:30pm, 1pm"
+                  value={answers.nutrition || ''}
+                  onChange={(e) => handleAnswerChange('nutrition', e.target.value)}
+                />
+              </div>
+            </Card>
+
+            {/* Relationships */}
+            <Card className="bg-gradient-to-br from-pink-50 to-pink-100 border-pink-300">
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-pink-700 mb-1 font-semibold">relationships</p>
+                  <p className="text-sm text-royal-600 mb-3">
+                    who do you want to stay connected with?
+                  </p>
+                </div>
+                <Input
+                  placeholder="e.g., sarah, mike, alex"
+                  value={answers.relationships || ''}
+                  onChange={(e) => handleAnswerChange('relationships', e.target.value)}
+                />
+              </div>
+            </Card>
+
+            {/* Stress */}
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-300">
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-blue-700 mb-1 font-semibold">buffers</p>
+                  <p className="text-sm text-royal-600 mb-3">
+                    how much breathing room between meetings?
+                  </p>
+                </div>
+                <Input
+                  placeholder="e.g., 10 minutes, 15 minutes"
+                  value={answers.stress || ''}
+                  onChange={(e) => handleAnswerChange('stress', e.target.value)}
+                />
+              </div>
+            </Card>
+
+            {/* Transcendence */}
+            <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-300">
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-amber-700 mb-1 font-semibold">growth</p>
+                  <p className="text-sm text-royal-600 mb-3">
+                    what are you learning or building?
+                  </p>
+                </div>
+                <Input
+                  placeholder="e.g., side project, learning spanish"
+                  value={answers.transcendence || ''}
+                  onChange={(e) => handleAnswerChange('transcendence', e.target.value)}
+                />
+              </div>
+            </Card>
+          </div>
+
+          {/* Exclude people */}
+          <Card className="bg-white border-royal-200">
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm font-medium text-royal-500 mb-1">exclude people (optional)</p>
+                <p className="text-sm text-royal-600 mb-3">
+                  duende will never send protection emails to these people. useful for your manager or key stakeholders.
+                </p>
+              </div>
+              <Input
+                placeholder="e.g., boss@company.com, ceo@company.com"
+                value={answers.excludePeople || ''}
+                onChange={(e) => handleAnswerChange('excludePeople', e.target.value)}
+              />
+            </div>
+          </Card>
+
+          {/* Generate button */}
+          <div className="flex justify-center pt-2">
+            <Button
+              onClick={handleGenerateProtections}
+              disabled={!answers.intentions && !answers.movement && !answers.nutrition && !answers.relationships && !answers.transcendence}
+              className="bg-royal-500 hover:bg-royal-600 text-white disabled:bg-royal-300"
+              size="lg"
+            >
+              {hasGenerated ? 'regenerate protections' : 'generate protections'}
+            </Button>
           </div>
         </div>
 
         {/* Calendar Visualization */}
         <div className="space-y-4">
-          <h2 className="text-xl font-serif text-royal-500">visualize your week</h2>
+          <h2 className="text-xl font-serif text-royal-500">your week with protections</h2>
+          {protectionCount === 0 && !hasGenerated && (
+            <Card className="bg-cloud-300 border-royal-200">
+              <p className="text-center text-royal-600 py-8">
+                answer the questions above and click generate to see your protections appear here
+              </p>
+            </Card>
+          )}
           <WeekCalendar
             blocks={calendarBlocks}
             onBlocksChange={setCalendarBlocks}
           />
         </div>
 
-        {/* Confirm */}
+        {/* How Duende Advocates */}
+        <div className="space-y-6">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-serif text-royal-500">how duende advocates for you</h2>
+            <p className="text-royal-600 max-w-2xl mx-auto">
+              duende messages others on your behalf and sends you updates. the ai takes the blame. both people are protected.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Outbound: What duende sends to others */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-royal-500">duende messages others</h3>
+
+              {/* Example 1: Movement */}
+              <Card className="bg-orange-50 border-orange-200">
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs uppercase tracking-wide text-royal-400">to: sarah@company.com</span>
+                  </div>
+                  <p className="text-sm text-royal-600 leading-relaxed">
+                    hi sarah, duende here for elif. she's been in back to back calls this morning. could we move the 3pm sync to 3:15 so she can take a quick walk? she'll be more present.
+                  </p>
+                  <p className="text-xs text-royal-400 italic">protecting: movement</p>
+                </div>
+              </Card>
+
+              {/* Example 2: Lunch */}
+              <Card className="bg-royal-50 border-royal-200">
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs uppercase tracking-wide text-royal-400">to: team@company.com</span>
+                  </div>
+                  <p className="text-sm text-royal-600 leading-relaxed">
+                    hey team, duende here for elif. her thursday lunch is getting crowded with meetings. could we move the 12:30 standup to 2pm so she can eat away from her desk?
+                  </p>
+                  <p className="text-xs text-royal-400 italic">protecting: nutrition</p>
+                </div>
+              </Card>
+
+              {/* Example 3: Deep work */}
+              <Card className="bg-orange-50 border-orange-200">
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs uppercase tracking-wide text-royal-400">to: mike@company.com</span>
+                  </div>
+                  <p className="text-sm text-royal-600 leading-relaxed">
+                    hi mike, duende here for elif. friday afternoon is her deep work time for learning. could this be async or move to monday? you'll get a more thoughtful response.
+                  </p>
+                  <p className="text-xs text-royal-400 italic">protecting: transcendence</p>
+                </div>
+              </Card>
+            </div>
+
+            {/* Inbound: What the user receives */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-royal-500">emails you receive</h3>
+
+              {/* Example 1: Threshold alert */}
+              <Card className="bg-white border-royal-200">
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs uppercase tracking-wide text-royal-400">from: duende</span>
+                  </div>
+                  <p className="text-sm font-medium text-royal-500">your tuesday looks heavy</p>
+                  <p className="text-sm text-royal-600 leading-relaxed">
+                    you have 6 hours of meetings back to back. i suggest protecting 30 minutes at noon for a walk. should i message the team to move the 12pm sync?
+                  </p>
+                  <div className="flex gap-2 pt-2">
+                    <button className="px-4 py-2 bg-orange-500 text-white text-xs rounded hover:bg-orange-600">
+                      yes, protect it
+                    </button>
+                    <button className="px-4 py-2 bg-white border border-royal-200 text-royal-600 text-xs rounded hover:bg-royal-50">
+                      skip this time
+                    </button>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Example 2: Suggestion accepted */}
+              <Card className="bg-white border-royal-200">
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs uppercase tracking-wide text-royal-400">from: duende</span>
+                  </div>
+                  <p className="text-sm font-medium text-royal-500">sarah agreed to 3:15</p>
+                  <p className="text-sm text-royal-600 leading-relaxed">
+                    i moved your sync with sarah from 3pm to 3:15pm. your calendar is updated. you now have 15 minutes to step outside.
+                  </p>
+                  <p className="text-xs text-royal-400 italic">✓ protection added</p>
+                </div>
+              </Card>
+
+              {/* Example 3: Weekly check in */}
+              <Card className="bg-white border-royal-200">
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs uppercase tracking-wide text-royal-400">from: duende</span>
+                  </div>
+                  <p className="text-sm font-medium text-royal-500">sunday planning</p>
+                  <p className="text-sm text-royal-600 leading-relaxed">
+                    looking at your week. i see 4 opportunities to protect your humanity. review and adjust in your planning page.
+                  </p>
+                  <div className="pt-2">
+                    <button className="px-4 py-2 bg-royal-500 text-white text-xs rounded hover:bg-royal-600">
+                      review protections
+                    </button>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </div>
+
+        {/* Connect Calendar */}
         <Card className="bg-royal-500 border-royal-500">
           <div className="flex items-center justify-between">
             <div className="text-white">
               <p className="text-2xl font-serif font-light mb-1">
-                {acceptedCount} {acceptedCount === 1 ? 'protection' : 'protections'} ready
+                {protectionCount} {protectionCount === 1 ? 'protection' : 'protections'} ready
               </p>
-              <p className="text-sm opacity-90">drag blocks to adjust, then sync to google calendar</p>
+              <p className="text-sm opacity-90">
+                {protectionCount === 0
+                  ? 'answer questions above to see your protections'
+                  : 'drag blocks to adjust timing, then connect your calendar'}
+              </p>
             </div>
             <Button
-              onClick={handleSave}
-              disabled={isSaving || acceptedCount === 0}
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              onClick={handleSyncToCalendar}
+              disabled={protectionCount === 0}
+              className="bg-orange-500 hover:bg-orange-600 text-white disabled:bg-orange-300"
               size="lg"
             >
-              {isSaving ? 'syncing...' : 'confirm + sync to calendar'}
+              connect calendar
             </Button>
           </div>
         </Card>

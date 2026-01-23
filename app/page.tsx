@@ -32,7 +32,7 @@ export default function Home() {
           </p>
           <div className="pt-4">
             <Link
-              href="/onboarding"
+              href="/planning"
               className="inline-block px-10 py-4 bg-orange-500 text-cloud-50 rounded-lg text-lg font-sans hover:bg-orange-600 active:bg-orange-700 transition-all duration-200"
             >
               get started
@@ -316,7 +316,7 @@ export default function Home() {
             setup takes 5 minutes. duende starts advocating immediately.
           </p>
           <Link
-            href="/onboarding"
+            href="/planning"
             className="inline-block px-10 py-4 bg-orange-500 text-cloud-50 rounded-lg text-lg font-sans hover:bg-orange-600 active:bg-orange-700 transition-all duration-200"
           >
             get started

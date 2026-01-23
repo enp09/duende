@@ -1,89 +1,160 @@
 # duende
 
-> the caring membrane between humans and their time
+> pronounced "dwen-day" — the feeling of being fully alive
 
-an ai care layer that sits between you, your calendar, and other people — protecting everyone's humanity without anyone having to ask.
-
----
-
-## project setup complete ✓
-
-the foundation for duende has been established with:
-
-- **next.js 15** with typescript and app router
-- **tailwind css** with warm editorial color palette (cream backgrounds, sage greens, terracotta accents)
-- **prisma** with comprehensive database schema
-- **folder structure** for scalable development
+an ai advocacy layer that sits between you, your calendar, and other people — protecting everyone's humanity without anyone having to ask.
 
 ---
 
-## color palette
+## what is duende?
 
-the app uses a warm, editorial aesthetic inspired by humanbeyondtech.com:
+duende helps you plan your week and advocates for the time that makes you human: movement, real meals, connection, space to think and grow.
 
-- **cream** (`cream-500: #e6d7c1`) - main background
-- **sage green** (`sage-500: #6b7c6b`) - primary text and accents
-- **terracotta** (`terracotta-500: #d97556`) - call-to-action and highlights
+**the ai takes the blame.** when someone tries to book you during lunch or you've been sitting too long, duende messages them on your behalf. nobody's the bad guy. both people are protected.
 
-fonts:
-- **inter** - sans-serif for body text
-- **lora** - serif for headings
+this is not a productivity tool. this is a humanity tool.
 
 ---
 
-## database schema
+## how it works
 
-the prisma schema includes models for all core features:
-
-### core models
-- **user** - authentication, preferences, calendar integration
-- **usersettings** - the five default settings (movement, nutrition, relationships, stress, transcendence)
-- **relationship** - close people to stay connected with
-- **intention** - weekly intentions from sunday planning ritual
-- **suggestion** - ai advocacy suggestions (shorten, async, reschedule, etc.)
-- **calendarevent** - cached calendar data for analysis
-- **conversationmessage** - conversational learning history
-- **teachinghistory** - tracks shown teachings to avoid repetition
+1. **plan your week** - answer 6 questions about what matters to you
+2. **see protections appear** - watch your calendar fill with movement time, protected lunch, connection moments
+3. **adjust and sync** - drag blocks to perfect timing, then sync to google calendar
+4. **duende advocates** - throughout the week, duende messages others when your humanity needs protecting
 
 ---
 
-## next steps
+## current status
 
-### 1. set up postgresql database
+**v0.2 - planning mvp complete** ✓
+
+### implemented features
+- ✅ landing page with ai advocacy framing
+- ✅ planning page with 6 domain questions
+- ✅ interactive calendar with drag-drop protections
+- ✅ email examples showing advocacy in action
+- ✅ simplified onboarding (email + calendar only)
+- ✅ google calendar oauth integration
+- ✅ settings page for preferences
+- ✅ live protection preview
+
+### in progress
+- 🚧 actual google calendar sync (read user events)
+- 🚧 calendar write (add protection blocks)
+- 🚧 email sending (threshold-based advocacy)
+
+### planned for v1
+- [ ] threshold detection (too many meetings, no lunch, etc)
+- [ ] draft message generation with claude
+- [ ] email delivery (resend/sendgrid)
+- [ ] weather-aware suggestions
+- [ ] relationship connection tracking
+- [ ] exclude list (people duende won't email)
+
+---
+
+## the five default settings
+
+duende protects five foundations of human wellbeing:
+
+1. **movement** - your body is designed to move. sitting for hours keeps you in stress mode.
+2. **nutrition** - eating at your desk keeps your nervous system in fight or flight.
+3. **relationships** - connection with people who matter regulates your nervous system.
+4. **buffers** - back to back meetings keep you in fight or flight all day.
+5. **growth** - growth happens at edges, not in the middle of your calendar.
+
+based on the framework from *human default settings* by sinan canan.
+
+---
+
+## tech stack
+
+### frontend
+- **next.js 15** with app router and react 19
+- **typescript** for type safety
+- **tailwind css** with custom color palette
+
+### backend
+- **next.js api routes** (serverless)
+- **postgresql** with prisma orm
+- **google calendar api** for calendar access
+- **anthropic claude** (planned for message generation)
+
+### colors
+- **royal blue** (#00239D) - primary brand color
+- **orange** (#FF5C00) - actions and highlights
+- **cloud dancer** (#F4F3EE) - backgrounds
+
+---
+
+## getting started
+
+### 1. clone and install
 
 ```bash
-# install postgresql if needed (macos)
-brew install postgresql@16
-brew services start postgresql@16
+git clone https://github.com/yourusername/duende.git
+cd duende
+npm install
+```
 
-# create database
+### 2. set up database
+
+```bash
+# create postgresql database
 createdb duende
 
-# update .env with your database url
+# create .env file
 DATABASE_URL="postgresql://yourusername@localhost:5432/duende?schema=public"
+
+# run migrations
+npx prisma migrate dev
 ```
 
-### 2. run database migration
+### 3. configure google calendar (optional for development)
 
-```bash
-npx prisma migrate dev --name init
+see [docs/GOOGLE_CALENDAR_SETUP.md](docs/GOOGLE_CALENDAR_SETUP.md) for detailed setup instructions.
+
+```env
+GOOGLE_CLIENT_ID="your-client-id"
+GOOGLE_CLIENT_SECRET="your-client-secret"
+GOOGLE_REDIRECT_URI="http://localhost:3000/api/auth/google/callback"
 ```
 
-### 3. start development server
+### 4. start development server
 
 ```bash
 npm run dev
 ```
 
-visit http://localhost:3000 to see the app.
+visit http://localhost:3000
 
-### 4. configure integrations (when ready)
+---
 
-copy `.env.example` to `.env` and add:
-- google calendar oauth credentials
-- anthropic api key (for claude)
-- openweather api key
-- email service credentials (resend or sendgrid)
+## project structure
+
+```
+duende/
+├── app/                      # next.js app router
+│   ├── page.tsx             # landing page
+│   ├── planning/            # planning page with calendar
+│   ├── onboarding/          # email + calendar connection
+│   ├── settings/            # user preferences
+│   └── api/                 # api routes
+│       ├── auth/            # google oauth
+│       ├── onboarding/      # user creation
+│       ├── planning/        # save protections
+│       └── user/            # user data
+├── components/
+│   ├── ui/                  # reusable components (Card, Button, Input)
+│   └── planning/            # WeekCalendar drag-drop component
+├── lib/
+│   ├── db.ts               # prisma client
+│   └── google.ts           # google calendar helpers
+├── prisma/
+│   └── schema.prisma       # database models
+└── docs/                   # specifications
+```
 
 ---
 
@@ -93,14 +164,14 @@ copy `.env.example` to `.env` and add:
 # start dev server
 npm run dev
 
-# run prisma studio (database gui)
+# database gui
 npx prisma studio
 
 # generate prisma client after schema changes
 npx prisma generate
 
 # create new migration
-npx prisma migrate dev --name description_of_changes
+npx prisma migrate dev --name description
 
 # format prisma schema
 npx prisma format
@@ -108,61 +179,48 @@ npx prisma format
 
 ---
 
-## project structure
+## user flow
 
-```
-duende/
-├── app/              # next.js app router
-│   ├── layout.tsx    # root layout with fonts
-│   ├── page.tsx      # home page
-│   └── globals.css   # tailwind styles
-├── components/       # react components
-├── lib/              # utilities and helpers
-│   └── db.ts         # prisma client singleton
-├── prisma/           # database schema and migrations
-│   └── schema.prisma # comprehensive data model
-├── types/            # typescript type definitions
-│   └── index.ts      # core types
-└── .env              # environment variables (not committed)
-```
+1. **landing page (/)** - see what duende does, examples of ai advocacy
+2. **click "get started"** → planning page
+3. **planning page (/planning)** - answer 6 questions about what matters
+4. **click "generate protections"** - see calendar blocks appear
+5. **drag to adjust timing** - fine-tune when protections happen
+6. **click "connect calendar"** → onboarding
+7. **onboarding (/onboarding)** - enter email, city, connect google calendar
+8. **settings (/settings)** - manage preferences, view calendar connection
 
 ---
 
 ## philosophy
 
-duende is built on the **default settings framework** from *human default settings* by sinan canan:
-
-1. **movement** - body, mind, and emotions need motion
-2. **nutrition** - managing abundance (food and cognitive inputs)
-3. **relationships** - tribal connection regulates our nervous system
-4. **stress** - ancient response, modern triggers
-5. **transcendence** - humans must grow to feel alive
+### what duende is
+- an ai advocacy layer between humans
+- a protection system for your humanity
+- threshold-based (only intervenes when needed)
+- always requires approval before sending
 
 ### what duende is not
 - a productivity tool
 - a calendar replacement
 - a time tracker
 - a scoring system
-- an auto-pilot
-- a rigid habit enforcer
+- rigid or judgmental
 
-### transparency
-> "duende isn't optimizing for your productivity. it's optimizing for your humanity — movement, nourishment, connection, calm, growth."
+### key principle
+> the ai takes the blame. nobody's the bad guy. both people are protected.
 
 ---
 
-## mvp features (v1 roadmap)
+## contributing
 
-- [ ] google calendar integration (read + write)
-- [ ] onboarding conversation flow
-- [ ] sunday planning ritual
-- [ ] morning brief (email delivery)
-- [ ] ai advocacy suggestions
-- [ ] draft message generation
-- [ ] contextual chaos (weather-aware suggestions)
-- [ ] woven teaching with humanbeyondtech links
-- [ ] conversational learning
-- [ ] weather api integration
+this is currently a solo project in active development. contributions welcome once v1 is stable.
+
+---
+
+## license
+
+MIT
 
 ---
 
