@@ -1,9 +1,19 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center p-8">
       <div className="max-w-2xl text-center space-y-6">
+        <div className="flex justify-center mb-6">
+          <Image
+            src="/logo.svg"
+            alt="duende logo"
+            width={120}
+            height={120}
+            priority
+          />
+        </div>
         <h1 className="text-5xl font-serif text-royal-500 mb-4">
           duende
         </h1>

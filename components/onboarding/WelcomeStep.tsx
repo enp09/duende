@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import Image from 'next/image';
 
 interface WelcomeStepProps {
   onNext: () => void;
@@ -10,6 +11,15 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="text-center space-y-4">
+        <div className="flex justify-center mb-4">
+          <Image
+            src="/logo.svg"
+            alt="duende logo"
+            width={100}
+            height={100}
+            priority
+          />
+        </div>
         <h1 className="text-6xl font-serif text-royal-500">
           duende
         </h1>
