@@ -29,6 +29,7 @@ export async function GET(
         city: user.city,
         timezone: user.timezone,
         onboardingCompleted: user.onboardingCompleted,
+        googleAccessToken: user.googleAccessToken,
         settings: user.settings,
         relationships: user.relationships,
       },

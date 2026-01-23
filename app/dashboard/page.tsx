@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -11,6 +11,7 @@ interface UserData {
   email: string;
   city: string;
   timezone: string;
+  googleAccessToken?: string;
   settings?: {
     movementTypes: string[];
     passionProjects: string[];
@@ -23,8 +24,11 @@ interface UserData {
 
 export default function DashboardPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
     const userId = localStorage.getItem('duende_user_id');
@@ -32,6 +36,16 @@ export default function DashboardPage() {
     if (!userId) {
       router.push('/onboarding');
       return;
+    }
+
+    // Check for URL params (calendar connection status)
+    const calendarParam = searchParams.get('calendar');
+    const errorParam = searchParams.get('error');
+
+    if (calendarParam === 'connected') {
+      setMessage({ type: 'success', text: 'calendar connected successfully' });
+    } else if (errorParam) {
+      setMessage({ type: 'error', text: `connection failed: ${errorParam}` });
     }
 
     // Fetch user data
@@ -47,7 +61,51 @@ export default function DashboardPage() {
         console.error('Error fetching user data:', err);
         setIsLoading(false);
       });
-  }, [router]);
+  }, [router, searchParams]);
+
+  const handleConnectCalendar = async () => {
+    if (!userData) return;
+
+    try {
+      const response = await fetch(`/api/auth/google/login?userId=${userData.id}`);
+      const data = await response.json();
+
+      if (data.success && data.authUrl) {
+        window.location.href = data.authUrl;
+      } else {
+        setMessage({ type: 'error', text: 'failed to start calendar connection' });
+      }
+    } catch (error) {
+      console.error('Error connecting calendar:', error);
+      setMessage({ type: 'error', text: 'something went wrong' });
+    }
+  };
+
+  const handleSyncCalendar = async () => {
+    if (!userData) return;
+
+    setIsSyncing(true);
+    try {
+      const response = await fetch('/api/calendar/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: userData.id }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setMessage({ type: 'success', text: `synced ${data.eventCount} events` });
+      } else {
+        setMessage({ type: 'error', text: 'sync failed' });
+      }
+    } catch (error) {
+      console.error('Error syncing calendar:', error);
+      setMessage({ type: 'error', text: 'something went wrong' });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -167,11 +225,44 @@ export default function DashboardPage() {
           </div>
         </Card>
 
-        {/* Coming Soon */}
-        <Card className="text-center">
-          <p className="text-royal-600 italic">
-            calendar integration and ai features coming soon
-          </p>
+        {/* Message Display */}
+        {message && (
+          <Card className={message.type === 'success' ? 'bg-orange-50 border-orange-200' : 'bg-red-50 border-red-200'}>
+            <p className={message.type === 'success' ? 'text-royal-500' : 'text-red-600'}>
+              {message.text}
+            </p>
+          </Card>
+        )}
+
+        {/* Calendar Integration */}
+        <Card>
+          <h2 className="text-xl font-serif text-royal-500 mb-4">calendar integration</h2>
+          {userData.googleAccessToken ? (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">✓</span>
+                <p className="text-royal-600">google calendar connected</p>
+              </div>
+              <Button onClick={handleSyncCalendar} disabled={isSyncing} size="sm">
+                {isSyncing ? 'syncing...' : 'sync calendar now'}
+              </Button>
+              <p className="text-sm text-royal-600 italic">
+                duende can now read your schedule and protect your default settings
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <p className="text-royal-600">
+                connect your google calendar to unlock smart suggestions and personalized guidance
+              </p>
+              <Button onClick={handleConnectCalendar}>
+                connect google calendar
+              </Button>
+              <p className="text-sm text-royal-600 italic">
+                duende reads your schedule to find moments for movement, protected meals, and growth
+              </p>
+            </div>
+          )}
         </Card>
       </div>
     </div>
