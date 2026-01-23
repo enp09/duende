@@ -18,7 +18,7 @@ export function Button({
   const variants = {
     primary: 'bg-orange-500 text-cloud-50 hover:bg-orange-600 active:bg-orange-700',
     secondary: 'bg-royal-500 text-cloud-50 hover:bg-royal-600 active:bg-royal-700',
-    ghost: 'bg-transparent text-royal-700 hover:bg-royal-100 active:bg-royal-200',
+    ghost: 'bg-transparent text-royal-500 hover:bg-royal-100 active:bg-royal-200',
   };
 
   const sizes = {

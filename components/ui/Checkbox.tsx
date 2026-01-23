@@ -21,7 +21,7 @@ export function Checkbox({ label, className = '', ...props }: CheckboxProps) {
         `}
         {...props}
       />
-      <span className="text-royal-800 group-hover:text-royal-900 transition-colors">
+      <span className="text-royal-500 group-hover:text-royal-500 transition-colors">
         {label}
       </span>
     </label>

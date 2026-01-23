@@ -10,7 +10,7 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-6xl font-serif text-royal-800">
+        <h1 className="text-6xl font-serif text-royal-500">
           duende
         </h1>
         <p className="text-xl text-royal-600 leading-relaxed max-w-lg mx-auto">
@@ -20,15 +20,15 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
 
       {/* Main content */}
       <Card className="space-y-6">
-        <p className="text-lg text-royal-700 leading-relaxed">
+        <p className="text-lg text-royal-500 leading-relaxed">
           duende is a caring membrane between you, your calendar, and other people.
         </p>
 
-        <p className="text-royal-700 leading-relaxed">
+        <p className="text-royal-500 leading-relaxed">
           we're here to protect your humanity. movement, nourishment, connection, calm, growth.
         </p>
 
-        <div className="space-y-2 text-royal-700">
+        <div className="space-y-2 text-royal-500">
           <p>only suggestions.</p>
           <p>you always decide.</p>
           <p>kindness as the default.</p>
@@ -37,7 +37,7 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
 
       {/* Transparency statement */}
       <Card className="bg-orange-50 border-orange-200">
-        <p className="text-royal-800 italic leading-relaxed">
+        <p className="text-royal-500 italic leading-relaxed">
           "duende optimizes for your humanity. movement, nourishment, connection, calm, growth."
         </p>
       </Card>

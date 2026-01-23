@@ -52,7 +52,7 @@ export function MovementStep({ data, onUpdate, onNext, onBack }: MovementStepPro
       {step === 1 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-royal-800">
+            <h2 className="text-2xl font-serif text-royal-500">
               what kinds of movement do you enjoy?
             </h2>
             <p className="text-royal-600">you can pick multiple</p>
@@ -97,7 +97,7 @@ export function MovementStep({ data, onUpdate, onNext, onBack }: MovementStepPro
           </Card>
 
           <Card className="bg-royal-50 border-royal-200">
-            <p className="text-royal-700 text-sm leading-relaxed">
+            <p className="text-royal-500 text-sm leading-relaxed">
               your body and mind are one system. movement is how your brain processes emotions and stress. we'll help you find natural moments to move.
             </p>
           </Card>
@@ -108,7 +108,7 @@ export function MovementStep({ data, onUpdate, onNext, onBack }: MovementStepPro
       {step === 2 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-royal-800">
+            <h2 className="text-2xl font-serif text-royal-500">
               when do you usually feel best moving?
             </h2>
           </div>
@@ -150,7 +150,7 @@ export function MovementStep({ data, onUpdate, onNext, onBack }: MovementStepPro
       {step === 3 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-royal-800">
+            <h2 className="text-2xl font-serif text-royal-500">
               do you like being outside?
             </h2>
           </div>
@@ -180,7 +180,7 @@ export function MovementStep({ data, onUpdate, onNext, onBack }: MovementStepPro
           </Card>
 
           <Card className="bg-royal-50 border-royal-200">
-            <p className="text-royal-700 text-sm leading-relaxed">
+            <p className="text-royal-500 text-sm leading-relaxed">
               good to know. duende will watch the weather and suggest outdoor
               moments when it's nice.
             </p>
@@ -192,7 +192,7 @@ export function MovementStep({ data, onUpdate, onNext, onBack }: MovementStepPro
       {step === 4 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-royal-800">
+            <h2 className="text-2xl font-serif text-royal-500">
               how do you feel about walking meetings?
             </h2>
           </div>
@@ -229,7 +229,7 @@ export function MovementStep({ data, onUpdate, onNext, onBack }: MovementStepPro
           </Card>
 
           <Card className="bg-royal-50 border-royal-200">
-            <p className="text-royal-700 text-sm leading-relaxed">
+            <p className="text-royal-500 text-sm leading-relaxed">
               walking side by side makes hard conversations easier. less eye contact pressure, more blood flow to the brain.
             </p>
           </Card>

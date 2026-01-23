@@ -65,7 +65,7 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
       {step === 1 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-royal-800">
+            <h2 className="text-2xl font-serif text-royal-500">
               who are your closest people?
             </h2>
             <p className="text-royal-600">
@@ -102,14 +102,14 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
                       key={index}
                       className="flex items-center justify-between p-3 bg-cloud-200 rounded-lg"
                     >
-                      <span className="text-royal-800">{rel.name}</span>
+                      <span className="text-royal-500">{rel.name}</span>
                       <div className="flex gap-2">
                         <button
                           onClick={() => {
                             setEditingIndex(index);
                             setStep(2);
                           }}
-                          className="text-royal-600 hover:text-royal-800 text-sm"
+                          className="text-royal-600 hover:text-royal-500 text-sm"
                         >
                           edit
                         </button>
@@ -128,7 +128,7 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
           </Card>
 
           <Card className="bg-royal-50 border-royal-200">
-            <p className="text-royal-700 text-sm leading-relaxed">
+            <p className="text-royal-500 text-sm leading-relaxed">
               humans evolved in tribes of 50-150. your nervous system literally
               calms with people you trust. that's biology, not soft.
             </p>
@@ -140,14 +140,14 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
       {step === 2 && editingIndex !== null && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-royal-800">
+            <h2 className="text-2xl font-serif text-royal-500">
               tell me about {relationships[editingIndex].name}
             </h2>
           </div>
 
           <Card className="space-y-6">
             <div>
-              <p className="text-sm text-royal-700 mb-3">relationship:</p>
+              <p className="text-sm text-royal-500 mb-3">relationship:</p>
               <div className="space-y-3">
                 <Radio
                   label="friend"
@@ -181,7 +181,7 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
             </div>
 
             <div>
-              <p className="text-sm text-royal-700 mb-3">how often do you want to connect?</p>
+              <p className="text-sm text-royal-500 mb-3">how often do you want to connect?</p>
               <div className="space-y-3">
                 <Radio
                   label="weekly"
@@ -215,7 +215,7 @@ export function RelationshipsStep({ data, onUpdate, onNext, onBack }: Relationsh
             </div>
 
             <div>
-              <p className="text-sm text-royal-700 mb-3">how do you feel after spending time with them?</p>
+              <p className="text-sm text-royal-500 mb-3">how do you feel after spending time with them?</p>
               <div className="space-y-3">
                 <Radio
                   label="energized"

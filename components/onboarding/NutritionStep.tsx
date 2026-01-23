@@ -50,7 +50,7 @@ export function NutritionStep({ data, onUpdate, onNext, onBack }: NutritionStepP
       {step === 1 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-royal-800">
+            <h2 className="text-2xl font-serif text-royal-500">
               do you want protected lunch time?
             </h2>
           </div>
@@ -87,7 +87,7 @@ export function NutritionStep({ data, onUpdate, onNext, onBack }: NutritionStepP
           </Card>
 
           <Card className="bg-royal-50 border-royal-200">
-            <p className="text-royal-700 text-sm leading-relaxed">
+            <p className="text-royal-500 text-sm leading-relaxed">
               eating at your desk keeps your body in stress mode. digestion and
               cognition compete for resources. a protected lunch lets your
               nervous system shift gears.
@@ -100,7 +100,7 @@ export function NutritionStep({ data, onUpdate, onNext, onBack }: NutritionStepP
       {step === 2 && (localData.wantsProtectedLunch === 'yes' || localData.wantsProtectedLunch === 'flexible') && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-royal-800">
+            <h2 className="text-2xl font-serif text-royal-500">
               what time works best for lunch?
             </h2>
           </div>
@@ -121,7 +121,7 @@ export function NutritionStep({ data, onUpdate, onNext, onBack }: NutritionStepP
       {step === 3 && (
         <>
           <div className="space-y-4">
-            <h2 className="text-2xl font-serif text-royal-800">
+            <h2 className="text-2xl font-serif text-royal-500">
               do you usually eat at your desk or away from it?
             </h2>
           </div>
@@ -151,7 +151,7 @@ export function NutritionStep({ data, onUpdate, onNext, onBack }: NutritionStepP
           </Card>
 
           <Card className="bg-royal-50 border-royal-200">
-            <p className="text-royal-700 text-sm leading-relaxed">
+            <p className="text-royal-500 text-sm leading-relaxed">
               this is about understanding your current patterns so i can suggest gently.
             </p>
           </Card>
