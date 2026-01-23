@@ -1,0 +1,281 @@
+// Duende Database Schema
+// Based on product specification - a caring membrane between humans and their time
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER & AUTH
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  imageUrl      String?
+
+  // Location for weather-aware suggestions
+  city          String?
+  timezone      String    @default("America/New_York")
+
+  // Google Calendar integration
+  googleAccessToken   String?
+  googleRefreshToken  String?
+  googleTokenExpiry   DateTime?
+  calendarWriteAccess Boolean  @default(false)
+
+  // Onboarding & learning
+  onboardingCompleted Boolean  @default(false)
+  onboardedAt         DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  settings      UserSettings?
+  intentions    Intention[]
+  suggestions   Suggestion[]
+  conversations ConversationMessage[]
+  relationships Relationship[]
+  calendarEvents CalendarEvent[]
+  teachingsShown TeachingHistory[]
+
+  @@index([email])
+}
+
+// ============================================
+// DEFAULT SETTINGS - The Five Settings
+// ============================================
+
+model UserSettings {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // MOVEMENT SETTINGS
+  movementTypes          String[]  // ["walking", "yoga", "gym", "dancing", "stretching", "swimming"]
+  preferredMovementTime  String?   // "morning", "midday", "evening", "varies"
+  enjoysOutdoors         Boolean   @default(true)
+  allowsWalkingMeetings  Boolean   @default(true)
+
+  // NUTRITION SETTINGS
+  wantsProtectedLunch    Boolean   @default(true)
+  preferredLunchTime     String?   // "12:00", "13:00", etc.
+  eatsAtDesk             Boolean   @default(true) // current habit, not preference
+
+  // RELATIONSHIPS SETTINGS
+  // Close people stored in separate Relationship model
+
+  // STRESS SETTINGS
+  decompressMethods      String[]  // ["walks", "naps", "reading", "music", "quiet", "exercise"]
+  maxMeetingHoursPerDay  Int       @default(6)
+  wantsBufferTime        Boolean   @default(true)
+  bufferMinutes          Int       @default(10)
+
+  // TRANSCENDENCE SETTINGS
+  passionProjects        String[]  // Free text describing projects
+  learningGoals          String[]  // What they want to learn this year
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// ============================================
+// RELATIONSHIPS - Close People
+// ============================================
+
+model Relationship {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name              String
+  email             String?
+  relationshipType  String   // "friend", "family", "partner", "close_colleague"
+  isCloseConnection Boolean  @default(true)
+
+  // Connection preferences
+  desiredFrequency  String?  // "weekly", "biweekly", "monthly"
+  energyImpact      String?  // "energizing", "neutral", "draining"
+
+  // Tracking
+  lastContactDate   DateTime?
+  needsReconnection Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([email])
+}
+
+// ============================================
+// INTENTIONS - Sunday Planning Ritual
+// ============================================
+
+model Intention {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // What default setting does this protect?
+  defaultSetting String // "movement", "nutrition", "relationships", "stress", "transcendence"
+
+  // Intention details
+  description    String
+  weekStartDate  DateTime // Monday of the week
+
+  // Status tracking
+  status         String   @default("pending") // "pending", "scheduled", "completed", "dismissed"
+
+  // When it happens (flexible - duende finds the right moment)
+  targetDay      String?  // "monday", "tuesday", etc. (optional, can be flexible)
+  scheduledFor   DateTime?
+  completedAt    DateTime?
+
+  // Context for smart scheduling
+  requiresWeather Boolean  @default(false) // outdoor intentions
+  requiresGap     Int?     // minutes needed
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, weekStartDate])
+  @@index([status])
+}
+
+// ============================================
+// SUGGESTIONS - AI Advocacy Layer
+// ============================================
+
+model Suggestion {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // What type of suggestion?
+  type           String // "shorten", "async", "reschedule", "batch", "buffer", "walking", "protect_lunch", "movement", "relationship_nudge"
+
+  // Context
+  defaultSetting String? // Which of the 5 settings does this protect?
+  calendarEventId String? // Related calendar event if applicable
+
+  // The suggestion content
+  title          String
+  description    String
+  reasoning      String? // Why duende is suggesting this
+
+  // Draft message for user to send
+  draftMessage   String?
+
+  // Teaching layer
+  teachingText   String? // One-liner about why this matters
+  learnMoreUrl   String? // Link to humanbeyondtech.com
+
+  // Status
+  status         String   @default("pending") // "pending", "accepted", "dismissed", "expired"
+
+  // User feedback
+  acceptedAt     DateTime?
+  dismissedAt    DateTime?
+  feedbackNote   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime? // Suggestions can expire if not acted upon
+
+  @@index([userId, status])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// ============================================
+// CALENDAR EVENTS - Cached from Google Calendar
+// ============================================
+
+model CalendarEvent {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Google Calendar data
+  googleEventId String  @unique
+  calendarId    String
+
+  title         String?
+  description   String?
+
+  startTime     DateTime
+  endTime       DateTime
+  isAllDay      Boolean  @default(false)
+
+  // Attendees
+  attendees     Json?    // Array of {email, name, responseStatus}
+  organizerEmail String?
+
+  // Meeting metadata for analysis
+  isRecurring   Boolean  @default(false)
+  meetingLink   String?
+  location      String?
+
+  // Duende analysis
+  isProtected   Boolean  @default(false) // User or duende protected this time
+  blockedByDuende Boolean @default(false) // Duende created this block
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, startTime])
+  @@index([googleEventId])
+}
+
+// ============================================
+// CONVERSATIONS - Conversational Learning
+// ============================================
+
+model ConversationMessage {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  role    String // "user", "assistant", "system"
+  content String @db.Text
+
+  // Metadata
+  context Json?  // Additional context about what this message relates to
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+// ============================================
+// TEACHING HISTORY - Avoid Repetition
+// ============================================
+
+model TeachingHistory {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  defaultSetting String // "movement", "nutrition", "relationships", "stress", "transcendence"
+  teachingKey    String // Unique key for the specific teaching
+  teachingText   String
+
+  // Tracking
+  timesShown     Int      @default(1)
+  lastShownAt    DateTime @default(now())
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, teachingKey])
+  @@index([userId, defaultSetting])
+}
