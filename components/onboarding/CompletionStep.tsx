@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { OnboardingData } from '@/types/onboarding';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -7,10 +9,39 @@ interface CompletionStepProps {
 }
 
 export function CompletionStep({ data }: CompletionStepProps) {
-  const handleComplete = () => {
-    // TODO: Save to database and redirect to dashboard
-    console.log('Onboarding data:', data);
-    alert('Onboarding complete! (Save to database and redirect to dashboard)');
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleComplete = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/onboarding/complete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Store userId in localStorage for now (will use proper auth later)
+        localStorage.setItem('duende_user_id', result.userId);
+        // Redirect to dashboard
+        router.push('/dashboard');
+      } else {
+        setError(result.error || 'something went wrong');
+        setIsLoading(false);
+      }
+    } catch (err) {
+      console.error('Error completing onboarding:', err);
+      setError('failed to save your data. please try again.');
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -75,9 +106,15 @@ export function CompletionStep({ data }: CompletionStepProps) {
         </p>
       </Card>
 
+      {error && (
+        <Card className="bg-orange-50 border-orange-500">
+          <p className="text-orange-700 text-sm">{error}</p>
+        </Card>
+      )}
+
       <div className="flex justify-center pt-4">
-        <Button onClick={handleComplete} size="lg">
-          go to dashboard
+        <Button onClick={handleComplete} size="lg" disabled={isLoading}>
+          {isLoading ? 'saving...' : 'go to dashboard'}
         </Button>
       </div>
     </div>
