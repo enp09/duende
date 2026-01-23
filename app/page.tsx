@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center p-8">
@@ -12,6 +14,14 @@ export default function Home() {
           <p className="text-sage-700 italic">
             duende isn't optimizing for your productivity. it's optimizing for your humanity — movement, nourishment, connection, calm, growth.
           </p>
+        </div>
+        <div className="pt-8">
+          <Link
+            href="/onboarding"
+            className="inline-block px-8 py-4 bg-terracotta-500 text-cream-50 rounded-lg text-lg font-sans hover:bg-terracotta-600 active:bg-terracotta-700 transition-all duration-200"
+          >
+            get started
+          </Link>
         </div>
       </div>
     </main>
