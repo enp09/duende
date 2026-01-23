@@ -90,13 +90,18 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Onboarding Complete Message */}
+        {/* Sunday Planning CTA */}
         <Card className="bg-orange-50 border-orange-200">
-          <div className="space-y-2">
-            <h2 className="text-xl font-serif text-royal-500">onboarding complete!</h2>
-            <p className="text-royal-600">
-              your default settings have been saved. duende is now learning your patterns and will start making suggestions to protect your humanity.
-            </p>
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-xl font-serif text-royal-500">📅 plan your week</h2>
+              <p className="text-royal-600">
+                set flexible intentions for movement, connection, growth, and rest. takes 5 minutes.
+              </p>
+            </div>
+            <Button onClick={() => router.push('/planning')} size="lg">
+              start planning ritual
+            </Button>
           </div>
         </Card>
 
