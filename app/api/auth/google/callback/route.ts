@@ -11,13 +11,13 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       return NextResponse.redirect(
-        new URL(`/dashboard?error=${encodeURIComponent(error)}`, request.url)
+        new URL(`/settings?error=${encodeURIComponent(error)}`, request.url)
       );
     }
 
     if (!code || !state) {
       return NextResponse.redirect(
-        new URL('/dashboard?error=missing_parameters', request.url)
+        new URL('/settings?error=missing_parameters', request.url)
       );
     }
 
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
 
     if (!tokens.access_token) {
       return NextResponse.redirect(
-        new URL('/dashboard?error=no_access_token', request.url)
+        new URL('/settings?error=no_access_token', request.url)
       );
     }
 
@@ -46,12 +46,12 @@ export async function GET(request: NextRequest) {
 
     // Redirect back to dashboard with success message
     return NextResponse.redirect(
-      new URL('/dashboard?calendar=connected', request.url)
+      new URL('/settings?calendar=connected', request.url)
     );
   } catch (error) {
     console.error('Error in Google OAuth callback:', error);
     return NextResponse.redirect(
-      new URL('/dashboard?error=auth_failed', request.url)
+      new URL('/settings?error=auth_failed', request.url)
     );
   }
 }

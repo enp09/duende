@@ -32,7 +32,7 @@ export function CompletionStep({ data }: CompletionStepProps) {
         // Store userId in localStorage for now (will use proper auth later)
         localStorage.setItem('duende_user_id', result.userId);
         // Redirect to dashboard
-        router.push('/dashboard');
+        router.push('/settings');
       } else {
         setError(result.error || 'something went wrong');
         setIsLoading(false);

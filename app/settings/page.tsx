@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -22,7 +23,7 @@ interface UserData {
   }>;
 }
 
-export default function DashboardPage() {
+export default function SettingsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -130,100 +131,29 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen py-8 px-4">
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="max-w-3xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Image
-              src="/logo.svg"
-              alt="duende logo"
-              width={60}
-              height={60}
-              priority
-            />
+            <Link href="/">
+              <Image
+                src="/logo.svg"
+                alt="duende logo"
+                width={50}
+                height={50}
+                priority
+                className="cursor-pointer"
+              />
+            </Link>
             <div>
-              <h1 className="text-3xl font-serif text-royal-500">welcome to duende</h1>
-              <p className="text-royal-600 text-sm">{userData.city}</p>
+              <h1 className="text-3xl font-serif text-royal-500">settings</h1>
+              <p className="text-royal-600 text-sm">{userData.email}</p>
             </div>
           </div>
+          <Button variant="ghost" onClick={() => router.push('/planning')}>
+            plan week
+          </Button>
         </div>
-
-        {/* Quick Actions */}
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* Sunday Planning CTA */}
-          <Card className="bg-orange-50 border-orange-200">
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-lg font-serif text-royal-500">📅 plan your week</h2>
-                <p className="text-sm text-royal-600">
-                  set flexible intentions for the week ahead.
-                </p>
-              </div>
-              <Button onClick={() => router.push('/planning')}>
-                start planning
-              </Button>
-            </div>
-          </Card>
-
-          {/* Morning Brief CTA */}
-          <Card className="bg-royal-50 border-royal-200">
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-lg font-serif text-royal-500">☀️ today's brief</h2>
-                <p className="text-sm text-royal-600">
-                  gentle guidance for the day ahead.
-                </p>
-              </div>
-              <Button variant="secondary" onClick={() => router.push('/brief')}>
-                view brief
-              </Button>
-            </div>
-          </Card>
-        </div>
-
-        {/* Your Settings Overview */}
-        <Card>
-          <h2 className="text-xl font-serif text-royal-500 mb-4">your default settings</h2>
-          <div className="space-y-4">
-            {userData.settings && (
-              <>
-                <div>
-                  <p className="text-sm font-medium text-royal-600 mb-1">movement</p>
-                  <p className="text-royal-500">
-                    {userData.settings.movementTypes.join(', ') || 'not specified'}
-                  </p>
-                </div>
-
-                {userData.settings.passionProjects.length > 0 && (
-                  <div>
-                    <p className="text-sm font-medium text-royal-600 mb-1">passion projects</p>
-                    <p className="text-royal-500">{userData.settings.passionProjects[0]}</p>
-                  </div>
-                )}
-              </>
-            )}
-
-            {userData.relationships && userData.relationships.length > 0 && (
-              <div>
-                <p className="text-sm font-medium text-royal-600 mb-1">close connections</p>
-                <p className="text-royal-500">
-                  {userData.relationships.map(r => r.name).join(', ')}
-                </p>
-              </div>
-            )}
-          </div>
-        </Card>
-
-        {/* Next Steps */}
-        <Card>
-          <h2 className="text-xl font-serif text-royal-500 mb-4">what happens next</h2>
-          <div className="space-y-3 text-royal-600">
-            <p>📅 <strong>sunday planning:</strong> we'll help you set intentions for the week</p>
-            <p>☀️ <strong>morning brief:</strong> daily guidance tailored to your calendar</p>
-            <p>💡 <strong>smart suggestions:</strong> protecting your humanity throughout the week</p>
-            <p>🗣️ <strong>conversational learning:</strong> talk to duende anytime to adjust</p>
-          </div>
-        </Card>
 
         {/* Message Display */}
         {message && (
@@ -247,22 +177,78 @@ export default function DashboardPage() {
                 {isSyncing ? 'syncing...' : 'sync calendar now'}
               </Button>
               <p className="text-sm text-royal-600 italic">
-                duende can now read your schedule and protect your default settings
+                duende watches your schedule and intervenes when thresholds trigger
               </p>
             </div>
           ) : (
             <div className="space-y-4">
               <p className="text-royal-600">
-                connect your google calendar to unlock smart suggestions and personalized guidance
+                connect your calendar so duende can watch for patterns and protect your default settings
               </p>
               <Button onClick={handleConnectCalendar}>
                 connect google calendar
               </Button>
-              <p className="text-sm text-royal-600 italic">
-                duende reads your schedule to find moments for movement, protected meals, and growth
-              </p>
             </div>
           )}
+        </Card>
+
+        {/* Your Default Settings */}
+        <Card>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-serif text-royal-500">your default settings</h2>
+            <p className="text-sm text-royal-600 italic">thresholds duende protects</p>
+          </div>
+          <div className="space-y-4">
+            {userData.settings && (
+              <>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm font-medium text-royal-600 mb-1">movement</p>
+                    <p className="text-royal-500">
+                      {userData.settings.movementTypes.join(', ') || 'not specified'}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-medium text-royal-600 mb-1">location</p>
+                    <p className="text-royal-500">{userData.city}, {userData.timezone}</p>
+                  </div>
+                </div>
+
+                {userData.settings.passionProjects.length > 0 && (
+                  <div>
+                    <p className="text-sm font-medium text-royal-600 mb-1">passion projects</p>
+                    <p className="text-royal-500">{userData.settings.passionProjects.join(', ')}</p>
+                  </div>
+                )}
+              </>
+            )}
+
+            {userData.relationships && userData.relationships.length > 0 && (
+              <div>
+                <p className="text-sm font-medium text-royal-600 mb-1">close connections</p>
+                <p className="text-royal-500">
+                  {userData.relationships.map(r => r.name).join(', ')}
+                </p>
+              </div>
+            )}
+          </div>
+        </Card>
+
+        {/* Account Info */}
+        <Card>
+          <h2 className="text-xl font-serif text-royal-500 mb-4">account</h2>
+          <div className="space-y-3 text-sm">
+            <div>
+              <p className="text-royal-600 mb-1">email</p>
+              <p className="text-royal-500">{userData.email}</p>
+            </div>
+            <div className="pt-4 border-t border-royal-200">
+              <p className="text-royal-600 text-xs italic">
+                to update your preferences or pause duende, email hello@duende.app
+              </p>
+            </div>
+          </div>
         </Card>
       </div>
     </div>

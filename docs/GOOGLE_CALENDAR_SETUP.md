@@ -71,7 +71,7 @@ GOOGLE_REDIRECT_URI="http://localhost:3000/api/auth/google/callback"
 
 ## Step 6: Test the Integration
 
-1. Go to your dashboard at `http://localhost:3000/dashboard`
+1. Go to your dashboard at `http://localhost:3000/settings`
 2. Click "Connect Google Calendar"
 3. Sign in with your Google account
 4. Grant permissions to Duende

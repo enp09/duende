@@ -112,7 +112,7 @@ export default function PlanningPage() {
       const result = await response.json();
 
       if (result.success) {
-        router.push('/dashboard');
+        router.push('/settings');
       } else {
         alert('failed to save intentions');
         setIsSaving(false);

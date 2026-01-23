@@ -7,7 +7,7 @@ export default function Home() {
     <main className="min-h-screen">
       {/* Hero Section */}
       <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
+        <div className="max-w-3xl mx-auto text-center space-y-8">
           <div className="flex justify-center mb-8">
             <Image
               src="/logo.svg"
@@ -20,13 +20,14 @@ export default function Home() {
           <h1 className="text-6xl font-serif text-royal-500">
             duende
           </h1>
-          <p className="text-2xl text-royal-500 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-2xl text-royal-500 leading-relaxed">
             the caring membrane between humans and their time
           </p>
-          <p className="text-lg text-royal-600 leading-relaxed max-w-xl mx-auto">
-            duende protects your humanity in a world designed to extract it. gentle guidance for movement, nourishment, connection, calm, and growth.
+          <p className="text-lg text-royal-600 max-w-xl mx-auto">
+            duende watches your calendar and intervenes when your humanity needs protecting.
+            gentle, threshold based, respectful.
           </p>
-          <div className="pt-8">
+          <div className="pt-4">
             <Link
               href="/onboarding"
               className="inline-block px-10 py-4 bg-orange-500 text-cloud-50 rounded-lg text-lg font-sans hover:bg-orange-600 active:bg-orange-700 transition-all duration-200"
@@ -37,44 +38,102 @@ export default function Home() {
         </div>
       </section>
 
-      {/* What It Does */}
+      {/* What You Can Expect - 360 Examples */}
       <section className="py-16 px-4 bg-royal-50">
-        <div className="max-w-4xl mx-auto space-y-12">
+        <div className="max-w-4xl mx-auto space-y-10">
           <h2 className="text-3xl font-serif text-royal-500 text-center">
-            what duende does
+            what you can expect
           </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <Card>
-              <h3 className="text-xl font-medium text-royal-500 mb-3">
-                sunday planning
-              </h3>
-              <p className="text-royal-600">
-                set flexible intentions for the week. duende analyzes your calendar and suggests when to protect lunch, schedule movement, or carve space for what matters.
-              </p>
+
+          <div className="space-y-6">
+            {/* Example 1 */}
+            <Card className="bg-orange-50 border-orange-200">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">📧</span>
+                  <div className="flex-1">
+                    <p className="text-sm text-royal-600 mb-2">thursday 2:15pm</p>
+                    <p className="text-royal-500 font-medium mb-2">
+                      "you have 6 back to back meetings tomorrow. your max is 4. want buffers?"
+                    </p>
+                    <p className="text-sm text-royal-600">
+                      duende noticed your calendar violated your threshold. one click adds 10 minute breaks between meetings.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </Card>
-            <Card>
-              <h3 className="text-xl font-medium text-royal-500 mb-3">
-                morning brief
-              </h3>
-              <p className="text-royal-600">
-                gentle guidance each morning. today's shape, what to watch for, one clear intention. grounded in your calendar, tuned to your humanity.
-              </p>
+
+            {/* Example 2 */}
+            <Card className="bg-royal-50 border-royal-200">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">📅</span>
+                  <div className="flex-1">
+                    <p className="text-sm text-royal-600 mb-2">sunday 8am</p>
+                    <p className="text-royal-500 font-medium mb-2">
+                      "planning your week"
+                    </p>
+                    <p className="text-sm text-royal-600">
+                      5 intention proposals based on your calendar patterns. protect lunch tuesday. 30min walk wednesday. 2 hours friday afternoon for your side project.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </Card>
-            <Card>
-              <h3 className="text-xl font-medium text-royal-500 mb-3">
-                smart suggestions
-              </h3>
-              <p className="text-royal-600">
-                real time nudges throughout the week. when to take a walk, protect a meal, reach out to someone who matters. only suggestions. you always decide.
-              </p>
+
+            {/* Example 3 */}
+            <Card className="bg-orange-50 border-orange-200">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">🚶</span>
+                  <div className="flex-1">
+                    <p className="text-sm text-royal-600 mb-2">tuesday 3pm</p>
+                    <p className="text-royal-500 font-medium mb-2">
+                      "you've been sitting for 4 hours. want a 15min walk block?"
+                    </p>
+                    <p className="text-sm text-royal-600">
+                      your next meeting is at 4:30pm. duende found a gap and suggests movement. click yes to add to calendar.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </Card>
-            <Card>
-              <h3 className="text-xl font-medium text-royal-500 mb-3">
-                conversational learning
-              </h3>
-              <p className="text-royal-600">
-                talk to duende anytime. adjust intentions, explain why something worked or felt off. it learns your rhythms, respects your boundaries.
-              </p>
+
+            {/* Example 4 */}
+            <Card className="bg-royal-50 border-royal-200">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">🍽️</span>
+                  <div className="flex-1">
+                    <p className="text-sm text-royal-600 mb-2">monday 11am</p>
+                    <p className="text-royal-500 font-medium mb-2">
+                      "wednesday lunch is getting crowded with meetings. protect it now?"
+                    </p>
+                    <p className="text-sm text-royal-600">
+                      duende blocks 12:30-1:30pm on your calendar before someone books over it.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Example 5 */}
+            <Card className="bg-orange-50 border-orange-200">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">💬</span>
+                  <div className="flex-1">
+                    <p className="text-sm text-royal-600 mb-2">wednesday 10am</p>
+                    <p className="text-royal-500 font-medium mb-2">
+                      "you mentioned wanting to connect with sarah. you both have friday 3pm free"
+                    </p>
+                    <p className="text-sm text-royal-600">
+                      duende remembers your relationships and finds natural moments to reconnect.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </Card>
           </div>
         </div>
@@ -82,70 +141,36 @@ export default function Home() {
 
       {/* The Five Default Settings */}
       <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto space-y-12">
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl font-serif text-royal-500">
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-serif text-royal-500 mb-3">
               the five default settings
             </h2>
-            <p className="text-lg text-royal-600 max-w-2xl mx-auto">
-              these are the foundations of human wellbeing. duende protects all five in your calendar.
+            <p className="text-royal-600 max-w-2xl mx-auto">
+              duende protects these foundations in your calendar
             </p>
           </div>
 
-          <div className="space-y-6">
-            <Card className="bg-orange-50 border-orange-200">
-              <div className="space-y-2">
-                <h3 className="text-xl font-medium text-royal-500">
-                  movement
-                </h3>
-                <p className="text-royal-600">
-                  your body is designed to move. duende finds moments for walks, stretches, and transitions. it watches sitting patterns and suggests when to reset.
-                </p>
-              </div>
+          <div className="grid md:grid-cols-5 gap-4">
+            <Card className="text-center">
+              <h3 className="text-lg font-medium text-royal-500 mb-2">movement</h3>
+              <p className="text-sm text-royal-600">watches sitting patterns</p>
             </Card>
-
-            <Card className="bg-royal-50 border-royal-200">
-              <div className="space-y-2">
-                <h3 className="text-xl font-medium text-royal-500">
-                  nutrition
-                </h3>
-                <p className="text-royal-600">
-                  protected meals matter. eating at your desk keeps your nervous system in stress mode. duende helps you defend lunch and stay grounded.
-                </p>
-              </div>
+            <Card className="text-center">
+              <h3 className="text-lg font-medium text-royal-500 mb-2">nutrition</h3>
+              <p className="text-sm text-royal-600">protects meals</p>
             </Card>
-
-            <Card className="bg-orange-50 border-orange-200">
-              <div className="space-y-2">
-                <h3 className="text-xl font-medium text-royal-500">
-                  relationships
-                </h3>
-                <p className="text-royal-600">
-                  connection regulates your nervous system. duende reminds you to reach out to people who matter and protects space for presence.
-                </p>
-              </div>
+            <Card className="text-center">
+              <h3 className="text-lg font-medium text-royal-500 mb-2">relationships</h3>
+              <p className="text-sm text-royal-600">finds connection moments</p>
             </Card>
-
-            <Card className="bg-royal-50 border-royal-200">
-              <div className="space-y-2">
-                <h3 className="text-xl font-medium text-royal-500">
-                  stress
-                </h3>
-                <p className="text-royal-600">
-                  back to back meetings keep you in fight or flight. duende suggests buffers and helps you signal safety to your body throughout the day.
-                </p>
-              </div>
+            <Card className="text-center">
+              <h3 className="text-lg font-medium text-royal-500 mb-2">stress</h3>
+              <p className="text-sm text-royal-600">adds buffers</p>
             </Card>
-
-            <Card className="bg-orange-50 border-orange-200">
-              <div className="space-y-2">
-                <h3 className="text-xl font-medium text-royal-500">
-                  transcendence
-                </h3>
-                <p className="text-royal-600">
-                  growth happens at edges. duende protects space for passion projects, learning, and becoming. this is where you expand.
-                </p>
-              </div>
+            <Card className="text-center">
+              <h3 className="text-lg font-medium text-royal-500 mb-2">transcendence</h3>
+              <p className="text-sm text-royal-600">guards growth time</p>
             </Card>
           </div>
         </div>
@@ -162,10 +187,10 @@ export default function Home() {
               <span className="text-3xl font-serif text-orange-500">1</span>
               <div>
                 <h3 className="text-xl font-medium text-royal-500 mb-2">
-                  share your preferences
+                  5 minute setup
                 </h3>
                 <p>
-                  tell duende what matters. how you like to move, who you care about, what you're growing toward. this takes about 5 minutes.
+                  tell duende your preferences. connect your calendar. done.
                 </p>
               </div>
             </div>
@@ -174,10 +199,10 @@ export default function Home() {
               <span className="text-3xl font-serif text-orange-500">2</span>
               <div>
                 <h3 className="text-xl font-medium text-royal-500 mb-2">
-                  connect your calendar
+                  duende watches
                 </h3>
                 <p>
-                  duende reads your schedule to understand your week. it watches for patterns that protect or threaten your default settings.
+                  reads your schedule. learns your patterns. stays silent until thresholds trigger.
                 </p>
               </div>
             </div>
@@ -186,22 +211,10 @@ export default function Home() {
               <span className="text-3xl font-serif text-orange-500">3</span>
               <div>
                 <h3 className="text-xl font-medium text-royal-500 mb-2">
-                  receive gentle guidance
+                  you decide
                 </h3>
                 <p>
-                  sunday planning, morning briefs, real time nudges. duende suggests when and why. you always choose whether to follow.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-4">
-              <span className="text-3xl font-serif text-orange-500">4</span>
-              <div>
-                <h3 className="text-xl font-medium text-royal-500 mb-2">
-                  stay in conversation
-                </h3>
-                <p>
-                  talk to duende anytime. adjust priorities, explain what worked, explore why something feels off. it learns your rhythms and respects your sovereignty.
+                  get an email with context and a specific suggestion. yes adds it to your calendar. no teaches duende.
                 </p>
               </div>
             </div>
@@ -212,15 +225,12 @@ export default function Home() {
       {/* Philosophy */}
       <section className="py-16 px-4">
         <div className="max-w-2xl mx-auto">
-          <Card className="text-center space-y-6">
-            <p className="text-xl text-royal-500 italic leading-relaxed">
+          <Card className="text-center space-y-4">
+            <p className="text-xl text-royal-500 italic">
               your calendar should protect your humanity, not extract it.
             </p>
             <p className="text-royal-600">
-              duende is built on the belief that productivity tools have forgotten humans have bodies. we have nervous systems that need regulation. relationships that require tending. growth that happens at edges, not in back to back meetings.
-            </p>
-            <p className="text-royal-600">
-              this is gentle technology. it suggests, teaches, learns. it optimizes for your wholeness, not your output.
+              duende optimizes for your wholeness, not your output.
             </p>
           </Card>
         </div>
@@ -228,12 +238,12 @@ export default function Home() {
 
       {/* CTA */}
       <section className="py-20 px-4 bg-orange-50">
-        <div className="max-w-2xl mx-auto text-center space-y-8">
+        <div className="max-w-2xl mx-auto text-center space-y-6">
           <h2 className="text-4xl font-serif text-royal-500">
             ready to protect your humanity?
           </h2>
           <p className="text-lg text-royal-600">
-            it takes 5 minutes to set up. duende starts caring for your week immediately.
+            setup takes 5 minutes. duende starts watching immediately.
           </p>
           <Link
             href="/onboarding"
