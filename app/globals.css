@@ -22,16 +22,14 @@
 }
 
 @layer base {
-  * {
-    @apply border-royal-200;
-  }
-
   body {
-    @apply bg-cloud-300 text-royal-900 font-sans;
+    background-color: #f4f3ee;
+    color: #00071f;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    font-family: 'Lora', Georgia, serif;
   }
 }
 
