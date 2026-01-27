@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -21,6 +22,7 @@ interface Suggestion {
 
 export default function SuggestionsPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -29,15 +31,18 @@ export default function SuggestionsPage() {
   const [recipientEmails, setRecipientEmails] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    const userId = localStorage.getItem('duende_user_id');
+    // Wait for session to load
+    if (status === 'loading') return;
+
+    const userId = session?.user?.id;
 
     if (!userId) {
-      router.push('/onboarding');
+      setIsLoading(false);
       return;
     }
 
     loadSuggestions(userId);
-  }, [router]);
+  }, [session, status]);
 
   const loadSuggestions = async (userId: string) => {
     try {
@@ -55,7 +60,7 @@ export default function SuggestionsPage() {
   };
 
   const handleAnalyzeCalendar = async () => {
-    const userId = localStorage.getItem('duende_user_id');
+    const userId = session?.user?.id;
     if (!userId) return;
 
     setIsAnalyzing(true);

@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -25,6 +26,7 @@ interface UserData {
 
 function SettingsContent() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,10 +34,13 @@ function SettingsContent() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
-    const userId = localStorage.getItem('duende_user_id');
+    // Wait for session to load
+    if (status === 'loading') return;
+
+    const userId = session?.user?.id;
 
     if (!userId) {
-      router.push('/onboarding');
+      setIsLoading(false);
       return;
     }
 
@@ -69,7 +74,7 @@ function SettingsContent() {
         console.error('Error fetching user data:', err);
         setIsLoading(false);
       });
-  }, [router, searchParams]);
+  }, [session, status, searchParams, router]);
 
   const syncProtectionsToCalendar = async (userId: string, protectionBlocks: any[]) => {
     try {
