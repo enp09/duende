@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -31,47 +32,80 @@ export default function OnboardingPage() {
     }
 
     setIsConnecting(true);
+    setError('');
 
     try {
       // Get saved planning data
       const savedAnswers = localStorage.getItem('duende_planning_answers');
       const savedBlocks = localStorage.getItem('duende_calendar_blocks');
 
-      // Create user with minimal data
-      const response = await fetch('/api/onboarding/complete', {
+      // Generate a random password for this user (they can reset it later if needed)
+      const randomPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+
+      // Create user account via the register API
+      const registerResponse = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
-          city,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          planningAnswers: savedAnswers ? JSON.parse(savedAnswers) : null,
-          calendarBlocks: savedBlocks ? JSON.parse(savedBlocks) : null,
+          password: randomPassword,
+          name: email.split('@')[0], // Use email prefix as name
         }),
       });
 
-      const result = await response.json();
+      const registerData = await registerResponse.json();
 
-      if (result.success) {
-        localStorage.setItem('duende_user_id', result.userId);
-
-        // Start OAuth flow
-        const authResponse = await fetch(`/api/auth/google/login?userId=${result.userId}`);
-        const authData = await authResponse.json();
-
-        if (authData.success && authData.authUrl) {
-          window.location.href = authData.authUrl; // Redirect to Google OAuth
-        } else {
-          setError('failed to connect calendar');
+      if (!registerResponse.ok) {
+        // If user already exists, just proceed to sign in
+        if (registerResponse.status !== 409) {
+          setError(registerData.error || 'failed to create account');
           setIsConnecting(false);
+          return;
         }
-      } else {
-        setError('failed to create account');
-        setIsConnecting(false);
       }
+
+      // Auto sign in the user
+      const signInResult = await signIn('credentials', {
+        email,
+        password: randomPassword,
+        redirect: false,
+      });
+
+      if (signInResult?.error && registerResponse.status !== 409) {
+        setError('account created but sign in failed. please try logging in.');
+        setIsConnecting(false);
+        return;
+      }
+
+      // Update user profile with city
+      await fetch('/api/user/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          city,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        }),
+      });
+
+      // Save planning data if provided
+      if (savedAnswers || savedBlocks) {
+        const protectionBlocks = savedBlocks ? JSON.parse(savedBlocks).filter((b: any) => b.type === 'proposed') : [];
+
+        await fetch('/api/planning/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            answers: savedAnswers ? JSON.parse(savedAnswers) : null,
+            protectionBlocks,
+          }),
+        });
+      }
+
+      // Redirect to Google OAuth to connect calendar
+      await signIn('google', { callbackUrl: '/planning' });
     } catch (err) {
       console.error('Error:', err);
-      setError('something went wrong');
+      setError('something went wrong. please try again.');
       setIsConnecting(false);
     }
   };

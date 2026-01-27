@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/auth';
 import { prisma } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId, answers, protectionBlocks } = await request.json();
+    const { userId: bodyUserId, answers, protectionBlocks } = await request.json();
+
+    // Try to get userId from session first, fall back to body (for onboarding flow)
+    const session = await auth();
+    const userId = session?.user?.id || bodyUserId;
 
     if (!userId) {
       return NextResponse.json(
