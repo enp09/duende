@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       calendarId: 'primary',
       timeMin: weekStart.toISOString(),
       timeMax: weekEnd.toISOString(),
-      privateExtendedProperty: 'createdBy=duende',
+      privateExtendedProperty: ['createdBy=duende'],
       maxResults: 100,
     });
 
