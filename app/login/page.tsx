@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/planning';
@@ -127,8 +127,8 @@ export default function LoginPage() {
 
             <Button
               type="button"
-              variant="outline"
-              className="w-full mt-4"
+              variant="ghost"
+              className="w-full mt-4 border border-royal-200"
               onClick={handleGoogleSignIn}
               disabled={isLoading}
             >
@@ -169,5 +169,17 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-cloud-50">
+        <p className="text-royal-500">loading...</p>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }

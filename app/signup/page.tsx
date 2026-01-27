@@ -166,8 +166,8 @@ export default function SignupPage() {
 
             <Button
               type="button"
-              variant="outline"
-              className="w-full mt-4"
+              variant="ghost"
+              className="w-full mt-4 border border-royal-200"
               onClick={handleGoogleSignIn}
               disabled={isLoading}
             >
