@@ -181,11 +181,12 @@ model Suggestion {
   learnMoreUrl   String? // Link to humanbeyondtech.com
 
   // Status
-  status         String   @default("pending") // "pending", "accepted", "dismissed", "expired"
+  status         String   @default("pending") // "pending", "accepted", "dismissed", "expired", "sent"
 
   // User feedback
   acceptedAt     DateTime?
   dismissedAt    DateTime?
+  sentAt         DateTime?
   feedbackNote   String?
 
   createdAt DateTime @default(now())

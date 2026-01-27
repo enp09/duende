@@ -23,11 +23,34 @@ this is not a productivity tool. this is a humanity tool.
 3. **adjust and sync** - drag blocks to perfect timing, then sync to google calendar
 4. **duende advocates** - throughout the week, duende messages others when your humanity needs protecting
 
+### ai advocacy system
+
+duende analyzes your calendar every day and detects threshold violations:
+
+- **too many meetings** - when meeting hours exceed your max (default: 6 hours/day)
+- **no protected lunch** - meetings scheduled during 11:30am-2pm window
+- **no movement** - long stretches (>3 hours) without breaks
+- **missing buffers** - back-to-back meetings with <10 minute gaps
+
+when a violation is detected:
+1. duende creates a suggestion in your suggestions page
+2. you click "generate advocacy message" to draft a warm, conversational email using claude
+3. you enter the recipient's email address
+4. you click "send message" to deliver the advocacy email
+5. duende handles the conversation on your behalf
+
+the ai-generated messages follow this tone:
+- starts with "hi [name], duende here for [you]"
+- explains the situation simply
+- frames it as beneficial for both people
+- uses lowercase, conversational language
+- never apologizes or is overly deferential
+
 ---
 
 ## current status
 
-**v0.2 - planning mvp complete** ✓
+**v0.3 - ai advocacy core complete** ✓
 
 ### implemented features
 - ✅ landing page with ai advocacy framing
@@ -36,21 +59,19 @@ this is not a productivity tool. this is a humanity tool.
 - ✅ email examples showing advocacy in action
 - ✅ simplified onboarding (email + calendar only)
 - ✅ google calendar oauth integration
+- ✅ google calendar read and write (sync protection blocks)
 - ✅ settings page for preferences
 - ✅ live protection preview
-
-### in progress
-- 🚧 actual google calendar sync (read user events)
-- 🚧 calendar write (add protection blocks)
-- 🚧 email sending (threshold-based advocacy)
+- ✅ threshold detection (too many meetings, no lunch, no movement, missing buffers)
+- ✅ claude ai integration for message generation
+- ✅ email delivery system (resend)
+- ✅ suggestions page with approve/send workflow
 
 ### planned for v1
-- [ ] threshold detection (too many meetings, no lunch, etc)
-- [ ] draft message generation with claude
-- [ ] email delivery (resend/sendgrid)
 - [ ] weather-aware suggestions
 - [ ] relationship connection tracking
 - [ ] exclude list (people duende won't email)
+- [ ] production deployment
 
 ---
 
@@ -111,15 +132,29 @@ DATABASE_URL="postgresql://yourusername@localhost:5432/duende?schema=public"
 npx prisma migrate dev
 ```
 
-### 3. configure google calendar (optional for development)
+### 3. configure environment variables
 
-see [docs/GOOGLE_CALENDAR_SETUP.md](docs/GOOGLE_CALENDAR_SETUP.md) for detailed setup instructions.
+copy `.env.example` to `.env` and fill in the required values:
 
+```bash
+cp .env.example .env
+```
+
+#### required for ai advocacy:
+```env
+ANTHROPIC_API_KEY="sk-ant-..."       # get from console.anthropic.com
+RESEND_API_KEY="re_..."              # get from resend.com
+RESEND_FROM_EMAIL="duende <hello@duende.app>"
+```
+
+#### required for calendar integration:
 ```env
 GOOGLE_CLIENT_ID="your-client-id"
 GOOGLE_CLIENT_SECRET="your-client-secret"
 GOOGLE_REDIRECT_URI="http://localhost:3000/api/auth/google/callback"
 ```
+
+see [docs/GOOGLE_CALENDAR_SETUP.md](docs/GOOGLE_CALENDAR_SETUP.md) for google calendar setup instructions.
 
 ### 4. start development server
 
@@ -138,19 +173,29 @@ duende/
 ├── app/                      # next.js app router
 │   ├── page.tsx             # landing page
 │   ├── planning/            # planning page with calendar
+│   ├── suggestions/         # ai advocacy suggestions
 │   ├── onboarding/          # email + calendar connection
 │   ├── settings/            # user preferences
 │   └── api/                 # api routes
 │       ├── auth/            # google oauth
+│       ├── advocacy/        # threshold detection & message generation
+│       │   ├── analyze/     # detect calendar violations
+│       │   ├── generate-message/  # claude ai integration
+│       │   └── send-message/      # email delivery
+│       ├── calendar/        # google calendar sync
 │       ├── onboarding/      # user creation
 │       ├── planning/        # save protections
+│       ├── suggestions/     # manage suggestions
 │       └── user/            # user data
 ├── components/
 │   ├── ui/                  # reusable components (Card, Button, Input)
 │   └── planning/            # WeekCalendar drag-drop component
 ├── lib/
 │   ├── db.ts               # prisma client
-│   └── google.ts           # google calendar helpers
+│   ├── google.ts           # google calendar helpers
+│   ├── threshold-detector.ts # violation detection logic
+│   ├── message-generator.ts  # claude ai for advocacy messages
+│   └── email-service.ts     # resend email sending
 ├── prisma/
 │   └── schema.prisma       # database models
 └── docs/                   # specifications
@@ -188,7 +233,8 @@ npx prisma format
 5. **drag to adjust timing** - fine-tune when protections happen
 6. **click "connect calendar"** → onboarding
 7. **onboarding (/onboarding)** - enter email, city, connect google calendar
-8. **settings (/settings)** - manage preferences, view calendar connection
+8. **settings (/settings)** - manage preferences, view calendar connection, sync protections
+9. **suggestions (/suggestions)** - view threshold violations, generate advocacy messages, send emails
 
 ---
 

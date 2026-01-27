@@ -44,23 +44,102 @@ export default function PlanningPage() {
   const [calendarBlocks, setCalendarBlocks] = useState<CalendarBlock[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasGenerated, setHasGenerated] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncMessage, setSyncMessage] = useState<string>('');
 
   useEffect(() => {
-    // Load saved answers from localStorage if they exist
+    // Load saved data and calendar events
+    loadSavedDataAndEvents();
+  }, []);
+
+  const loadSavedDataAndEvents = async () => {
+    const userId = localStorage.getItem('duende_user_id');
+
+    // Try to load from database first if user is logged in
+    if (userId) {
+      try {
+        const response = await fetch(`/api/planning/load?userId=${userId}`);
+        const data = await response.json();
+
+        if (data.success && data.hasExistingData) {
+          // Load saved planning data from database
+          setAnswers(prev => ({ ...prev, ...data.answers }));
+
+          // Load calendar events and merge with saved protections
+          await loadCalendarEvents(data.protectionBlocks);
+          setHasGenerated(true);
+          setIsLoading(false);
+          return;
+        }
+      } catch (error) {
+        console.log('Could not load saved planning data:', error);
+      }
+    }
+
+    // Fallback to localStorage
     const savedAnswers = localStorage.getItem('duende_planning_answers');
     if (savedAnswers) {
       const parsed = JSON.parse(savedAnswers);
-      // Merge with default state to ensure all keys exist
-      setAnswers(prev => ({
-        ...prev,
-        ...parsed,
-      }));
+      setAnswers(prev => ({ ...prev, ...parsed }));
     }
 
-    // Generate initial calendar blocks (existing meetings)
-    generateExistingMeetings();
+    // Load calendar events (real or dummy)
+    await loadCalendarEvents();
     setIsLoading(false);
-  }, []);
+  };
+
+  const loadCalendarEvents = async (savedProtections: CalendarBlock[] = []) => {
+    // Check if user has connected calendar
+    const userId = localStorage.getItem('duende_user_id');
+
+    if (userId) {
+      try {
+        // Fetch real calendar events
+        const response = await fetch(`/api/calendar/events?userId=${userId}`);
+        const data = await response.json();
+
+        if (data.success && data.events) {
+          const formattedEvents = formatGoogleCalendarEvents(data.events);
+          // Merge with saved protections if provided
+          setCalendarBlocks([...formattedEvents, ...savedProtections]);
+          return;
+        }
+      } catch (error) {
+        console.log('Could not fetch calendar events, showing dummy data', error);
+      }
+    }
+
+    // Fallback to dummy data if calendar not connected
+    generateExistingMeetings();
+  };
+
+  const formatGoogleCalendarEvents = (events: any[]): CalendarBlock[] => {
+    return events.map(event => {
+      const startDate = new Date(event.startTime);
+      const endDate = new Date(event.endTime);
+
+      // Get day name
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const dayName = dayNames[startDate.getDay()];
+
+      // Format time as HH:MM
+      const formatTime = (date: Date) => {
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+      };
+
+      return {
+        id: event.id,
+        type: 'existing',
+        title: event.title,
+        day: dayName,
+        startTime: formatTime(startDate),
+        endTime: formatTime(endDate),
+        color: '#9ca3af',
+      };
+    });
+  };
 
   const generateExistingMeetings = () => {
     const existingMeetings: CalendarBlock[] = [
@@ -205,13 +284,57 @@ export default function PlanningPage() {
     localStorage.setItem('duende_planning_answers', JSON.stringify(answers));
   };
 
-  const handleSyncToCalendar = () => {
-    // Save calendar blocks to localStorage
+  const handleSyncToCalendar = async () => {
+    const userId = localStorage.getItem('duende_user_id');
     const protections = calendarBlocks.filter(b => b.type === 'proposed');
+
+    // Save to localStorage as backup
     localStorage.setItem('duende_calendar_blocks', JSON.stringify(protections));
 
-    // Redirect to onboarding to collect email and connect calendar
-    router.push('/onboarding');
+    // If user is logged in, try to sync directly
+    if (userId) {
+      setIsSyncing(true);
+      setSyncMessage('syncing to your calendar...');
+
+      try {
+        // First save to database
+        await fetch('/api/planning/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId,
+            answers,
+            protectionBlocks: protections,
+          }),
+        });
+
+        // Then sync to Google Calendar
+        const syncResponse = await fetch('/api/calendar/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, protectionBlocks: protections }),
+        });
+
+        const syncData = await syncResponse.json();
+
+        if (syncData.success) {
+          setSyncMessage(`✓ ${syncData.count} protections synced to your calendar!`);
+          setTimeout(() => setSyncMessage(''), 5000);
+        } else {
+          setSyncMessage(`sync failed: ${syncData.error}`);
+          setTimeout(() => setSyncMessage(''), 5000);
+        }
+      } catch (error) {
+        console.error('Error syncing:', error);
+        setSyncMessage('sync failed - try again from settings');
+        setTimeout(() => setSyncMessage(''), 5000);
+      } finally {
+        setIsSyncing(false);
+      }
+    } else {
+      // Redirect to onboarding to collect email and connect calendar
+      router.push('/onboarding');
+    }
   };
 
   if (isLoading) {
@@ -515,6 +638,13 @@ export default function PlanningPage() {
           </div>
         </div>
 
+        {/* Sync Message */}
+        {syncMessage && (
+          <Card className="bg-orange-50 border-orange-200">
+            <p className="text-royal-500 text-center">{syncMessage}</p>
+          </Card>
+        )}
+
         {/* Connect Calendar */}
         <Card className="bg-royal-500 border-royal-500">
           <div className="flex items-center justify-between">
@@ -525,16 +655,16 @@ export default function PlanningPage() {
               <p className="text-sm opacity-90">
                 {protectionCount === 0
                   ? 'answer questions above to see your protections'
-                  : 'drag blocks to adjust timing, then connect your calendar'}
+                  : 'drag blocks to adjust timing, then sync to your calendar'}
               </p>
             </div>
             <Button
               onClick={handleSyncToCalendar}
-              disabled={protectionCount === 0}
+              disabled={protectionCount === 0 || isSyncing}
               className="bg-orange-500 hover:bg-orange-600 text-white disabled:bg-orange-300"
               size="lg"
             >
-              connect calendar
+              {isSyncing ? 'syncing...' : 'sync to calendar'}
             </Button>
           </div>
         </Card>

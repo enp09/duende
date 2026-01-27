@@ -45,6 +45,13 @@ export default function SettingsPage() {
 
     if (calendarParam === 'connected') {
       setMessage({ type: 'success', text: 'calendar connected successfully' });
+
+      // Auto-sync protection blocks if they exist
+      const savedBlocks = localStorage.getItem('duende_calendar_blocks');
+      if (savedBlocks) {
+        const blocks = JSON.parse(savedBlocks);
+        syncProtectionsToCalendar(userId, blocks);
+      }
     } else if (errorParam) {
       setMessage({ type: 'error', text: `connection failed: ${errorParam}` });
     }
@@ -63,6 +70,29 @@ export default function SettingsPage() {
         setIsLoading(false);
       });
   }, [router, searchParams]);
+
+  const syncProtectionsToCalendar = async (userId: string, protectionBlocks: any[]) => {
+    try {
+      const response = await fetch('/api/calendar/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, protectionBlocks }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setMessage({
+          type: 'success',
+          text: `calendar connected and ${data.count} protections synced!`
+        });
+        // Clear localStorage after successful sync
+        localStorage.removeItem('duende_calendar_blocks');
+      }
+    } catch (error) {
+      console.error('Error syncing protections:', error);
+    }
+  };
 
   const handleConnectCalendar = async () => {
     if (!userData) return;
@@ -86,19 +116,39 @@ export default function SettingsPage() {
     if (!userData) return;
 
     setIsSyncing(true);
+    setMessage({ type: 'success', text: 'loading your protections...' });
+
     try {
-      const response = await fetch('/api/calendar/sync', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: userData.id }),
-      });
+      // First, load saved protection blocks from database
+      const loadResponse = await fetch(`/api/planning/load?userId=${userData.id}`);
+      const loadData = await loadResponse.json();
 
-      const data = await response.json();
+      if (loadData.success && loadData.protectionBlocks && loadData.protectionBlocks.length > 0) {
+        // Sync protections to Google Calendar
+        const syncResponse = await fetch('/api/calendar/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: userData.id,
+            protectionBlocks: loadData.protectionBlocks,
+          }),
+        });
 
-      if (data.success) {
-        setMessage({ type: 'success', text: `synced ${data.eventCount} events` });
+        const syncData = await syncResponse.json();
+
+        if (syncData.success) {
+          setMessage({
+            type: 'success',
+            text: `synced ${syncData.count} protection blocks to your calendar`
+          });
+        } else {
+          setMessage({ type: 'error', text: syncData.error || 'sync failed' });
+        }
       } else {
-        setMessage({ type: 'error', text: 'sync failed' });
+        setMessage({
+          type: 'error',
+          text: 'no protection blocks found. create them in the planning page first.'
+        });
       }
     } catch (error) {
       console.error('Error syncing calendar:', error);
@@ -150,9 +200,14 @@ export default function SettingsPage() {
               <p className="text-royal-600 text-sm">{userData.email}</p>
             </div>
           </div>
-          <Button variant="ghost" onClick={() => router.push('/planning')}>
-            plan week
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="ghost" onClick={() => router.push('/suggestions')}>
+              suggestions
+            </Button>
+            <Button variant="ghost" onClick={() => router.push('/planning')}>
+              plan week
+            </Button>
+          </div>
         </div>
 
         {/* Message Display */}

@@ -4,11 +4,18 @@ import { getCalendarClient, refreshAccessToken } from '@/lib/google';
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await request.json();
+    const { userId, protectionBlocks } = await request.json();
 
     if (!userId) {
       return NextResponse.json(
-        { success: false, error: 'user id required' },
+        { success: false, error: 'User ID required' },
+        { status: 400 }
+      );
+    }
+
+    if (!protectionBlocks || !Array.isArray(protectionBlocks)) {
+      return NextResponse.json(
+        { success: false, error: 'Protection blocks required' },
         { status: 400 }
       );
     }
@@ -17,35 +24,47 @@ export async function POST(request: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
+        id: true,
+        email: true,
+        timezone: true,
         googleAccessToken: true,
         googleRefreshToken: true,
         googleTokenExpiry: true,
+        calendarWriteAccess: true,
       },
     });
 
-    if (!user?.googleAccessToken || !user?.googleRefreshToken) {
+    if (!user) {
       return NextResponse.json(
-        { success: false, error: 'calendar not connected' },
-        { status: 400 }
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    if (!user.googleAccessToken || !user.googleRefreshToken) {
+      return NextResponse.json(
+        { success: false, error: 'Calendar not connected' },
+        { status: 401 }
       );
     }
 
     // Check if token needs refresh
     let accessToken = user.googleAccessToken;
-    const expiryDate = user.googleTokenExpiry ? new Date(user.googleTokenExpiry).getTime() : 0;
-    const now = Date.now();
+    let tokenExpiry = user.googleTokenExpiry?.getTime() || 0;
 
-    if (expiryDate < now) {
-      // Token expired, refresh it
-      const newTokens = await refreshAccessToken(user.googleRefreshToken);
-      accessToken = newTokens.access_token || accessToken;
+    if (tokenExpiry < Date.now()) {
+      console.log('Access token expired, refreshing...');
+      const credentials = await refreshAccessToken(user.googleRefreshToken);
 
-      // Update user with new tokens
+      accessToken = credentials.access_token || user.googleAccessToken;
+      tokenExpiry = credentials.expiry_date || Date.now() + 3600000;
+
+      // Update tokens in database
       await prisma.user.update({
         where: { id: userId },
         data: {
-          googleAccessToken: newTokens.access_token,
-          googleTokenExpiry: newTokens.expiry_date ? new Date(newTokens.expiry_date) : undefined,
+          googleAccessToken: accessToken,
+          googleTokenExpiry: new Date(tokenExpiry),
         },
       });
     }
@@ -54,84 +73,177 @@ export async function POST(request: NextRequest) {
     const calendar = await getCalendarClient(
       accessToken,
       user.googleRefreshToken,
-      expiryDate
+      tokenExpiry
     );
 
-    // Fetch events for the next 7 days
-    const timeMin = new Date();
-    const timeMax = new Date();
-    timeMax.setDate(timeMax.getDate() + 7);
+    // Calculate week boundaries
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const diff = now.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+    const weekStart = new Date(now);
+    weekStart.setDate(diff);
+    weekStart.setHours(0, 0, 0, 0);
 
-    const response = await calendar.events.list({
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 7);
+
+    // Find and delete existing duende-created events for this week
+    const existingEvents = await calendar.events.list({
       calendarId: 'primary',
-      timeMin: timeMin.toISOString(),
-      timeMax: timeMax.toISOString(),
-      singleEvents: true,
-      orderBy: 'startTime',
+      timeMin: weekStart.toISOString(),
+      timeMax: weekEnd.toISOString(),
+      privateExtendedProperty: 'createdBy=duende',
       maxResults: 100,
     });
 
-    const events = response.data.items || [];
+    const deletePromises = (existingEvents.data.items || []).map(event =>
+      calendar.events.delete({
+        calendarId: 'primary',
+        eventId: event.id!,
+      }).catch(err => {
+        console.error(`Failed to delete event ${event.id}:`, err);
+      })
+    );
 
-    // Store events in database
-    const savedEvents = [];
-    for (const event of events) {
-      if (!event.id || !event.start || !event.end) continue;
+    await Promise.all(deletePromises);
+    console.log(`Deleted ${deletePromises.length} existing duende events`);
 
-      const startTime = event.start.dateTime || event.start.date;
-      const endTime = event.end.dateTime || event.end.date;
+    // Create new protection events
+    const dayMap: { [key: string]: number } = {
+      Sunday: 0,
+      Monday: 1,
+      Tuesday: 2,
+      Wednesday: 3,
+      Thursday: 4,
+      Friday: 5,
+      Saturday: 6,
+    };
 
-      if (!startTime || !endTime) continue;
+    const createdEvents = [];
 
-      // Upsert event (update if exists, create if not)
-      const savedEvent = await prisma.calendarEvent.upsert({
-        where: { googleEventId: event.id },
-        update: {
-          title: event.summary || 'Untitled Event',
-          description: event.description,
-          startTime: new Date(startTime),
-          endTime: new Date(endTime),
-          isAllDay: !event.start.dateTime,
-          attendees: event.attendees
-            ? JSON.parse(JSON.stringify(event.attendees))
-            : null,
-          organizerEmail: event.organizer?.email,
-          isRecurring: !!event.recurringEventId,
-          meetingLink: event.hangoutLink || event.conferenceData?.entryPoints?.[0]?.uri,
-          location: event.location,
-        },
-        create: {
-          userId,
-          googleEventId: event.id,
+    for (const block of protectionBlocks) {
+      try {
+        // Calculate the date for this block
+        const targetDayOfWeek = dayMap[block.day];
+        const daysFromMonday = targetDayOfWeek - 1; // weekStart is Monday
+        const blockDate = new Date(weekStart);
+        blockDate.setDate(blockDate.getDate() + daysFromMonday);
+
+        // Parse start and end times
+        const [startHour, startMin] = block.startTime.split(':').map(Number);
+        const [endHour, endMin] = block.endTime.split(':').map(Number);
+
+        const startDateTime = new Date(blockDate);
+        startDateTime.setHours(startHour, startMin, 0, 0);
+
+        const endDateTime = new Date(blockDate);
+        endDateTime.setHours(endHour, endMin, 0, 0);
+
+        // Determine color based on protection type
+        const colorId = getColorId(block.setting);
+
+        // Create event in Google Calendar
+        const event = await calendar.events.insert({
           calendarId: 'primary',
-          title: event.summary || 'Untitled Event',
-          description: event.description,
-          startTime: new Date(startTime),
-          endTime: new Date(endTime),
-          isAllDay: !event.start.dateTime,
-          attendees: event.attendees
-            ? JSON.parse(JSON.stringify(event.attendees))
-            : null,
-          organizerEmail: event.organizer?.email,
-          isRecurring: !!event.recurringEventId,
-          meetingLink: event.hangoutLink || event.conferenceData?.entryPoints?.[0]?.uri,
-          location: event.location,
-        },
-      });
+          requestBody: {
+            summary: `🛡️ ${block.title}`,
+            description: `Protected by Duende\n\nThis time is blocked to protect your ${block.setting || 'wellbeing'}.\n\nDuende will advocate for this time if someone tries to book over it.`,
+            start: {
+              dateTime: startDateTime.toISOString(),
+              timeZone: user.timezone || 'America/New_York',
+            },
+            end: {
+              dateTime: endDateTime.toISOString(),
+              timeZone: user.timezone || 'America/New_York',
+            },
+            colorId,
+            extendedProperties: {
+              private: {
+                createdBy: 'duende',
+                protectionType: block.setting || 'general',
+                duendeBlockId: block.id,
+              },
+            },
+            reminders: {
+              useDefault: false,
+              overrides: [],
+            },
+          },
+        });
 
-      savedEvents.push(savedEvent);
+        createdEvents.push({
+          googleEventId: event.data.id,
+          title: block.title,
+          day: block.day,
+        });
+
+        // Save to database
+        await prisma.calendarEvent.upsert({
+          where: { googleEventId: event.data.id! },
+          update: {
+            title: block.title,
+            startTime: startDateTime,
+            endTime: endDateTime,
+            blockedByDuende: true,
+            isProtected: true,
+          },
+          create: {
+            userId,
+            googleEventId: event.data.id!,
+            calendarId: 'primary',
+            title: block.title,
+            startTime: startDateTime,
+            endTime: endDateTime,
+            isAllDay: false,
+            blockedByDuende: true,
+            isProtected: true,
+          },
+        });
+
+        console.log(`Created protection: ${block.title} on ${block.day}`);
+      } catch (error: any) {
+        console.error(`Failed to create event for ${block.title}:`, error);
+        // Continue with other blocks even if one fails
+      }
+    }
+
+    // Mark user as having calendar write access
+    if (!user.calendarWriteAccess) {
+      await prisma.user.update({
+        where: { id: userId },
+        data: { calendarWriteAccess: true },
+      });
     }
 
     return NextResponse.json({
       success: true,
-      eventCount: savedEvents.length,
-      message: `synced ${savedEvents.length} events`,
+      message: `Successfully synced ${createdEvents.length} protection blocks to your calendar`,
+      createdEvents,
+      count: createdEvents.length,
     });
-  } catch (error) {
-    console.error('Error syncing calendar:', error);
+
+  } catch (error: any) {
+    console.error('Error syncing to calendar:', error);
     return NextResponse.json(
-      { success: false, error: 'failed to sync calendar' },
+      {
+        success: false,
+        error: error.message || 'Failed to sync protections to calendar',
+        details: error.toString(),
+      },
       { status: 500 }
     );
   }
+}
+
+// Map protection types to Google Calendar color IDs
+function getColorId(setting?: string): string {
+  const colorMap: { [key: string]: string } = {
+    movement: '6',      // Orange
+    nutrition: '10',    // Green
+    relationships: '4', // Pink
+    stress: '9',        // Blue
+    transcendence: '5', // Yellow/Amber
+  };
+
+  return colorMap[setting || ''] || '11'; // Default to gray
 }

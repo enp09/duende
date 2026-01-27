@@ -20,15 +20,14 @@ export default function Home() {
           <h1 className="text-6xl font-serif text-royal-500">
             duende
           </h1>
-          <p className="text-sm text-royal-400 uppercase tracking-wide">
-            pronounced dwen-day
+          <p className="text-sm text-royal-400 tracking-wide">
+            [ dwen-dah ]
           </p>
-          <p className="text-xl text-royal-500 leading-relaxed italic">
-            the feeling of being fully alive
+          <p className="text-xl text-royal-500 leading-relaxed italic max-w-2xl mx-auto">
+            soul in motion — an Andalusian concept that depicts a fierce, raw, spiritual energy that overtakes an artist when the art becomes larger than life.
           </p>
-          <p className="text-lg text-royal-600 max-w-xl mx-auto leading-relaxed">
-            duende is an ai layer that helps you plan your week and advocates for the time that makes you human.
-            movement, real meals, connection, space to think and grow.
+          <p className="text-2xl text-royal-600 font-light leading-relaxed">
+            reclaim time for what makes you human
           </p>
           <div className="pt-4">
             <Link
