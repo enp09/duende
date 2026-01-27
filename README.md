@@ -1,36 +1,58 @@
 # duende
 
-> pronounced "dwen-day" — the feeling of being fully alive
+> **[ dwen-dah ]** - soul in motion
+>
+> an Andalusian concept that depicts a fierce, raw, spiritual energy that overtakes an artist when the art becomes larger than life.
 
-an ai advocacy layer that sits between you, your calendar, and other people — protecting everyone's humanity without anyone having to ask.
+**reclaim time for what makes your team human**
+
+an ai layer that advocates when calendars violate what makes us human. the ai takes the blame. both people are protected.
 
 ---
 
 ## what is duende?
 
-duende helps you plan your week and advocates for the time that makes you human: movement, real meals, connection, space to think and grow.
+duende is an ai advocacy system for **teams that care about their humanity and wellbeing**.
 
-**the ai takes the blame.** when someone tries to book you during lunch or you've been sitting too long, duende messages them on your behalf. nobody's the bad guy. both people are protected.
+it sits between your calendar and other people, protecting movement, real meals, connection, and space to think. when someone tries to book you during lunch or you've been sitting too long, duende messages them on your behalf.
 
-this is not a productivity tool. this is a humanity tool.
+**the ai takes the blame.** nobody's the bad guy. both people are protected.
+
+this is a humanity tool, not a productivity tool.
 
 ---
 
 ## how it works
 
-1. **plan your week** - answer 6 questions about what matters to you
-2. **see protections appear** - watch your calendar fill with movement time, protected lunch, connection moments
-3. **adjust and sync** - drag blocks to perfect timing, then sync to google calendar
-4. **duende advocates** - throughout the week, duende messages others when your humanity needs protecting
+### 1. you set your team's defaults
+tell duende what makes your people human. max meeting hours per day. protected lunch windows. time between calls to breathe.
 
-### ai advocacy system
+5 minute setup. then you're done.
 
-duende analyzes your calendar every day and detects threshold violations:
+### 2. duende watches their calendars
+connects to google calendar. reads every event. knows when someone's been sitting too long. sees when lunch is getting crowded with meetings. detects back to back calls piling up.
+
+real-time. all day. no one has to remember to check.
+
+### 3. duende advocates on their behalf
+when a threshold gets crossed, duende messages the person who's asking for time. warm, clear, human. explains why this matters. suggests an alternative that works for both people.
+
+the ai takes the blame. sarah doesn't have to say no. the requester understands why. both protected.
+
+---
+
+## ai advocacy system
+
+### threshold detection
+
+duende analyzes your calendar every day and detects violations:
 
 - **too many meetings** - when meeting hours exceed your max (default: 6 hours/day)
 - **no protected lunch** - meetings scheduled during 11:30am-2pm window
 - **no movement** - long stretches (>3 hours) without breaks
 - **missing buffers** - back-to-back meetings with <10 minute gaps
+
+### intelligent advocacy
 
 when a violation is detected:
 1. duende creates a suggestion in your suggestions page
@@ -46,17 +68,34 @@ the ai-generated messages follow this tone:
 - uses lowercase, conversational language
 - never apologizes or is overly deferential
 
+### human pattern recognition
+
+beyond immediate violations, duende notices long-term patterns:
+
+- **new team members** - james joined 3 weeks ago, no 1:1 time yet
+- **weather awareness** - first sunny day in weeks, suggests outdoor walking meetings
+- **relationship maintenance** - been 7 weeks since casual coffee with sarah
+- **energy patterns** - your strategic thinking is 3x better 9-11am than 2-4pm
+- **growth time protection** - spanish learning block keeps getting filled with meetings
+
+these are the patterns that make you human. calendars just show meetings. duende sees relationships, energy, growth, connection.
+
 ---
 
 ## current status
 
-**v0.3 - ai advocacy core complete** ✓
+**v0.4 - enterprise landing page with andalusian soul** ✓
 
 ### implemented features
-- ✅ landing page with ai advocacy framing
+- ✅ enterprise landing page with cultural heritage and soul
+- ✅ professional navigation with pricing, integrations, how it works
+- ✅ story-driven "how it works" with real examples (sarah and james)
+- ✅ educational approach: teaches biology behind movement, nutrition, buffers, deep work
+- ✅ combined "the ai takes the blame" section showing immediate advocacy and long-term patterns
+- ✅ social proof stats: 67% reduction in meeting overload, 4.2hrs reclaimed, 89% more present
+- ✅ pricing section: $12/user/month Professional, custom Enterprise
 - ✅ planning page with 6 domain questions
 - ✅ interactive calendar with drag-drop protections
-- ✅ email examples showing advocacy in action
 - ✅ simplified onboarding (email + calendar only)
 - ✅ google calendar oauth integration
 - ✅ google calendar read and write (sync protection blocks)
@@ -67,10 +106,17 @@ the ai-generated messages follow this tone:
 - ✅ email delivery system (resend)
 - ✅ suggestions page with approve/send workflow
 
+### core integrations
+- ✅ **google calendar** - read events, detect threshold violations, sync protection blocks
+- 🔜 **slack** - send advocacy messages on behalf of team members (coming soon)
+- 🔜 **notion** - sync protection schedules with team databases (coming soon)
+
 ### planned for v1
 - [ ] weather-aware suggestions
 - [ ] relationship connection tracking
 - [ ] exclude list (people duende won't email)
+- [ ] slack integration
+- [ ] notion integration
 - [ ] production deployment
 
 ---
@@ -89,6 +135,25 @@ based on the framework from *human default settings* by sinan canan.
 
 ---
 
+## educational approach
+
+**duende teaches you why, not just what.**
+
+instead of "take a walk," duende explains:
+
+> "you've been sitting for 3.5 hours. here's what's happening: your hip flexors are shortening, reducing blood flow to your prefrontal cortex by ~15%. this is why that last meeting felt fuzzy.
+>
+> we've evolved to walk. our ancestors walked 2+ hours daily. movement regulates brain activity and nervous system. you're designed for motion."
+
+over time, you learn your own patterns:
+- you think clearest after 15 minutes of walking
+- your best ideas come at 11am walks, not 4pm
+- with 10-min buffers, your decision quality improves 34% in late-day meetings
+
+you're learning how your specific body and brain work. duende shows you patterns you've never noticed. you become an expert on yourself.
+
+---
+
 ## tech stack
 
 ### frontend
@@ -100,7 +165,8 @@ based on the framework from *human default settings* by sinan canan.
 - **next.js api routes** (serverless)
 - **postgresql** with prisma orm
 - **google calendar api** for calendar access
-- **anthropic claude** (planned for message generation)
+- **anthropic claude** for message generation
+- **resend** for email delivery
 
 ### colors
 - **royal blue** (#00239D) - primary brand color
@@ -114,7 +180,7 @@ based on the framework from *human default settings* by sinan canan.
 ### 1. clone and install
 
 ```bash
-git clone https://github.com/yourusername/duende.git
+git clone https://github.com/enp09/duende.git
 cd duende
 npm install
 ```
@@ -122,10 +188,10 @@ npm install
 ### 2. set up database
 
 ```bash
-# create postgresql database
+# create postgresql database (or use Supabase)
 createdb duende
 
-# create .env file
+# create .env file with your database URL
 DATABASE_URL="postgresql://yourusername@localhost:5432/duende?schema=public"
 
 # run migrations
@@ -154,7 +220,7 @@ GOOGLE_CLIENT_SECRET="your-client-secret"
 GOOGLE_REDIRECT_URI="http://localhost:3000/api/auth/google/callback"
 ```
 
-see [docs/GOOGLE_CALENDAR_SETUP.md](docs/GOOGLE_CALENDAR_SETUP.md) for google calendar setup instructions.
+see [docs/GOOGLE_CALENDAR_SETUP.md](docs/GOOGLE_CALENDAR_SETUP.md) for detailed google calendar setup instructions.
 
 ### 4. start development server
 
@@ -171,7 +237,7 @@ visit http://localhost:3000
 ```
 duende/
 ├── app/                      # next.js app router
-│   ├── page.tsx             # landing page
+│   ├── page.tsx             # landing page (enterprise + andalusian soul)
 │   ├── planning/            # planning page with calendar
 │   ├── suggestions/         # ai advocacy suggestions
 │   ├── onboarding/          # email + calendar connection
@@ -199,6 +265,9 @@ duende/
 ├── prisma/
 │   └── schema.prisma       # database models
 └── docs/                   # specifications
+    ├── ARCHITECTURE.md      # system architecture
+    ├── PROJECT_STATUS.md    # current status and roadmap
+    └── GOOGLE_CALENDAR_SETUP.md  # oauth setup guide
 ```
 
 ---
@@ -226,8 +295,8 @@ npx prisma format
 
 ## user flow
 
-1. **landing page (/)** - see what duende does, examples of ai advocacy
-2. **click "get started"** → planning page
+1. **landing page (/)** - see the andalusian concept, understand how duende protects humanity, view pricing
+2. **click "see demo"** → planning page
 3. **planning page (/planning)** - answer 6 questions about what matters
 4. **click "generate protections"** - see calendar blocks appear
 5. **drag to adjust timing** - fine-tune when protections happen
@@ -245,6 +314,8 @@ npx prisma format
 - a protection system for your humanity
 - threshold-based (only intervenes when needed)
 - always requires approval before sending
+- educational (teaches why, not just what)
+- pattern-aware (sees relationships, energy, growth, connection)
 
 ### what duende is not
 - a productivity tool
@@ -253,8 +324,32 @@ npx prisma format
 - a scoring system
 - rigid or judgmental
 
-### key principle
-> the ai takes the blame. nobody's the bad guy. both people are protected.
+### key principles
+
+> **the ai takes the blame.** nobody's the bad guy. both people are protected.
+
+> **teach why, not just what.** you learn your own biology rather than following orders.
+
+> **see human patterns.** calendars just show meetings. duende sees relationships, energy, growth, connection. the things that actually matter.
+
+---
+
+## for teams that care
+
+duende is built for **teams that care about their humanity and wellbeing**.
+
+if you believe:
+- movement, real meals, connection, and space to think matter
+- people perform better when operating from wholeness
+- ai should protect what makes us human, not extract more productivity
+- nobody should have to be the bad guy for needing basic humanity
+
+then duende is for you.
+
+**pricing:**
+- professional: $12/user/month
+- enterprise: custom pricing with full integrations
+- 14-day free trial, no credit card required
 
 ---
 
@@ -271,4 +366,5 @@ MIT
 ---
 
 *a humanbeyondtech project*
+
 *www.humanbeyondtech.com*
