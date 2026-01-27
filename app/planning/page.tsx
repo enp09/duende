@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -32,6 +33,7 @@ interface DomainAnswers {
 
 export default function PlanningPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [answers, setAnswers] = useState<DomainAnswers>({
     intentions: '',
     movement: '',
@@ -48,12 +50,24 @@ export default function PlanningPage() {
   const [syncMessage, setSyncMessage] = useState<string>('');
 
   useEffect(() => {
+    // Wait for session to load
+    if (status === 'loading') return;
+
     // Load saved data and calendar events
-    loadSavedDataAndEvents();
-  }, []);
+    if (session?.user?.id) {
+      loadSavedDataAndEvents();
+    } else {
+      setIsLoading(false);
+    }
+  }, [session, status]);
 
   const loadSavedDataAndEvents = async () => {
-    const userId = localStorage.getItem('duende_user_id');
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      setIsLoading(false);
+      return;
+    }
 
     // Try to load from database first if user is logged in
     if (userId) {
@@ -90,7 +104,7 @@ export default function PlanningPage() {
 
   const loadCalendarEvents = async (savedProtections: CalendarBlock[] = []) => {
     // Check if user has connected calendar
-    const userId = localStorage.getItem('duende_user_id');
+    const userId = session?.user?.id;
 
     if (userId) {
       try {
@@ -285,7 +299,7 @@ export default function PlanningPage() {
   };
 
   const handleSyncToCalendar = async () => {
-    const userId = localStorage.getItem('duende_user_id');
+    const userId = session?.user?.id;
     const protections = calendarBlocks.filter(b => b.type === 'proposed');
 
     // Save to localStorage as backup
