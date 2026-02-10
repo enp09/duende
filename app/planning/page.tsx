@@ -420,7 +420,7 @@ export default function PlanningPage() {
             </Link>
             <div>
               <h1 className="text-3xl font-serif text-royal-500">plan your week</h1>
-              <p className="text-royal-600 text-sm">duende will advocate for what makes you human</p>
+              <p className="text-royal-600 text-sm">duende will protect your wellbeing and energy</p>
             </div>
           </div>
         </div>
@@ -586,19 +586,19 @@ export default function PlanningPage() {
           />
         </div>
 
-        {/* How Duende Advocates */}
+        {/* How Duende Supports */}
         <div className="space-y-6">
           <div className="text-center space-y-2">
-            <h2 className="text-2xl font-serif text-royal-500">how duende advocates for you</h2>
+            <h2 className="text-2xl font-serif text-royal-500">how duende supports you</h2>
             <p className="text-royal-600 max-w-2xl mx-auto">
-              duende messages others on your behalf and sends you updates. the ai takes the blame. both people are protected.
+              duende shares wellbeing insights with others and sends you updates. everyone learns. both people are supported.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Outbound: What duende sends to others */}
             <div className="space-y-4">
-              <h3 className="text-lg font-medium text-royal-500">duende messages others</h3>
+              <h3 className="text-lg font-medium text-royal-500">duende shares insights</h3>
 
               {/* Example 1: Movement */}
               <Card className="bg-orange-50 border-orange-200">
@@ -607,7 +607,7 @@ export default function PlanningPage() {
                     <span className="text-xs uppercase tracking-wide text-royal-400">to: sarah@company.com</span>
                   </div>
                   <p className="text-sm text-royal-600 leading-relaxed">
-                    hi sarah, duende here for elif. she's been in back to back calls this morning. could we move the 3pm sync to 3:15 so she can take a quick walk? she'll be more present.
+                    hi sarah, elif here. i've noticed i get more focused and energized after a short walk between meetings. could we move the 3pm sync to 3:15 so i can step outside? you'll get my best thinking.
                   </p>
                   <p className="text-xs text-royal-400 italic">protecting: movement</p>
                 </div>
@@ -620,7 +620,7 @@ export default function PlanningPage() {
                     <span className="text-xs uppercase tracking-wide text-royal-400">to: team@company.com</span>
                   </div>
                   <p className="text-sm text-royal-600 leading-relaxed">
-                    hey team, duende here for elif. her thursday lunch is getting crowded with meetings. could we move the 12:30 standup to 2pm so she can eat away from her desk?
+                    hey team, elif here. eating lunch away from my desk really helps me recharge. could we move the 12:30 standup to 2pm so i can eat? i'll be more engaged when we connect.
                   </p>
                   <p className="text-xs text-royal-400 italic">protecting: nutrition</p>
                 </div>
@@ -633,7 +633,7 @@ export default function PlanningPage() {
                     <span className="text-xs uppercase tracking-wide text-royal-400">to: mike@company.com</span>
                   </div>
                   <p className="text-sm text-royal-600 leading-relaxed">
-                    hi mike, duende here for elif. friday afternoon is her deep work time for learning. could this be async or move to monday? you'll get a more thoughtful response.
+                    hi mike, elif here. friday afternoon is when i do my best learning and thinking. could this be async or move to monday? you'll get my most thoughtful work.
                   </p>
                   <p className="text-xs text-royal-400 italic">protecting: transcendence</p>
                 </div>

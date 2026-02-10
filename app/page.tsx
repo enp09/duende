@@ -50,7 +50,7 @@ export default function Home() {
                 reclaim time for what makes your team human
               </h2>
               <p className="text-xl text-royal-600 max-w-2xl mx-auto leading-relaxed">
-                an ai layer that advocates when calendars violate what makes us human. the ai takes the blame. both people are protected.
+                an ai layer that educates and encourages intentional calendar practices. helps teams protect their wellbeing and energy. everyone wins.
               </p>
             </div>
             <div className="flex items-center justify-center gap-4">
@@ -184,14 +184,14 @@ export default function Home() {
                     <span className="text-white text-lg font-light">3</span>
                   </div>
                   <h3 className="text-2xl font-medium text-royal-500">
-                    duende advocates on their behalf
+                    duende educates and encourages
                   </h3>
                 </div>
                 <p className="text-lg text-royal-600 leading-relaxed pl-13">
-                  when a threshold gets crossed, duende messages the person who's asking for time. warm, clear, human. explains why this matters. suggests an alternative that works for both people.
+                  when a wellbeing pattern emerges, duende shares insights about why it matters. warm, clear, human. teaches about impact on energy, focus, and relationships. suggests alternatives that benefit everyone.
                 </p>
                 <p className="text-royal-600 pl-13">
-                  the ai takes the blame. sarah doesn't have to say no. the requester understands why. both protected.
+                  no blame. everyone learns. both people are supported in making better choices.
                 </p>
               </div>
               <Card className="p-6 bg-orange-50 border-orange-200">
@@ -251,7 +251,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-medium text-royal-500">google calendar</h3>
                 <p className="text-royal-600">
-                  read calendar events, detect threshold violations, automatically add protection blocks. real-time synchronization.
+                  read calendar events, identify wellbeing patterns, automatically add protection blocks. real-time synchronization.
                 </p>
                 <div className="pt-2">
                   <span className="text-sm text-orange-500">core integration</span>
@@ -266,7 +266,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-medium text-royal-500">slack</h3>
                 <p className="text-royal-600">
-                  send advocacy messages on behalf of team members, notify stakeholders of threshold violations, coordinate rescheduling.
+                  share wellbeing insights with team members, educate about calendar patterns and impact, coordinate rescheduling.
                 </p>
                 <div className="pt-2">
                   <span className="text-sm text-orange-500">coming soon</span>
@@ -381,15 +381,15 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-serif text-royal-500 mb-4">
-              the ai takes the blame
+              everyone wins with wellbeing-first decisions
             </h2>
             <p className="text-lg text-royal-600 max-w-2xl mx-auto">
-              duende sees what calendars miss: threshold violations, human patterns, relationships, energy. nobody's the bad guy. both people protected.
+              duende sees what calendars miss: wellbeing patterns, human needs, energy levels, relationships. everyone learns. both people supported.
             </p>
           </div>
 
           <div className="space-y-6">
-            {/* Meeting Overload - Immediate Advocacy */}
+            {/* Meeting Overload - Immediate Education */}
             <Card className="p-8 border-orange-200 bg-orange-50">
               <div className="flex gap-6">
                 <div className="flex-shrink-0">
@@ -400,16 +400,16 @@ export default function Home() {
                 <div className="flex-1 space-y-3">
                   <div>
                     <h3 className="text-lg font-medium text-royal-500 mb-1">meeting overload detection</h3>
-                    <p className="text-sm text-royal-400">threshold exceeded • immediate advocacy</p>
+                    <p className="text-sm text-royal-400">wellbeing insight • encouragement to protect energy</p>
                   </div>
                   <div className="bg-white border-l-4 border-orange-500 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende detects:</strong></p>
+                    <p className="mb-2"><strong>duende sees:</strong></p>
                     <p>"sarah has been in 6.5 hours of meetings today. james just requested 'product sync' at 3pm."</p>
-                    <p className="text-royal-400 mt-3 text-xs italic">duende messages james: "hi james, duende here for sarah. she's been in back to back calls all day (6.5 hours so far). could we make the product sync async today so she can take a walk? you'll get a more thoughtful response and she'll be more present."</p>
+                    <p className="text-royal-400 mt-3 text-xs italic">duende messages james: "hi james, duende here for sarah. she's been in back to back calls all day (6.5 hours). taking breaks between meetings helps with focus and energy. could the product sync work async today or wait until tomorrow? you'll both get a better conversation."</p>
                   </div>
                   <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
                     <span>→</span>
-                    <span>both people protected, nobody's the bad guy</span>
+                    <span>everyone supported, better outcomes for both</span>
                   </div>
                 </div>
               </div>
@@ -536,7 +536,7 @@ export default function Home() {
               pricing
             </h2>
             <p className="text-lg text-royal-600">
-              enterprise-grade advocacy for teams of all sizes
+              enterprise-grade wellbeing support for teams of all sizes
             </p>
           </div>
 
@@ -563,7 +563,7 @@ export default function Home() {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-orange-500 mt-1">✓</span>
-                      <span>ai-generated advocacy messages</span>
+                      <span>ai-generated educational messages</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-orange-500 mt-1">✓</span>
@@ -756,7 +756,7 @@ export default function Home() {
             ready to protect your team's humanity?
           </h2>
           <p className="text-xl text-white/90">
-            start with a 14-day trial. see autonomous advocacy in action.
+            start with a 14-day trial. experience wellbeing-focused calendar management.
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link

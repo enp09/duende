@@ -39,20 +39,20 @@ export async function POST(request: NextRequest) {
     const userName = suggestion.user.email.split('@')[0];
     const recipientName = recipientEmail.split('@')[0];
 
-    // Send advocacy email to recipient
+    // Send educational email to recipient
     const advocacyResult = await sendAdvocacyEmail({
       to: recipientEmail,
       recipientName,
       userName,
       message: suggestion.draftMessage,
-      subject: `${userName} - calendar update`,
+      subject: `${userName} - wellbeing insight`,
     });
 
     if (!advocacyResult.success) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Failed to send advocacy email',
+          error: 'Failed to send email',
           details: advocacyResult.error,
         },
         { status: 500 }
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       messageId: advocacyResult.messageId,
-      message: 'Advocacy message sent successfully',
+      message: 'Message sent successfully',
     });
 
   } catch (error: any) {

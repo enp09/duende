@@ -222,7 +222,7 @@ export default function SuggestionsPage() {
             </Link>
             <div>
               <h1 className="text-3xl font-serif text-royal-500">duende thinks</h1>
-              <p className="text-royal-600 text-sm">threshold alerts and advocacy suggestions</p>
+              <p className="text-royal-600 text-sm">wellbeing insights and calendar patterns</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -241,7 +241,7 @@ export default function SuggestionsPage() {
             <div>
               <p className="text-royal-500 font-medium mb-1">check your calendar</p>
               <p className="text-sm text-royal-600">
-                duende will analyze the next 7 days and look for threshold violations
+                duende will analyze the next 7 days and share wellbeing insights
               </p>
             </div>
             <Button onClick={handleAnalyzeCalendar} disabled={isAnalyzing}>
@@ -254,16 +254,16 @@ export default function SuggestionsPage() {
         {suggestions.length === 0 ? (
           <Card className="bg-orange-50 border-orange-200">
             <div className="text-center py-8">
-              <p className="text-royal-500 text-lg mb-2">✓ no threshold violations detected</p>
+              <p className="text-royal-500 text-lg mb-2">✓ looking good</p>
               <p className="text-royal-600 text-sm">
-                your calendar looks good! click "analyze calendar" above to check again.
+                your calendar looks balanced right now. click "analyze calendar" above to check again.
               </p>
             </div>
           </Card>
         ) : (
           <div className="space-y-4">
             <h2 className="text-xl font-serif text-royal-500">
-              {suggestions.length} {suggestions.length === 1 ? 'suggestion' : 'suggestions'}
+              {suggestions.length} wellbeing {suggestions.length === 1 ? 'insight' : 'insights'}
             </h2>
 
             {suggestions.map((suggestion) => (
@@ -287,7 +287,7 @@ export default function SuggestionsPage() {
                   {/* Suggested Action */}
                   {suggestion.reasoning && (
                     <div className="bg-white border border-royal-200 rounded-lg p-3">
-                      <p className="text-sm font-medium text-royal-500 mb-1">duende suggests:</p>
+                      <p className="text-sm font-medium text-royal-500 mb-1">why this matters:</p>
                       <p className="text-sm text-royal-600">{suggestion.reasoning}</p>
                     </div>
                   )}
@@ -296,7 +296,7 @@ export default function SuggestionsPage() {
                   {suggestion.draftMessage ? (
                     <div className="bg-white border border-orange-300 rounded-lg p-4">
                       <p className="text-xs uppercase tracking-wide text-royal-400 mb-2">
-                        draft message to send:
+                        educational message:
                       </p>
                       <p className="text-royal-600 leading-relaxed">{suggestion.draftMessage}</p>
                     </div>
@@ -309,7 +309,7 @@ export default function SuggestionsPage() {
                     >
                       {generatingMessageFor === suggestion.id
                         ? 'generating with claude...'
-                        : 'generate advocacy message'}
+                        : 'share this insight'}
                     </Button>
                   )}
 
