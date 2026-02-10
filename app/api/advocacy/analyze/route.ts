@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     if (violations.length === 0) {
       return NextResponse.json({
         success: true,
-        message: 'No violations detected - your calendar looks good!',
+        message: 'Your calendar looks great! You're doing a good job protecting your wellbeing.',
         violations: [],
         count: 0,
       });
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: `Found ${violations.length} threshold ${violations.length === 1 ? 'violation' : 'violations'}`,
+      message: `Found ${violations.length} wellbeing ${violations.length === 1 ? 'insight' : 'insights'} to consider`,
       violations,
       suggestions: createdSuggestions,
       count: violations.length,

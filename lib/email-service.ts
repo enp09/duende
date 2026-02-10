@@ -22,7 +22,7 @@ export class EmailService {
   }
 
   /**
-   * Send an advocacy email on behalf of a user
+   * Send an educational message about wellbeing
    */
   async sendAdvocacyMessage(options: {
     to: string;
@@ -40,14 +40,14 @@ export class EmailService {
       const result = await this.resend.emails.send({
         from: this.fromEmail,
         to,
-        subject: subject || `${userName} - calendar update`,
+        subject: subject || `${userName} - wellbeing insight`,
         html,
         text,
       });
 
       return { success: true, messageId: result.data?.id };
     } catch (error: any) {
-      console.error('Error sending advocacy email:', error);
+      console.error('Error sending email:', error);
       return { success: false, error: error.message };
     }
   }
@@ -142,7 +142,7 @@ export class EmailService {
 
   <div class="footer">
     <p>
-      this message was sent by duende, an ai advocacy layer managing ${userName}'s calendar to protect their humanity.
+      this message from duende is about supporting ${userName} in protecting their wellbeing and time with intention.
     </p>
     <p>
       questions? reach out to hello@duende.app
@@ -165,7 +165,7 @@ export class EmailService {
 ${message}
 
 ---
-this message was sent by duende, an ai advocacy layer managing ${userName}'s calendar to protect their humanity.
+this message from duende is about supporting ${userName} in protecting their wellbeing and time with intention.
 
 questions? reach out to hello@duende.app
     `.trim();
@@ -259,7 +259,7 @@ questions? reach out to hello@duende.app
 
   <div class="footer">
     <p>
-      duende is watching your calendar and protecting your default settings.
+      duende is here to help you understand and protect your wellbeing through intentional calendar practices.
     </p>
   </div>
 </body>
@@ -279,7 +279,7 @@ ${alertMessage}
 view your suggestions: ${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/suggestions
 
 ---
-duende is watching your calendar and protecting your default settings.
+duende is here to help you understand and protect your wellbeing through intentional calendar practices.
     `.trim();
   }
 }
