@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     if (violations.length === 0) {
       return NextResponse.json({
         success: true,
-        message: 'Your calendar looks great! You're doing a good job protecting your wellbeing.',
+        message: "Your calendar looks great! You're doing a good job protecting your wellbeing.",
         violations: [],
         count: 0,
       });
