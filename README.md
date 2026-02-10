@@ -177,6 +177,10 @@ you're learning how your specific body and brain work. duende shows you patterns
 
 ## getting started
 
+### prerequisites
+- **Node.js** v18.18.0 or higher (v20+ recommended)
+- **npm** v9 or higher
+
 ### 1. clone and install
 
 ```bash
