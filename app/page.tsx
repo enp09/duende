@@ -182,6 +182,9 @@ export default function Home() {
             <h2 className="text-4xl font-serif text-royal-500 mb-4">
               see it in action
             </h2>
+            <p className="text-lg text-royal-600 max-w-2xl mx-auto">
+                intelligent calendar orchestration with minimal configuration
+            </p>
           </div>
 
           <Card className="bg-white border-0 p-8 shadow-sm">

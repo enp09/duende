@@ -46,6 +46,7 @@ export default function PlanningPage() {
   const [calendarBlocks, setCalendarBlocks] = useState<CalendarBlock[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasGenerated, setHasGenerated] = useState(false);
+  const [showCalendarOverlay, setShowCalendarOverlay] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncMessage, setSyncMessage] = useState<string>('');
   const [demoEmails, setDemoEmails] = useState({
@@ -299,8 +300,14 @@ export default function PlanningPage() {
   const handleGenerateProtections = () => {
     generateProtections();
     setHasGenerated(true);
+    setShowCalendarOverlay(false);
     // Save answers to localStorage
     localStorage.setItem('duende_planning_answers', JSON.stringify(answers));
+    // Scroll to calendar section
+    setTimeout(() => {
+      const calendarSection = document.querySelector('.week-calendar-section');
+      calendarSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   };
 
   const handleProtectTime = () => {
@@ -540,23 +547,6 @@ export default function PlanningPage() {
             </Card>
           </div>
 
-          {/* Exclude people */}
-          <Card className="bg-white border-royal-200">
-            <div className="space-y-3">
-              <div>
-                <p className="text-sm font-medium text-royal-500 mb-1">exclude people (optional)</p>
-                <p className="text-sm text-royal-600 mb-3">
-                  duende will never send protection emails to these people. useful for your manager or key stakeholders.
-                </p>
-              </div>
-              <Input
-                placeholder="e.g., boss@company.com, ceo@company.com"
-                value={answers.excludePeople || ''}
-                onChange={(e) => handleAnswerChange('excludePeople', e.target.value)}
-              />
-            </div>
-          </Card>
-
           {/* Generate button */}
           <div className="flex justify-center pt-2">
             <Button
@@ -573,17 +563,21 @@ export default function PlanningPage() {
         {/* Calendar Visualization */}
         <div className="space-y-4 week-calendar-section">
           <h2 className="text-xl font-serif text-royal-500">your week with protections</h2>
-          {protectionCount === 0 && !hasGenerated && (
-            <Card className="bg-cloud-300 border-royal-200">
-              <p className="text-center text-royal-600 py-8">
-                answer the questions above and click generate to see your protections appear here
-              </p>
-            </Card>
-          )}
-          <WeekCalendar
-            blocks={calendarBlocks}
-            onBlocksChange={setCalendarBlocks}
-          />
+          <div className="relative">
+            {showCalendarOverlay && (
+              <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70 backdrop-blur-sm rounded-xl">
+                <p className="text-center text-royal-600 text-lg font-medium px-8">
+                  answer the que––stions above and click generate to see your protections appear here
+                </p>
+              </div>
+            )}
+            <div className={showCalendarOverlay ? 'opacity-100' : ''}>
+              <WeekCalendar
+                blocks={calendarBlocks}
+                onBlocksChange={setCalendarBlocks}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Sync Message */}
