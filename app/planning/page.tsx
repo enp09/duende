@@ -586,91 +586,6 @@ export default function PlanningPage() {
           />
         </div>
 
-        {/* How Duende Advocates */}
-        <div className="space-y-6">
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl font-serif text-royal-500">how duende advocates for you</h2>
-            <p className="text-royal-600 max-w-2xl mx-auto">
-              duende messages others on your behalf and sends you updates. the ai takes the blame. both people are protected.
-            </p>
-          </div>
-
-          <div className="max-w-xl mx-auto">
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-royal-500">emails you receive</h3>
-              <p className="text-xs text-royal-400 italic">try clicking the buttons below to see duende in action</p>
-
-              {/* Example 1: Threshold alert */}
-              {demoEmails.heavyTuesday && (
-                <Card className="bg-white border-royal-200 border-2 shadow-lg">
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <span className="text-xs uppercase tracking-wide text-royal-400">from: duende</span>
-                    </div>
-                    <p className="text-sm font-medium text-royal-500">your tuesday looks heavy</p>
-                    <p className="text-sm text-royal-600 leading-relaxed">
-                      you have 6 hours of meetings back to back. i suggest protecting 30 minutes at noon for a walk. should i message the team to move the 12pm sync?
-                    </p>
-                    <div className="flex gap-2 pt-2">
-                      <button
-                        onClick={handleProtectTime}
-                        className="px-4 py-2 bg-orange-500 text-white text-xs rounded hover:bg-orange-600 transition-colors"
-                      >
-                        yes, protect it
-                      </button>
-                      <button
-                        onClick={handleSkipProtection}
-                        className="px-4 py-2 bg-white border border-royal-200 text-royal-600 text-xs rounded hover:bg-royal-50 transition-colors"
-                      >
-                        skip this time
-                      </button>
-                    </div>
-                  </div>
-                </Card>
-              )}
-
-              {/* Example 2: Suggestion accepted */}
-              {demoEmails.sarahAgreed && (
-                <Card className="bg-green-50 border-green-200 border-2">
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <span className="text-xs uppercase tracking-wide text-green-600">from: duende</span>
-                    </div>
-                    <p className="text-sm font-medium text-green-700">sarah agreed to 3:15</p>
-                    <p className="text-sm text-royal-600 leading-relaxed">
-                      i moved your sync with sarah from 3pm to 3:15pm. your calendar is updated. you now have 15 minutes to step outside.
-                    </p>
-                    <p className="text-xs text-green-600 italic">✓ protection added</p>
-                  </div>
-                </Card>
-              )}
-
-              {/* Example 3: Weekly check in */}
-              {demoEmails.sundayPlanning && (
-                <Card className="bg-white border-royal-200">
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <span className="text-xs uppercase tracking-wide text-royal-400">from: duende</span>
-                    </div>
-                    <p className="text-sm font-medium text-royal-500">sunday planning</p>
-                    <p className="text-sm text-royal-600 leading-relaxed">
-                      looking at your week. i see 4 opportunities to protect your humanity. review and adjust in your planning page.
-                    </p>
-                    <div className="pt-2">
-                      <button
-                        onClick={handleReviewProtections}
-                        className="px-4 py-2 bg-royal-500 text-white text-xs rounded hover:bg-royal-600 transition-colors"
-                      >
-                        review protections
-                      </button>
-                    </div>
-                  </div>
-                </Card>
-              )}
-            </div>
-          </div>
-        </div>
-
         {/* Sync Message */}
         {syncMessage && (
           <Card className="bg-orange-50 border-orange-200">
@@ -697,7 +612,7 @@ export default function PlanningPage() {
               className="bg-orange-500 hover:bg-orange-600 text-white disabled:bg-orange-300"
               size="lg"
             >
-              {isSyncing ? 'syncing...' : 'sync to calendar'}
+              {isSyncing ? 'syncing...' : 'sync to your google calendar'}
             </Button>
           </div>
         </Card>
