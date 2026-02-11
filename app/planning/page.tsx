@@ -595,52 +595,7 @@ export default function PlanningPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Outbound: What duende sends to others */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-royal-500">duende messages others</h3>
-
-              {/* Example 1: Movement */}
-              <Card className="bg-orange-50 border-orange-200">
-                <div className="space-y-2">
-                  <div className="flex items-start gap-2">
-                    <span className="text-xs uppercase tracking-wide text-royal-400">to: sarah@company.com</span>
-                  </div>
-                  <p className="text-sm text-royal-600 leading-relaxed">
-                    hi sarah, duende here for elif. she's been in back to back calls this morning. could we move the 3pm sync to 3:15 so she can take a quick walk? she'll be more present.
-                  </p>
-                  <p className="text-xs text-royal-400 italic">protecting: movement</p>
-                </div>
-              </Card>
-
-              {/* Example 2: Lunch */}
-              <Card className="bg-royal-50 border-royal-200">
-                <div className="space-y-2">
-                  <div className="flex items-start gap-2">
-                    <span className="text-xs uppercase tracking-wide text-royal-400">to: team@company.com</span>
-                  </div>
-                  <p className="text-sm text-royal-600 leading-relaxed">
-                    hey team, duende here for elif. her thursday lunch is getting crowded with meetings. could we move the 12:30 standup to 2pm so she can eat away from her desk?
-                  </p>
-                  <p className="text-xs text-royal-400 italic">protecting: nutrition</p>
-                </div>
-              </Card>
-
-              {/* Example 3: Deep work */}
-              <Card className="bg-orange-50 border-orange-200">
-                <div className="space-y-2">
-                  <div className="flex items-start gap-2">
-                    <span className="text-xs uppercase tracking-wide text-royal-400">to: mike@company.com</span>
-                  </div>
-                  <p className="text-sm text-royal-600 leading-relaxed">
-                    hi mike, duende here for elif. friday afternoon is her deep work time for learning. could this be async or move to monday? you'll get a more thoughtful response.
-                  </p>
-                  <p className="text-xs text-royal-400 italic">protecting: transcendence</p>
-                </div>
-              </Card>
-            </div>
-
-            {/* Inbound: What the user receives */}
+          <div className="max-w-xl mx-auto">
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-royal-500">emails you receive</h3>
               <p className="text-xs text-royal-400 italic">try clicking the buttons below to see duende in action</p>
