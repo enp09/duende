@@ -16,9 +16,6 @@ export default function Home() {
             <Link href="#how-it-works" className="text-sm text-royal-600 hover:text-royal-500">
               how it works
             </Link>
-            <Link href="#integrations" className="text-sm text-royal-600 hover:text-royal-500">
-              integrations
-            </Link>
 <Link
               href="/planning"
               className="px-6 py-2 bg-orange-500 text-white rounded-md text-sm hover:bg-orange-600 transition-colors"
@@ -58,10 +55,10 @@ export default function Home() {
                 see demo
               </Link>
               <Link
-                href="#integrations"
+                href="#how-it-works"
                 className="px-8 py-3 border border-royal-200 text-royal-500 rounded-lg hover:border-royal-300 transition-colors"
               >
-                view integrations
+                learn more
               </Link>
             </div>
           </div>
@@ -173,132 +170,18 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Step 3 */}
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-lg font-light">3</span>
-                  </div>
-                  <h3 className="text-2xl font-medium text-royal-500">
-                    duende advocates on their behalf
-                  </h3>
-                </div>
-                <p className="text-lg text-royal-600 leading-relaxed pl-13">
-                  when a threshold gets crossed, duende messages the person who's asking for time. warm, clear, human. explains why this matters. suggests an alternative that works for both people.
-                </p>
-                <p className="text-royal-600 pl-13">
-                  the ai takes the blame. sarah doesn't have to say no. the requester understands why. both protected.
-                </p>
-              </div>
-              <Card className="p-6 bg-orange-50 border-orange-200">
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-start gap-2 text-xs text-royal-400 mb-3">
-                    <span className="flex-1">to: james@company.com</span>
-                    <span className="px-2 py-0.5 bg-orange-200 text-orange-700 rounded">sent by duende</span>
-                  </div>
-                  <p className="text-royal-600 leading-relaxed">
-                    hi james, duende here for sarah.
-                  </p>
-                  <p className="text-royal-600 leading-relaxed">
-                    she's been in back to back calls all day (6.5 hours so far). could we make the product sync async today so she can take a walk? you'll get a more thoughtful response and she'll be more present.
-                  </p>
-                  <p className="text-royal-600 leading-relaxed">
-                    what works for you?
-                  </p>
-                  <div className="pt-3 mt-3 border-t border-orange-200 text-xs text-royal-400">
-                    <p>sent automatically when threshold exceeded</p>
-                  </div>
-                </div>
-              </Card>
-            </div>
           </div>
 
-          <div className="mt-16 text-center">
-            <p className="text-lg text-royal-600 mb-6">
-              that's it. duende handles everything. you just live your life.
-            </p>
-            <Link
-              href="/planning"
-              className="inline-block px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-            >
-              see it in action
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Integrations */}
-      <section id="integrations" className="px-6 py-24 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-serif text-royal-500 mb-4">
-              works with your stack
-            </h2>
-            <p className="text-lg text-royal-600 max-w-2xl mx-auto">
-              duende integrates seamlessly with the tools your team already uses
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 border-royal-200 hover:border-orange-500 transition-colors">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-lg bg-royal-50 flex items-center justify-center">
-                  <span className="text-2xl">📅</span>
-                </div>
-                <h3 className="text-xl font-medium text-royal-500">google calendar</h3>
-                <p className="text-royal-600">
-                  read calendar events, detect threshold violations, automatically add protection blocks. real-time synchronization.
-                </p>
-                <div className="pt-2">
-                  <span className="text-sm text-orange-500">core integration</span>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-8 border-royal-200 hover:border-orange-500 transition-colors">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-lg bg-royal-50 flex items-center justify-center">
-                  <span className="text-2xl">💬</span>
-                </div>
-                <h3 className="text-xl font-medium text-royal-500">slack</h3>
-                <p className="text-royal-600">
-                  send advocacy messages on behalf of team members, notify stakeholders of threshold violations, coordinate rescheduling.
-                </p>
-                <div className="pt-2">
-                  <span className="text-sm text-orange-500">coming soon</span>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-8 border-royal-200 hover:border-orange-500 transition-colors">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-lg bg-royal-50 flex items-center justify-center">
-                  <span className="text-2xl">📝</span>
-                </div>
-                <h3 className="text-xl font-medium text-royal-500">notion</h3>
-                <p className="text-royal-600">
-                  sync protection schedules with team databases, update project timelines based on capacity, track wellbeing metrics.
-                </p>
-                <div className="pt-2">
-                  <span className="text-sm text-orange-500">coming soon</span>
-                </div>
-              </div>
-            </Card>
-          </div>
         </div>
       </section>
 
       {/* Demo Preview */}
-      <section className="px-6 py-24 bg-cloud-300">
+      <section className="px-6 py-24 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-serif text-royal-500 mb-4">
               see it in action
             </h2>
-            <p className="text-lg text-royal-600">
-              intelligent calendar orchestration with minimal configuration
-            </p>
           </div>
 
           <Card className="bg-white border-0 p-8 shadow-sm">
@@ -373,134 +256,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The AI Takes the Blame - Combined */}
-      <section className="px-6 py-24 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-serif text-royal-500 mb-4">
-              the ai takes the blame
-            </h2>
-            <p className="text-lg text-royal-600 max-w-2xl mx-auto">
-              duende sees what calendars miss: threshold violations, human patterns, relationships, energy. nobody's the bad guy. both people protected.
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            {/* Meeting Overload - Immediate Advocacy */}
-            <Card className="p-8 border-orange-200 bg-orange-50">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center">
-                    <span className="text-2xl">⚠️</span>
-                  </div>
-                </div>
-                <div className="flex-1 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-royal-500 mb-1">meeting overload detection</h3>
-                    <p className="text-sm text-royal-400">threshold exceeded • immediate advocacy</p>
-                  </div>
-                  <div className="bg-white border-l-4 border-orange-500 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende detects:</strong></p>
-                    <p>"sarah has been in 6.5 hours of meetings today. james just requested 'product sync' at 3pm."</p>
-                    <p className="text-royal-400 mt-3 text-xs italic">duende messages james: "hi james, duende here for sarah. she's been in back to back calls all day (6.5 hours so far). could we make the product sync async today so she can take a walk? you'll get a more thoughtful response and she'll be more present."</p>
-                  </div>
-                  <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
-                    <span>→</span>
-                    <span>both people protected, nobody's the bad guy</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* New Team Member - Human Pattern */}
-            <Card className="p-8 border-royal-200">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-cloud-300 flex items-center justify-center">
-                    <span className="text-2xl">👋</span>
-                  </div>
-                </div>
-                <div className="flex-1 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-royal-500 mb-1">new team member connection</h3>
-                    <p className="text-sm text-royal-400">relationship • integration</p>
-                  </div>
-                  <div className="bg-cloud-300 border-l-4 border-royal-400 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende notices:</strong></p>
-                    <p>"james joined the team 3 weeks ago. you haven't had any 1:1 time with him yet. in his first month, connection matters more than catching up on tasks."</p>
-                    <p className="text-royal-400 mt-3 text-xs">would you like to set a 30-minute coffee chat this week? duende can find a time when you're both relaxed.</p>
-                  </div>
-                  <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
-                    <span>→</span>
-                    <span>calendars show meetings, duende sees relationships</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-
-{/* Energy Patterns - Long-term Intelligence */}
-            <Card className="p-8 border-royal-200">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-cloud-300 flex items-center justify-center">
-                    <span className="text-2xl">⚡</span>
-                  </div>
-                </div>
-                <div className="flex-1 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-royal-500 mb-1">energy pattern learning</h3>
-                    <p className="text-sm text-royal-400">personal rhythm • performance optimization</p>
-                  </div>
-                  <div className="bg-cloud-300 border-l-4 border-royal-400 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende notices:</strong></p>
-                    <p>"over 6 weeks, your strategic thinking sessions are 3x more productive between 9-11am than 2-4pm. but this week, you've scheduled 'Q2 planning' for tuesday at 3pm."</p>
-                    <p className="text-royal-400 mt-3 text-xs">your best thinking happens in the morning. want to move this to a time that matches your energy?</p>
-                  </div>
-                  <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
-                    <span>→</span>
-                    <span>duende learns when you do your best work</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* Growth Time - Personal Goals */}
-            <Card className="p-8 border-orange-200 bg-orange-50">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center">
-                    <span className="text-2xl">📚</span>
-                  </div>
-                </div>
-                <div className="flex-1 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-royal-500 mb-1">growth time protection</h3>
-                    <p className="text-sm text-royal-400">learning • long-term development</p>
-                  </div>
-                  <div className="bg-white border-l-4 border-orange-500 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende notices:</strong></p>
-                    <p>"you mentioned wanting to learn spanish. for 8 weeks, you've had a friday 4-5pm block labeled 'language practice' but meetings keep filling it. you've only used it twice."</p>
-                    <p className="text-royal-400 mt-3 text-xs">learning needs consistency. should duende protect this block more aggressively? it can auto-decline meetings during this time.</p>
-                  </div>
-                  <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
-                    <span>→</span>
-                    <span>protects who you're becoming, not just what you're doing</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          <div className="mt-12 text-center">
-            <p className="text-lg text-royal-600 max-w-2xl mx-auto leading-relaxed">
-              these are the patterns that make you human. calendars just show meetings. duende sees relationships, energy, growth, connection. the things that actually matter.
-            </p>
-          </div>
-        </div>
-      </section>
-
-
       {/* Philosophy */}
       <section className="px-6 py-24 bg-cloud-300">
         <div className="max-w-4xl mx-auto">
@@ -562,7 +317,6 @@ export default function Home() {
               <h4 className="text-sm font-medium text-royal-500 mb-3">product</h4>
               <ul className="space-y-2 text-sm text-royal-600">
                 <li><Link href="#how-it-works" className="hover:text-orange-500">how it works</Link></li>
-                <li><Link href="#integrations" className="hover:text-orange-500">integrations</Link></li>
                 <li><Link href="/planning" className="hover:text-orange-500">demo</Link></li>
               </ul>
             </div>
