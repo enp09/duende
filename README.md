@@ -18,7 +18,7 @@ it sits between your calendar and other people, protecting movement, real meals,
 
 **the ai takes the blame.** nobody's the bad guy. both people are protected.
 
-this is a humanity tool, not a productivity tool.
+this is a humanity tool, not a productivity tool. 
 
 ---
 
