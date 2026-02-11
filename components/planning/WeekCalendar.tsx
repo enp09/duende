@@ -32,17 +32,17 @@ export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarPro
   const [draggedBlock, setDraggedBlock] = useState<CalendarBlock | null>(null);
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-  const hours = Array.from({ length: 15 }, (_, i) => i + 7); // 7am to 9pm
+  const hours = Array.from({ length: 11 }, (_, i) => i + 8); // 8am to 6pm
 
   const timeToPosition = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);
-    return ((hours - 7) * 60 + minutes) / 60;
+    return ((hours - 8) * 60 + minutes) / 60;
   };
 
   const getBlockHeight = (startTime: string, endTime: string) => {
     const start = timeToPosition(startTime);
     const end = timeToPosition(endTime);
-    return (end - start) * 80;
+    return (end - start) * 58;
   };
 
   const getBlocksForDay = (day: string) => {
@@ -106,7 +106,7 @@ export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarPro
       <div className="w-20 border-r border-royal-100 bg-cloud-300">
         <div className="h-16 border-b border-royal-100"></div>
         {hours.map(hour => (
-          <div key={hour} className="h-20 flex items-center justify-center text-xs text-royal-400 border-b border-cloud-300">
+          <div key={hour} className="flex items-center justify-center text-xs text-royal-400 border-b border-cloud-300" style={{ height: '58px' }}>
             {hour === 12 ? '12pm' : hour > 12 ? `${hour-12}pm` : `${hour}am`}
           </div>
         ))}
@@ -120,13 +120,14 @@ export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarPro
               <div className="text-lg text-royal-500 font-light mt-0.5">{26 + dayIndex}</div>
             </div>
 
-            <div className="relative" style={{ height: '1200px' }}>
+            <div className="relative" style={{ height: `${11 * 58}px` }}>
               {hours.map(hour => (
                 <div
                   key={hour}
-                  className={`h-20 border-b border-cloud-300 transition-colors ${
+                  className={`border-b border-cloud-300 transition-colors ${
                     draggedBlock ? 'hover:bg-orange-100 hover:border-orange-300' : ''
                   }`}
+                  style={{ height: '58px' }}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, day, hour)}
                 ></div>
@@ -142,7 +143,7 @@ export default function WeekCalendar({ blocks, onBlocksChange }: WeekCalendarPro
                   onDragStart={(e) => handleDragStart(e, block)}
                   onDragEnd={handleDragEnd}
                   style={{
-                    top: `${timeToPosition(block.startTime) * 80}px`,
+                    top: `${timeToPosition(block.startTime) * 58}px`,
                     height: `${getBlockHeight(block.startTime, block.endTime)}px`,
                     backgroundColor: block.color,
                     zIndex: draggedBlock?.id === block.id ? 50 : 10
