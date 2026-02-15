@@ -183,7 +183,6 @@ export async function POST(request: NextRequest) {
             title: block.title,
             startTime: startDateTime,
             endTime: endDateTime,
-            blockedByDuende: true,
             isProtected: true,
           },
           create: {
@@ -194,7 +193,6 @@ export async function POST(request: NextRequest) {
             startTime: startDateTime,
             endTime: endDateTime,
             isAllDay: false,
-            blockedByDuende: true,
             isProtected: true,
           },
         });

@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       await prisma.calendarEvent.deleteMany({
         where: {
           userId,
-          blockedByDuende: true,
+          isProtected: true,
           startTime: {
             gte: weekStartDate,
           },
@@ -118,7 +118,6 @@ export async function POST(request: NextRequest) {
             startTime,
             endTime,
             isAllDay: false,
-            blockedByDuende: true,
             isProtected: true,
           },
         });

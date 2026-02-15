@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
         },
         calendarEvents: {
           where: {
-            blockedByDuende: true,
+            isProtected: true,
             startTime: {
               gte: getWeekStartDate(),
             },
