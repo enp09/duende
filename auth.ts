@@ -84,7 +84,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           ? new Date(account.expires_at * 1000)
           : null;
 
-        // Save tokens to database
+        // Save tokens to database (read-only calendar access)
         if (user?.id) {
           await prisma.user.update({
             where: { id: user.id },
@@ -94,7 +94,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               googleTokenExpiry: account.expires_at
                 ? new Date(account.expires_at * 1000)
                 : null,
-              calendarWriteAccess: true,
             },
           });
         }

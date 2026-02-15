@@ -33,14 +33,13 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Update user with tokens
+    // Update user with tokens (read-only access)
     await prisma.user.update({
       where: { id: userId },
       data: {
         googleAccessToken: tokens.access_token,
         googleRefreshToken: tokens.refresh_token || undefined,
         googleTokenExpiry: tokens.expiry_date ? new Date(tokens.expiry_date) : undefined,
-        calendarWriteAccess: true,
       },
     });
 

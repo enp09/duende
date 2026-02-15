@@ -30,7 +30,6 @@ export async function POST(request: NextRequest) {
         googleAccessToken: true,
         googleRefreshToken: true,
         googleTokenExpiry: true,
-        calendarWriteAccess: true,
       },
     });
 
@@ -205,14 +204,6 @@ export async function POST(request: NextRequest) {
         console.error(`Failed to create event for ${block.title}:`, error);
         // Continue with other blocks even if one fails
       }
-    }
-
-    // Mark user as having calendar write access
-    if (!user.calendarWriteAccess) {
-      await prisma.user.update({
-        where: { id: userId },
-        data: { calendarWriteAccess: true },
-      });
     }
 
     return NextResponse.json({
