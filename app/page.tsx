@@ -475,8 +475,6 @@ export default function Home() {
             </Card>
           </div>
 
-          </div>
-
           <div className="mt-12 text-center">
             <p className="text-lg text-royal-600 max-w-2xl mx-auto leading-relaxed">
               these aren't productivity hacks - they're how your biology works. duende helps you see patterns and understand why they matter.
