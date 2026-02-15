@@ -28,11 +28,10 @@ model User {
   city          String?
   timezone      String    @default("America/New_York")
 
-  // Google Calendar integration
+  // Google Calendar integration (read-only)
   googleAccessToken   String?
   googleRefreshToken  String?
   googleTokenExpiry   DateTime?
-  calendarWriteAccess Boolean  @default(false)
 
   // Onboarding & learning
   onboardingCompleted Boolean  @default(false)
@@ -47,7 +46,6 @@ model User {
   settings      UserSettings?
   intentions    Intention[]
   suggestions   Suggestion[]
-  conversations ConversationMessage[]
   relationships Relationship[]
   calendarEvents CalendarEvent[]
   teachingsShown TeachingHistory[]
@@ -151,9 +149,8 @@ model Relationship {
   desiredFrequency  String?  // "weekly", "biweekly", "monthly"
   energyImpact      String?  // "energizing", "neutral", "draining"
 
-  // Tracking
+  // Tracking (for user insight only, no automated actions)
   lastContactDate   DateTime?
-  needsReconnection Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -163,8 +160,10 @@ model Relationship {
 }
 
 // ============================================
-// INTENTIONS - Sunday Planning Ritual
+// INTENTIONS - User Planning & Goal Setting
 // ============================================
+// User-created intentions for protecting their default settings
+// These are aspirational goals the user sets, not automated actions
 
 model Intention {
   id     String @id @default(cuid())
@@ -178,15 +177,15 @@ model Intention {
   description    String
   weekStartDate  DateTime // Monday of the week
 
-  // Status tracking
+  // Status tracking (user manages this)
   status         String   @default("pending") // "pending", "scheduled", "completed", "dismissed"
 
-  // When it happens (flexible - duende finds the right moment)
-  targetDay      String?  // "monday", "tuesday", etc. (optional, can be flexible)
+  // When user plans to do this
+  targetDay      String?  // "monday", "tuesday", etc.
   scheduledFor   DateTime?
   completedAt    DateTime?
 
-  // Context for smart scheduling
+  // Context for user planning
   requiresWeather Boolean  @default(false) // outdoor intentions
   requiresGap     Int?     // minutes needed
 
@@ -198,40 +197,42 @@ model Intention {
 }
 
 // ============================================
-// SUGGESTIONS - AI Advocacy Layer
+// SUGGESTIONS - Educational Insights
 // ============================================
+// Renamed from advocacy to educational insights
+// These help users understand calendar patterns, not to send messages on their behalf
 
 model Suggestion {
   id     String @id @default(cuid())
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // What type of suggestion?
-  type           String // "shorten", "async", "reschedule", "batch", "buffer", "walking", "protect_lunch", "movement", "relationship_nudge"
+  // What type of insight?
+  type           String // "too_many_meetings", "no_protected_lunch", "no_movement", "missing_buffers"
 
   // Context
-  defaultSetting String? // Which of the 5 settings does this protect?
+  defaultSetting String? // Which of the 5 settings does this relate to?
   calendarEventId String? // Related calendar event if applicable
 
-  // The suggestion content
+  // The insight content
   title          String
   description    String
-  reasoning      String? // Why duende is suggesting this
+  reasoning      String? // Educational explanation of why this pattern matters
 
-  // Draft message for user to send
-  draftMessage   String?
+  // Draft message removed - no longer sending messages on behalf of users
+  draftMessage   String? // Deprecated field, will be removed in future migration
 
   // Teaching layer
-  teachingText   String? // One-liner about why this matters
-  learnMoreUrl   String? // Link to humanbeyondtech.com
+  teachingText   String? // Educational content about the biology/science
+  learnMoreUrl   String? // Link to resources
 
   // Status
-  status         String   @default("pending") // "pending", "accepted", "dismissed", "expired", "sent"
+  status         String   @default("pending") // "pending", "dismissed", "acknowledged"
 
   // User feedback
   acceptedAt     DateTime?
   dismissedAt    DateTime?
-  sentAt         DateTime?
+  sentAt         DateTime? // Deprecated field, will be removed
   feedbackNote   String?
 
   createdAt DateTime @default(now())
@@ -272,35 +273,14 @@ model CalendarEvent {
   meetingLink   String?
   location      String?
 
-  // Duende analysis
-  isProtected   Boolean  @default(false) // User or duende protected this time
-  blockedByDuende Boolean @default(false) // Duende created this block
+  // Duende analysis (read-only)
+  isProtected   Boolean  @default(false) // User manually protected this time
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([userId, startTime])
   @@index([googleEventId])
-}
-
-// ============================================
-// CONVERSATIONS - Conversational Learning
-// ============================================
-
-model ConversationMessage {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  role    String // "user", "assistant", "system"
-  content String @db.Text
-
-  // Metadata
-  context Json?  // Additional context about what this message relates to
-
-  createdAt DateTime @default(now())
-
-  @@index([userId, createdAt])
 }
 
 // ============================================

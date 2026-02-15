@@ -7,7 +7,6 @@ interface CalendarEvent {
   endTime: Date;
   isAllDay: boolean;
   attendees: any;
-  blockedByDuende: boolean;
 }
 
 interface UserSettings {
@@ -71,7 +70,7 @@ export class ThresholdDetector {
     const grouped: Record<string, CalendarEvent[]> = {};
 
     for (const event of events) {
-      if (event.isAllDay || event.blockedByDuende) continue;
+      if (event.isAllDay) continue;
 
       const day = event.startTime.toISOString().split('T')[0];
       if (!grouped[day]) grouped[day] = [];
@@ -107,9 +106,9 @@ export class ThresholdDetector {
         type: 'too_many_meetings',
         severity: totalHours > maxHours + 2 ? 'high' : 'medium',
         title: `${totalHours.toFixed(1)} hours of meetings on ${dayName}`,
-        description: `You have ${events.length} meetings scheduled for ${totalHours.toFixed(1)} hours. Your threshold is ${maxHours} hours.`,
+        description: `you have ${events.length} meetings scheduled for ${totalHours.toFixed(1)} hours. your threshold is ${maxHours} hours. extended meeting time keeps your sympathetic nervous system (fight-or-flight mode) active, preventing your body from recovering and processing information.`,
         affectedEvents: meetingTitles,
-        suggestedAction: `Consider making 1-2 meetings async or rescheduling to spread the load`,
+        suggestedAction: `cortisol (stress hormone) accumulates throughout the day without breaks. consider making 1-2 meetings async or rescheduling to spread the cognitive load.`,
         defaultSetting: 'stress',
       });
     }
@@ -152,10 +151,10 @@ export class ThresholdDetector {
       violations.push({
         type: 'no_protected_lunch',
         severity: 'high',
-        title: `Lunch is blocked on ${dayName}`,
-        description: `You have ${lunchMeetings.length} meeting(s) during lunch hours (11:30-14:00). Your nervous system needs a break from your desk.`,
+        title: `lunch is blocked on ${dayName}`,
+        description: `you have ${lunchMeetings.length} meeting(s) during lunch hours (11:30-14:00). eating at your desk keeps your body in stress mode - digestion and cognition compete for the same resources. the vagus nerve, which controls digestion, requires activation of the parasympathetic nervous system ("rest and digest" mode). this cannot happen while you're in a meeting.`,
         affectedEvents: lunchMeetings.map(e => e.title || 'Untitled'),
-        suggestedAction: `Move ${lunchMeetings[0].title} to 14:30 or make it async`,
+        suggestedAction: `even 30 minutes away from your desk helps your body shift from sympathetic to parasympathetic mode. move ${lunchMeetings[0].title} to 14:30 or make it async.`,
         defaultSetting: 'nutrition',
       });
     }
@@ -226,8 +225,8 @@ export class ThresholdDetector {
         type: 'no_movement',
         severity: longest.duration > 240 ? 'high' : 'medium',
         title: `${Math.floor(longest.duration / 60)} hours without a break on ${dayName}`,
-        description: `You have a stretch from ${this.formatTime(longest.start)} to ${this.formatTime(longest.end)} with no movement. Sitting this long keeps you in stress mode.`,
-        suggestedAction: `Add a 15-minute walk or standing break around ${this.formatTime(new Date(longest.start.getTime() + (longest.duration / 2) * 60000))}`,
+        description: `you have a stretch from ${this.formatTime(longest.start)} to ${this.formatTime(longest.end)} with no movement. your body and mind are one system - sitting for 3+ hours triggers the sympathetic nervous system (fight-or-flight mode), reducing cognitive function and emotional regulation. movement is how your brain processes emotions and stress.`,
+        suggestedAction: `walking side by side makes hard conversations easier - less eye contact pressure, more blood flow to the brain. add a 15-minute walk or standing break around ${this.formatTime(new Date(longest.start.getTime() + (longest.duration / 2) * 60000))}.`,
         defaultSetting: 'movement',
       });
     }
@@ -264,9 +263,9 @@ export class ThresholdDetector {
         type: 'missing_buffers',
         severity: backToBackMeetings.length > 4 ? 'high' : 'medium',
         title: `${backToBackMeetings.length} back-to-back meetings on ${dayName}`,
-        description: `You have ${backToBackMeetings.length} meetings with less than ${bufferMinutes} minutes between them. This keeps you in fight-or-flight all day.`,
+        description: `you have ${backToBackMeetings.length} meetings with less than ${bufferMinutes} minutes between them. back-to-back meetings keep you in fight-or-flight mode all day. your nervous system needs transition time to process information and regulate stress hormones. cortisol takes time to metabolize - without breaks, it accumulates throughout the day, leading to decision fatigue and emotional dysregulation.`,
         affectedEvents: backToBackMeetings,
-        suggestedAction: `Shorten some meetings by 5-10 minutes to create breathing room`,
+        suggestedAction: `10-15 minute buffers are not wasted time - they are recovery time. shorten some meetings by 5-10 minutes to create breathing room. use this time to walk, breathe, or simply stare out the window.`,
         defaultSetting: 'stress',
       });
     }

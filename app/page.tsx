@@ -47,10 +47,10 @@ export default function Home() {
                 </div>
               </div>
               <h2 className="text-4xl font-serif text-royal-500 leading-tight pt-4">
-                reclaim time for what makes your team human
+                understand how your calendar affects your humanity
               </h2>
               <p className="text-xl text-royal-600 max-w-2xl mx-auto leading-relaxed">
-                an ai layer that advocates when calendars violate what makes us human. the ai takes the blame. both people are protected.
+                learn the biology behind the 5 pieces of being human. see patterns in your calendar. make informed choices about your wellbeing.
               </p>
             </div>
             <div className="flex items-center justify-center gap-4">
@@ -95,7 +95,7 @@ export default function Home() {
               how it works
             </h2>
             <p className="text-lg text-royal-600 max-w-2xl mx-auto">
-              set it up once, let duende handle the rest
+              understand your patterns, learn about your biology, make better choices
             </p>
           </div>
 
@@ -164,14 +164,14 @@ export default function Home() {
                     <span className="text-white text-lg font-light">2</span>
                   </div>
                   <h3 className="text-2xl font-medium text-royal-500">
-                    duende watches their calendars
+                    duende analyzes your calendar patterns
                   </h3>
                 </div>
                 <p className="text-lg text-royal-600 leading-relaxed pl-13">
-                  connects to google calendar. reads every event. knows when someone's been sitting too long. sees when lunch is getting crowded with meetings. detects back to back calls piling up.
+                  connects to google calendar (read-only). detects patterns: when you've been sitting too long, when lunch is crowded with meetings, when back-to-back calls pile up.
                 </p>
                 <p className="text-royal-600 pl-13">
-                  real-time. all day. no one has to remember to check.
+                  shows you insights about your calendar's impact on your wellbeing.
                 </p>
               </div>
             </div>
@@ -184,33 +184,33 @@ export default function Home() {
                     <span className="text-white text-lg font-light">3</span>
                   </div>
                   <h3 className="text-2xl font-medium text-royal-500">
-                    duende advocates on their behalf
+                    duende teaches you why it matters
                   </h3>
                 </div>
                 <p className="text-lg text-royal-600 leading-relaxed pl-13">
-                  when a threshold gets crossed, duende messages the person who's asking for time. warm, clear, human. explains why this matters. suggests an alternative that works for both people.
+                  when a pattern is detected, duende explains the biology. shows you how sitting for hours affects your nervous system. explains why back-to-back meetings lead to decision fatigue.
                 </p>
                 <p className="text-royal-600 pl-13">
-                  the ai takes the blame. sarah doesn't have to say no. the requester understands why. both protected.
+                  you learn about yourself. you make informed choices. you advocate for your own needs.
                 </p>
               </div>
-              <Card className="p-6 bg-orange-50 border-orange-200">
+              <Card className="p-6 bg-blue-50 border-blue-200">
                 <div className="space-y-3 text-sm">
                   <div className="flex items-start gap-2 text-xs text-royal-400 mb-3">
-                    <span className="flex-1">to: james@company.com</span>
-                    <span className="px-2 py-0.5 bg-orange-200 text-orange-700 rounded">sent by duende</span>
+                    <span className="flex-1">educational insight</span>
+                    <span className="px-2 py-0.5 bg-blue-200 text-blue-700 rounded">movement</span>
                   </div>
                   <p className="text-royal-600 leading-relaxed">
-                    hi james, duende here for sarah.
+                    <strong>pattern detected:</strong> you've been in meetings for 3.5 hours straight.
                   </p>
                   <p className="text-royal-600 leading-relaxed">
-                    she's been in back to back calls all day (6.5 hours so far). could we make the product sync async today so she can take a walk? you'll get a more thoughtful response and she'll be more present.
+                    <strong>why this matters:</strong> sitting for 3+ hours triggers your sympathetic nervous system (fight-or-flight mode), reducing cognitive function and emotional regulation.
                   </p>
                   <p className="text-royal-600 leading-relaxed">
-                    what works for you?
+                    <strong>what you can do:</strong> a 15-minute walk can help. walking side by side makes hard conversations easier - less eye contact pressure, more blood flow to the brain.
                   </p>
-                  <div className="pt-3 mt-3 border-t border-orange-200 text-xs text-royal-400">
-                    <p>sent automatically when threshold exceeded</p>
+                  <div className="pt-3 mt-3 border-t border-blue-200 text-xs text-royal-400">
+                    <p>learn about your body, make your own choices</p>
                   </div>
                 </div>
               </Card>
@@ -219,13 +219,13 @@ export default function Home() {
 
           <div className="mt-16 text-center">
             <p className="text-lg text-royal-600 mb-6">
-              that's it. duende handles everything. you just live your life.
+              that's it. understand your patterns, learn about your biology, make better choices.
             </p>
             <Link
               href="/planning"
               className="inline-block px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
             >
-              see it in action
+              explore insights
             </Link>
           </div>
         </div>
@@ -376,15 +376,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The AI Takes the Blame - Combined */}
+      {/* The 5 Pieces of Being Human */}
       <section className="px-6 py-24 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-serif text-royal-500 mb-4">
-              the ai takes the blame
+              the 5 pieces of being human
             </h2>
             <p className="text-lg text-royal-600 max-w-2xl mx-auto">
-              duende sees what calendars miss: threshold violations, human patterns, relationships, energy. nobody's the bad guy. both people protected.
+              based on "human default settings" by sinan canan. these aren't optional - they're how your nervous system is designed to function.
             </p>
           </div>
 

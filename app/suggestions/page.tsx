@@ -8,27 +8,22 @@ import Image from 'next/image';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 
-interface Suggestion {
+interface Insight {
   id: string;
   type: string;
   title: string;
   description: string | null;
   reasoning: string | null;
-  draftMessage: string | null;
   defaultSetting: string | null;
   status: string;
   createdAt: Date;
 }
 
-export default function SuggestionsPage() {
+export default function InsightsPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [insights, setInsights] = useState<Insight[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [generatingMessageFor, setGeneratingMessageFor] = useState<string | null>(null);
-  const [sendingMessageFor, setSendingMessageFor] = useState<string | null>(null);
-  const [recipientEmails, setRecipientEmails] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     // Wait for session to load
@@ -41,148 +36,35 @@ export default function SuggestionsPage() {
       return;
     }
 
-    loadSuggestions(userId);
+    loadInsights(userId);
   }, [session, status]);
 
-  const loadSuggestions = async (userId: string) => {
+  const loadInsights = async (userId: string) => {
     try {
       const response = await fetch(`/api/suggestions?userId=${userId}`);
       const data = await response.json();
 
       if (data.success) {
-        setSuggestions(data.suggestions);
+        setInsights(data.suggestions);
       }
     } catch (error) {
-      console.error('Error loading suggestions:', error);
+      console.error('Error loading insights:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleAnalyzeCalendar = async () => {
-    const userId = session?.user?.id;
-    if (!userId) return;
-
-    setIsAnalyzing(true);
-
-    try {
-      const response = await fetch('/api/advocacy/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        await loadSuggestions(userId);
-      }
-    } catch (error) {
-      console.error('Error analyzing calendar:', error);
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
-
-  const handleGenerateMessage = async (suggestionId: string) => {
-    setGeneratingMessageFor(suggestionId);
-
-    try {
-      const response = await fetch('/api/advocacy/generate-message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ suggestionId }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Update the suggestion in the list with the generated message
-        setSuggestions(prev =>
-          prev.map(s =>
-            s.id === suggestionId
-              ? { ...s, draftMessage: data.messages.advocacy }
-              : s
-          )
-        );
-      }
-    } catch (error) {
-      console.error('Error generating message:', error);
-    } finally {
-      setGeneratingMessageFor(null);
-    }
-  };
-
-  const handleSendMessage = async (suggestionId: string) => {
-    const recipientEmail = recipientEmails[suggestionId];
-
-    if (!recipientEmail) {
-      alert('Please enter a recipient email address');
-      return;
-    }
-
-    // Basic email validation
-    if (!recipientEmail.includes('@') || !recipientEmail.includes('.')) {
-      alert('Please enter a valid email address');
-      return;
-    }
-
-    setSendingMessageFor(suggestionId);
-
-    try {
-      const response = await fetch('/api/advocacy/send-message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          suggestionId,
-          recipientEmail,
-          sendAlertToUser: false,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Remove suggestion from list after successful send
-        setSuggestions(prev => prev.filter(s => s.id !== suggestionId));
-        // Show success message (could be enhanced with a toast notification)
-        alert('Message sent successfully!');
-      } else {
-        alert(`Failed to send message: ${data.error}`);
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Something went wrong while sending the message');
-    } finally {
-      setSendingMessageFor(null);
-    }
-  };
-
-  const handleAccept = async (suggestionId: string) => {
+  const handleDismiss = async (insightId: string) => {
     try {
       await fetch('/api/suggestions', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ suggestionId, status: 'accepted' }),
+        body: JSON.stringify({ suggestionId: insightId, status: 'dismissed' }),
       });
 
-      setSuggestions(prev => prev.filter(s => s.id !== suggestionId));
+      setInsights(prev => prev.filter(i => i.id !== insightId));
     } catch (error) {
-      console.error('Error accepting suggestion:', error);
-    }
-  };
-
-  const handleDismiss = async (suggestionId: string) => {
-    try {
-      await fetch('/api/suggestions', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ suggestionId, status: 'dismissed' }),
-      });
-
-      setSuggestions(prev => prev.filter(s => s.id !== suggestionId));
-    } catch (error) {
-      console.error('Error dismissing suggestion:', error);
+      console.error('Error dismissing insight:', error);
     }
   };
 
@@ -203,10 +85,46 @@ export default function SuggestionsPage() {
     return labels[setting || ''] || 'wellbeing';
   };
 
+  const getSettingEducation = (setting: string | null) => {
+    const education: { [key: string]: { why: string; action: string; science: string } } = {
+      movement: {
+        why: 'your body and mind are one system. sitting for hours keeps your nervous system in stress mode. movement is how your brain processes emotions and regulates itself.',
+        action: 'consider taking a 10-15 minute walk between meetings. walking side by side makes hard conversations easier - less eye contact pressure, more blood flow to the brain.',
+        science: 'studies show that 3+ hours of continuous sitting triggers the sympathetic nervous system (fight-or-flight mode), reducing cognitive function and emotional regulation.',
+      },
+      nutrition: {
+        why: 'eating at your desk keeps your body in stress mode. digestion and cognition compete for the same resources - your parasympathetic nervous system needs to activate for proper digestion.',
+        action: 'protect lunch time (ideally 11:30-14:00) as a real break. even 30 minutes away from your desk helps your body shift from sympathetic to parasympathetic mode.',
+        science: 'the vagus nerve, which controls digestion, requires activation of the parasympathetic ("rest and digest") nervous system. this cannot happen while you are in work mode.',
+      },
+      stress: {
+        why: 'back-to-back meetings keep you in fight-or-flight mode. your nervous system needs transition time to process information and regulate stress hormones.',
+        action: 'build in 10-15 minute buffers between meetings. use this time to walk, breathe, or simply stare out the window. this is not wasted time - it is recovery time.',
+        science: 'cortisol (stress hormone) takes time to metabolize. without breaks, cortisol accumulates throughout the day, leading to decision fatigue and emotional dysregulation.',
+      },
+      relationships: {
+        why: 'humans evolved in tribes of 50-150 people. your nervous system literally calms when you connect with people you trust. this is biology, not "soft skills".',
+        action: 'schedule regular time with the people who matter most to you. even a 15-minute call or coffee can regulate your nervous system more than meditation alone.',
+        science: 'co-regulation is real: when you spend time with trusted people, mirror neurons and oxytocin release help regulate your stress response in ways that solo activities cannot.',
+      },
+      transcendence: {
+        why: 'growth happens at the edge of comfort, not in maintenance mode. a calendar that is 100% maintenance is slowly numbing your sense of aliveness.',
+        action: 'protect time for learning, creating, or exploring something that energizes you. this is not optional - it is how humans stay engaged with life.',
+        science: 'neuroplasticity (the brain\'s ability to form new connections) requires novelty and challenge. without growth activities, cognitive flexibility decreases over time.',
+      },
+    };
+
+    return education[setting || ''] || {
+      why: 'your calendar reflects your values and priorities. patterns in your calendar directly affect your wellbeing.',
+      action: 'reflect on what matters most to you and ensure your calendar supports those priorities.',
+      science: 'chronic stress from poor calendar management affects sleep, immune function, and long-term health outcomes.',
+    };
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-royal-500">loading suggestions...</p>
+        <p className="text-royal-500">loading insights...</p>
       </div>
     );
   }
@@ -221,8 +139,8 @@ export default function SuggestionsPage() {
               <Image src="/logo.svg" alt="duende" width={50} height={50} priority className="cursor-pointer" />
             </Link>
             <div>
-              <h1 className="text-3xl font-serif text-royal-500">duende thinks</h1>
-              <p className="text-royal-600 text-sm">threshold alerts and advocacy suggestions</p>
+              <h1 className="text-3xl font-serif text-royal-500">your calendar insights</h1>
+              <p className="text-royal-600 text-sm">understanding patterns and their impact on your wellbeing</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -235,140 +153,137 @@ export default function SuggestionsPage() {
           </div>
         </div>
 
-        {/* Analyze Button */}
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-royal-500 font-medium mb-1">check your calendar</p>
-              <p className="text-sm text-royal-600">
-                duende will analyze the next 7 days and look for threshold violations
-              </p>
+        {/* Educational Introduction */}
+        <Card className="bg-blue-50 border-blue-200">
+          <div className="space-y-3">
+            <h2 className="text-lg font-serif text-royal-500">the 5 pieces of being human</h2>
+            <p className="text-royal-600 text-sm leading-relaxed">
+              duende helps you understand how your calendar affects your biology. based on research from "human default settings" by sinan canan, these 5 elements are not optional - they are how your nervous system is designed to function.
+            </p>
+            <div className="grid grid-cols-5 gap-2 mt-4">
+              <div className="text-center">
+                <div className="text-2xl mb-1">🚶</div>
+                <div className="text-xs text-royal-500 font-medium">movement</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl mb-1">🍽️</div>
+                <div className="text-xs text-royal-500 font-medium">nutrition</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl mb-1">🤝</div>
+                <div className="text-xs text-royal-500 font-medium">connection</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl mb-1">🌬️</div>
+                <div className="text-xs text-royal-500 font-medium">buffers</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl mb-1">🌱</div>
+                <div className="text-xs text-royal-500 font-medium">growth</div>
+              </div>
             </div>
-            <Button onClick={handleAnalyzeCalendar} disabled={isAnalyzing}>
-              {isAnalyzing ? 'analyzing...' : 'analyze calendar'}
-            </Button>
           </div>
         </Card>
 
-        {/* Suggestions List */}
-        {suggestions.length === 0 ? (
-          <Card className="bg-orange-50 border-orange-200">
+        {/* Insights List */}
+        {insights.length === 0 ? (
+          <Card className="bg-green-50 border-green-200">
             <div className="text-center py-8">
-              <p className="text-royal-500 text-lg mb-2">✓ no threshold violations detected</p>
+              <p className="text-royal-500 text-lg mb-2">✓ no patterns detected this week</p>
               <p className="text-royal-600 text-sm">
-                your calendar looks good! click "analyze calendar" above to check again.
+                your calendar looks balanced! check back next week for new insights.
               </p>
             </div>
           </Card>
         ) : (
           <div className="space-y-4">
             <h2 className="text-xl font-serif text-royal-500">
-              {suggestions.length} {suggestions.length === 1 ? 'suggestion' : 'suggestions'}
+              {insights.length} {insights.length === 1 ? 'insight' : 'insights'} from your calendar
             </h2>
 
-            {suggestions.map((suggestion) => (
-              <Card key={suggestion.id} className={getSeverityColor(suggestion.type)}>
-                <div className="space-y-4">
-                  {/* Header */}
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs uppercase tracking-wide text-royal-400">
-                          protecting: {getSettingLabel(suggestion.defaultSetting)}
-                        </span>
+            {insights.map((insight) => {
+              const education = getSettingEducation(insight.defaultSetting);
+
+              return (
+                <Card key={insight.id} className={getSeverityColor(insight.type)}>
+                  <div className="space-y-4">
+                    {/* Header */}
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs uppercase tracking-wide text-royal-400">
+                            {getSettingLabel(insight.defaultSetting)}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-medium text-royal-500">{insight.title}</h3>
                       </div>
-                      <h3 className="text-lg font-medium text-royal-500">{suggestion.title}</h3>
                     </div>
-                  </div>
 
-                  {/* Description */}
-                  <p className="text-royal-600">{suggestion.description}</p>
-
-                  {/* Suggested Action */}
-                  {suggestion.reasoning && (
+                    {/* Pattern Description */}
                     <div className="bg-white border border-royal-200 rounded-lg p-3">
-                      <p className="text-sm font-medium text-royal-500 mb-1">duende suggests:</p>
-                      <p className="text-sm text-royal-600">{suggestion.reasoning}</p>
+                      <p className="text-sm font-medium text-royal-500 mb-1">pattern detected:</p>
+                      <p className="text-sm text-royal-600">{insight.description}</p>
                     </div>
-                  )}
 
-                  {/* AI Generated Message */}
-                  {suggestion.draftMessage ? (
-                    <div className="bg-white border border-orange-300 rounded-lg p-4">
-                      <p className="text-xs uppercase tracking-wide text-royal-400 mb-2">
-                        draft message to send:
+                    {/* Why This Matters */}
+                    <div className="bg-white border border-royal-200 rounded-lg p-4">
+                      <p className="text-sm font-semibold text-royal-500 mb-2">why this matters:</p>
+                      <p className="text-sm text-royal-600 leading-relaxed mb-3">
+                        {education.why}
                       </p>
-                      <p className="text-royal-600 leading-relaxed">{suggestion.draftMessage}</p>
-                    </div>
-                  ) : (
-                    <Button
-                      onClick={() => handleGenerateMessage(suggestion.id)}
-                      disabled={generatingMessageFor === suggestion.id}
-                      size="sm"
-                      className="bg-orange-500 hover:bg-orange-600"
-                    >
-                      {generatingMessageFor === suggestion.id
-                        ? 'generating with claude...'
-                        : 'generate advocacy message'}
-                    </Button>
-                  )}
 
-                  {/* Recipient Email Input */}
-                  {suggestion.draftMessage && (
-                    <div className="space-y-2">
-                      <label className="text-xs uppercase tracking-wide text-royal-400">
-                        recipient email:
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="name@example.com"
-                        value={recipientEmails[suggestion.id] || ''}
-                        onChange={(e) =>
-                          setRecipientEmails(prev => ({
-                            ...prev,
-                            [suggestion.id]: e.target.value,
-                          }))
-                        }
-                        className="w-full px-3 py-2 border border-royal-200 rounded-lg text-royal-500 placeholder-royal-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                      />
-                    </div>
-                  )}
+                      <p className="text-sm font-semibold text-royal-500 mb-2">what you can do:</p>
+                      <p className="text-sm text-royal-600 leading-relaxed mb-3">
+                        {education.action}
+                      </p>
 
-                  {/* Actions */}
-                  <div className="flex gap-2 pt-2">
-                    {suggestion.draftMessage ? (
+                      <p className="text-sm font-semibold text-royal-500 mb-2">the science:</p>
+                      <p className="text-xs text-royal-500 leading-relaxed">
+                        {education.science}
+                      </p>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex gap-2 pt-2">
                       <Button
-                        onClick={() => handleSendMessage(suggestion.id)}
+                        onClick={() => handleDismiss(insight.id)}
                         size="sm"
-                        className="bg-royal-500 hover:bg-royal-600"
-                        disabled={sendingMessageFor === suggestion.id}
+                        variant="ghost"
                       >
-                        {sendingMessageFor === suggestion.id
-                          ? 'sending...'
-                          : 'send message'}
+                        got it
                       </Button>
-                    ) : (
                       <Button
-                        onClick={() => handleAccept(suggestion.id)}
+                        onClick={() => router.push('/planning')}
                         size="sm"
                         className="bg-royal-500 hover:bg-royal-600"
                       >
-                        approve
+                        adjust calendar
                       </Button>
-                    )}
-                    <Button
-                      onClick={() => handleDismiss(suggestion.id)}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      dismiss
-                    </Button>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              );
+            })}
           </div>
         )}
+
+        {/* Learn More Section */}
+        <Card className="bg-cloud-100 border-royal-200">
+          <div className="space-y-3">
+            <h2 className="text-lg font-serif text-royal-500">want to learn more?</h2>
+            <div className="space-y-2 text-sm text-royal-600">
+              <p>
+                <strong>book:</strong> "human default settings" by sinan canan - the neuroscience behind these 5 elements
+              </p>
+              <p>
+                <strong>reflection:</strong> your calendar is a reflection of your priorities. does it support the human you want to be?
+              </p>
+              <p>
+                <strong>advocacy:</strong> you can advocate for your own needs. duende is here to help you understand them, not to do it for you.
+              </p>
+            </div>
+          </div>
+        </Card>
       </div>
     </div>
   );
