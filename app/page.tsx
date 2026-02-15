@@ -251,7 +251,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-medium text-royal-500">google calendar</h3>
                 <p className="text-royal-600">
-                  read calendar events, detect threshold violations, automatically add protection blocks. real-time synchronization.
+                  read calendar events (read-only), detect patterns, provide educational insights about your wellbeing. real-time analysis.
                 </p>
                 <div className="pt-2">
                   <span className="text-sm text-orange-500">core integration</span>
@@ -266,7 +266,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-medium text-royal-500">slack</h3>
                 <p className="text-royal-600">
-                  send advocacy messages on behalf of team members, notify stakeholders of threshold violations, coordinate rescheduling.
+                  share insights with your team, send wellbeing reminders, help teams understand patterns in their calendar health.
                 </p>
                 <div className="pt-2">
                   <span className="text-sm text-orange-500">coming soon</span>
@@ -281,7 +281,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-medium text-royal-500">notion</h3>
                 <p className="text-royal-600">
-                  sync protection schedules with team databases, update project timelines based on capacity, track wellbeing metrics.
+                  track wellbeing metrics, visualize calendar health trends, integrate insights with your team's workflow.
                 </p>
                 <div className="pt-2">
                   <span className="text-sm text-orange-500">coming soon</span>
@@ -388,141 +388,98 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="space-y-6">
-            {/* Meeting Overload - Immediate Advocacy */}
-            <Card className="p-8 border-orange-200 bg-orange-50">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center">
-                    <span className="text-2xl">⚠️</span>
-                  </div>
-                </div>
-                <div className="flex-1 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-royal-500 mb-1">meeting overload detection</h3>
-                    <p className="text-sm text-royal-400">threshold exceeded • immediate advocacy</p>
-                  </div>
-                  <div className="bg-white border-l-4 border-orange-500 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende detects:</strong></p>
-                    <p>"sarah has been in 6.5 hours of meetings today. james just requested 'product sync' at 3pm."</p>
-                    <p className="text-royal-400 mt-3 text-xs italic">duende messages james: "hi james, duende here for sarah. she's been in back to back calls all day (6.5 hours so far). could we make the product sync async today so she can take a walk? you'll get a more thoughtful response and she'll be more present."</p>
-                  </div>
-                  <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
-                    <span>→</span>
-                    <span>both people protected, nobody's the bad guy</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* New Team Member - Human Pattern */}
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Movement */}
             <Card className="p-8 border-royal-200">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-cloud-300 flex items-center justify-center">
-                    <span className="text-2xl">👋</span>
-                  </div>
+              <div className="space-y-4">
+                <div className="flex items-start justify-between">
+                  <h3 className="text-xl font-medium text-royal-500">movement</h3>
+                  <span className="text-2xl">🚶</span>
                 </div>
-                <div className="flex-1 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-royal-500 mb-1">new team member connection</h3>
-                    <p className="text-sm text-royal-400">relationship • integration</p>
-                  </div>
-                  <div className="bg-cloud-300 border-l-4 border-royal-400 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende notices:</strong></p>
-                    <p>"james joined the team 3 weeks ago. you haven't had any 1:1 time with him yet. in his first month, connection matters more than catching up on tasks."</p>
-                    <p className="text-royal-400 mt-3 text-xs">would you like to set a 30-minute coffee chat this week? duende can find a time when you're both relaxed.</p>
-                  </div>
-                  <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
-                    <span>→</span>
-                    <span>calendars show meetings, duende sees relationships</span>
+                <div className="space-y-3 text-royal-600 text-sm leading-relaxed">
+                  <p className="font-medium text-royal-500">your body and mind are one system</p>
+                  <p>sitting for hours keeps your nervous system in stress mode. movement is how your brain processes emotions and regulates itself.</p>
+                  <div className="bg-cloud-300 p-4 rounded-lg">
+                    <p className="text-xs text-royal-500"><strong>the science:</strong> 3+ hours of continuous sitting triggers the sympathetic nervous system (fight-or-flight), reducing cognitive function and emotional regulation.</p>
                   </div>
                 </div>
               </div>
             </Card>
 
-            {/* Weather-Aware - Environmental Context */}
-            <Card className="p-8 border-orange-200 bg-orange-50">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center">
-                    <span className="text-2xl">🌤️</span>
-                  </div>
-                </div>
-                <div className="flex-1 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-royal-500 mb-1">weather-aware scheduling</h3>
-                    <p className="text-sm text-royal-400">movement • environmental context</p>
-                  </div>
-                  <div className="bg-white border-l-4 border-orange-500 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende notices:</strong></p>
-                    <p>"it's going to be 72° and sunny tomorrow afternoon—the first nice day in two weeks. your tuesday usually has a 3pm walking slot, but it's currently filled with an internal meeting."</p>
-                    <p className="text-royal-400 mt-3 text-xs">should duende suggest moving the meeting to thursday so you can walk outside while the weather's good?</p>
-                  </div>
-                  <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
-                    <span>→</span>
-                    <span>movement matters more when it's beautiful outside</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* Energy Patterns - Long-term Intelligence */}
+            {/* Nutrition */}
             <Card className="p-8 border-royal-200">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-cloud-300 flex items-center justify-center">
-                    <span className="text-2xl">⚡</span>
-                  </div>
+              <div className="space-y-4">
+                <div className="flex items-start justify-between">
+                  <h3 className="text-xl font-medium text-royal-500">nutrition</h3>
+                  <span className="text-2xl">🍽️</span>
                 </div>
-                <div className="flex-1 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-royal-500 mb-1">energy pattern learning</h3>
-                    <p className="text-sm text-royal-400">personal rhythm • performance optimization</p>
-                  </div>
-                  <div className="bg-cloud-300 border-l-4 border-royal-400 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende notices:</strong></p>
-                    <p>"over 6 weeks, your strategic thinking sessions are 3x more productive between 9-11am than 2-4pm. but this week, you've scheduled 'Q2 planning' for tuesday at 3pm."</p>
-                    <p className="text-royal-400 mt-3 text-xs">your best thinking happens in the morning. want to move this to a time that matches your energy?</p>
-                  </div>
-                  <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
-                    <span>→</span>
-                    <span>duende learns when you do your best work</span>
+                <div className="space-y-3 text-royal-600 text-sm leading-relaxed">
+                  <p className="font-medium text-royal-500">eating at your desk keeps you in stress mode</p>
+                  <p>digestion and cognition compete for the same resources. your parasympathetic nervous system needs to activate for proper digestion.</p>
+                  <div className="bg-cloud-300 p-4 rounded-lg">
+                    <p className="text-xs text-royal-500"><strong>the science:</strong> the vagus nerve, which controls digestion, requires activation of the parasympathetic ("rest and digest") nervous system. this cannot happen while you're in work mode.</p>
                   </div>
                 </div>
               </div>
             </Card>
 
-            {/* Growth Time - Personal Goals */}
-            <Card className="p-8 border-orange-200 bg-orange-50">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center">
-                    <span className="text-2xl">📚</span>
+            {/* Relationships */}
+            <Card className="p-8 border-royal-200">
+              <div className="space-y-4">
+                <div className="flex items-start justify-between">
+                  <h3 className="text-xl font-medium text-royal-500">relationships</h3>
+                  <span className="text-2xl">🤝</span>
+                </div>
+                <div className="space-y-3 text-royal-600 text-sm leading-relaxed">
+                  <p className="font-medium text-royal-500">connection with trusted people regulates your nervous system</p>
+                  <p>humans evolved in tribes of 50-150. your nervous system literally calms when you connect with people you trust. this is biology, not "soft skills".</p>
+                  <div className="bg-cloud-300 p-4 rounded-lg">
+                    <p className="text-xs text-royal-500"><strong>the science:</strong> co-regulation is real - when you spend time with trusted people, mirror neurons and oxytocin release help regulate your stress response in ways solo activities cannot.</p>
                   </div>
                 </div>
-                <div className="flex-1 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-medium text-royal-500 mb-1">growth time protection</h3>
-                    <p className="text-sm text-royal-400">learning • long-term development</p>
+              </div>
+            </Card>
+
+            {/* Stress/Buffers */}
+            <Card className="p-8 border-royal-200">
+              <div className="space-y-4">
+                <div className="flex items-start justify-between">
+                  <h3 className="text-xl font-medium text-royal-500">buffers (stress)</h3>
+                  <span className="text-2xl">🌬️</span>
+                </div>
+                <div className="space-y-3 text-royal-600 text-sm leading-relaxed">
+                  <p className="font-medium text-royal-500">back-to-back meetings keep you in fight-or-flight</p>
+                  <p>your nervous system needs transition time to process information and regulate stress hormones. without breaks, you stay in sympathetic mode all day.</p>
+                  <div className="bg-cloud-300 p-4 rounded-lg">
+                    <p className="text-xs text-royal-500"><strong>the science:</strong> cortisol (stress hormone) takes time to metabolize. without breaks, cortisol accumulates throughout the day, leading to decision fatigue and emotional dysregulation.</p>
                   </div>
-                  <div className="bg-white border-l-4 border-orange-500 p-4 text-sm text-royal-600">
-                    <p className="mb-2"><strong>duende notices:</strong></p>
-                    <p>"you mentioned wanting to learn spanish. for 8 weeks, you've had a friday 4-5pm block labeled 'language practice' but meetings keep filling it. you've only used it twice."</p>
-                    <p className="text-royal-400 mt-3 text-xs">learning needs consistency. should duende protect this block more aggressively? it can auto-decline meetings during this time.</p>
-                  </div>
-                  <div className="pt-2 flex items-center gap-2 text-sm text-orange-500">
-                    <span>→</span>
-                    <span>protects who you're becoming, not just what you're doing</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* Transcendence/Growth */}
+            <Card className="p-8 border-royal-200">
+              <div className="space-y-4">
+                <div className="flex items-start justify-between">
+                  <h3 className="text-xl font-medium text-royal-500">transcendence (growth)</h3>
+                  <span className="text-2xl">🌱</span>
+                </div>
+                <div className="space-y-3 text-royal-600 text-sm leading-relaxed">
+                  <p className="font-medium text-royal-500">growth happens at the edge, not in maintenance</p>
+                  <p>a calendar that's 100% maintenance is slowly numbing. you need time for learning, creating, exploring - things that energize you.</p>
+                  <div className="bg-cloud-300 p-4 rounded-lg">
+                    <p className="text-xs text-royal-500"><strong>the science:</strong> neuroplasticity (your brain's ability to form new connections) requires novelty and challenge. without growth activities, cognitive flexibility decreases over time.</p>
                   </div>
                 </div>
               </div>
             </Card>
           </div>
 
+          </div>
+
           <div className="mt-12 text-center">
             <p className="text-lg text-royal-600 max-w-2xl mx-auto leading-relaxed">
-              these are the patterns that make you human. calendars just show meetings. duende sees relationships, energy, growth, connection. the things that actually matter.
+              these aren't productivity hacks - they're how your biology works. duende helps you see patterns and understand why they matter.
             </p>
           </div>
         </div>
@@ -536,7 +493,7 @@ export default function Home() {
               pricing
             </h2>
             <p className="text-lg text-royal-600">
-              enterprise-grade advocacy for teams of all sizes
+              educational insights for teams of all sizes
             </p>
           </div>
 
@@ -559,15 +516,15 @@ export default function Home() {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-orange-500 mt-1">✓</span>
-                      <span>threshold detection & monitoring</span>
+                      <span>pattern detection & insights</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-orange-500 mt-1">✓</span>
-                      <span>ai-generated advocacy messages</span>
+                      <span>educational content about wellbeing</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-orange-500 mt-1">✓</span>
-                      <span>email delivery & coordination</span>
+                      <span>email insights & notifications</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-orange-500 mt-1">✓</span>
@@ -753,10 +710,10 @@ export default function Home() {
       <section className="px-6 py-24 bg-royal-500">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           <h2 className="text-4xl font-serif text-white">
-            ready to protect your team's humanity?
+            ready to understand your calendar's impact?
           </h2>
           <p className="text-xl text-white/90">
-            start with a 14-day trial. see autonomous advocacy in action.
+            start with a 14-day trial. learn about the 5 pieces of being human.
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link

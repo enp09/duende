@@ -4,19 +4,19 @@
 >
 > an Andalusian concept that depicts a fierce, raw, spiritual energy that overtakes an artist when the art becomes larger than life.
 
-**reclaim time for what makes your team human**
+**understand how your calendar affects your humanity**
 
-an ai layer that advocates when calendars violate what makes us human. the ai takes the blame. both people are protected.
+an educational platform that helps you learn the biology behind the 5 pieces of being human. see patterns in your calendar. make informed choices about your wellbeing.
 
 ---
 
 ## what is duende?
 
-duende is an ai advocacy system for **teams that care about their humanity and wellbeing**.
+duende is an **educational insights platform** for individuals and teams that care about their humanity and wellbeing.
 
-it sits between your calendar and other people, protecting movement, real meals, connection, and space to think. when someone tries to book you during lunch or you've been sitting too long, duende messages them on your behalf.
+it analyzes your calendar (read-only) and teaches you about the biological impact of calendar patterns on movement, nutrition, relationships, stress, and growth. when patterns are detected, duende explains why they matter and what you can do.
 
-**the ai takes the blame.** nobody's the bad guy. both people are protected.
+**you learn about yourself.** you make informed choices. you advocate for your own needs.
 
 this is a humanity tool, not a productivity tool.
 
@@ -24,92 +24,86 @@ this is a humanity tool, not a productivity tool.
 
 ## how it works
 
-### 1. you set your team's defaults
-tell duende what makes your people human. max meeting hours per day. protected lunch windows. time between calls to breathe.
+### 1. you set your personal preferences
+tell duende about your ideal wellbeing settings. max meeting hours per day. preferred lunch times. buffer time you need between calls.
 
 5 minute setup. then you're done.
 
-### 2. duende watches their calendars
-connects to google calendar. reads every event. knows when someone's been sitting too long. sees when lunch is getting crowded with meetings. detects back to back calls piling up.
+### 2. duende analyzes your calendar patterns
+connects to google calendar (read-only). detects patterns: when you've been sitting too long, when lunch is crowded with meetings, when back-to-back calls pile up.
 
-real-time. all day. no one has to remember to check.
+shows you insights about your calendar's impact on your wellbeing.
 
-### 3. duende advocates on their behalf
-when a threshold gets crossed, duende messages the person who's asking for time. warm, clear, human. explains why this matters. suggests an alternative that works for both people.
+### 3. duende teaches you why it matters
+when a pattern is detected, duende explains the biology. shows you how sitting for hours affects your nervous system. explains why back-to-back meetings lead to decision fatigue.
 
-the ai takes the blame. sarah doesn't have to say no. the requester understands why. both protected.
+you learn about yourself. you make informed choices. you advocate for your own needs.
 
 ---
 
-## ai advocacy system
+## educational insights system
 
-### threshold detection
+### pattern detection
 
-duende analyzes your calendar every day and detects violations:
+duende analyzes your calendar and detects patterns that affect wellbeing:
 
 - **too many meetings** - when meeting hours exceed your max (default: 6 hours/day)
 - **no protected lunch** - meetings scheduled during 11:30am-2pm window
 - **no movement** - long stretches (>3 hours) without breaks
 - **missing buffers** - back-to-back meetings with <10 minute gaps
 
-### intelligent advocacy
+### educational insights
 
-when a violation is detected:
-1. duende creates a suggestion in your suggestions page
-2. you click "generate advocacy message" to draft a warm, conversational email using claude
-3. you enter the recipient's email address
-4. you click "send message" to deliver the advocacy email
-5. duende handles the conversation on your behalf
+when a pattern is detected:
+1. duende shows the insight on your insights page
+2. explains **why this matters** - the biological/scientific explanation
+3. suggests **what you can do** - actionable steps you can take
+4. provides **the science** - research and neuroscience behind it
 
-the ai-generated messages follow this tone:
-- starts with "hi [name], duende here for [you]"
-- explains the situation simply
-- frames it as beneficial for both people
-- uses lowercase, conversational language
-- never apologizes or is overly deferential
+each insight teaches you about:
+- how your nervous system responds to calendar patterns
+- the biological impact of stress, sitting, and lack of breaks
+- why movement, nutrition, relationships, buffers, and growth matter
+- how to advocate for your own needs
 
-### human pattern recognition
+### understanding yourself
 
-beyond immediate violations, duende notices long-term patterns:
+over time, you learn your own patterns:
 
-- **new team members** - james joined 3 weeks ago, no 1:1 time yet
-- **weather awareness** - first sunny day in weeks, suggests outdoor walking meetings
-- **relationship maintenance** - been 7 weeks since casual coffee with sarah
-- **energy patterns** - your strategic thinking is 3x better 9-11am than 2-4pm
-- **growth time protection** - spanish learning block keeps getting filled with meetings
+- you think clearest after 15 minutes of walking
+- your best ideas come at 11am walks, not 4pm
+- with 10-min buffers, your decision quality improves in late-day meetings
+- protected lunch helps you be more present in afternoon meetings
 
-these are the patterns that make you human. calendars just show meetings. duende sees relationships, energy, growth, connection.
+these are the patterns that make you human. duende helps you understand them, not automate around them.
 
 ---
 
 ## current status
 
-**v0.4 - enterprise landing page with andalusian soul** ✓
+**v0.5 - educational refactor** ✓
 
 ### implemented features
-- ✅ enterprise landing page with cultural heritage and soul
+- ✅ educational landing page focused on learning about the 5 pieces of being human
 - ✅ professional navigation with pricing, integrations, how it works
-- ✅ story-driven "how it works" with real examples (sarah and james)
-- ✅ educational approach: teaches biology behind movement, nutrition, buffers, deep work
-- ✅ combined "the ai takes the blame" section showing immediate advocacy and long-term patterns
+- ✅ insights dashboard with biological explanations
+- ✅ educational approach: teaches neuroscience behind movement, nutrition, buffers, relationships, growth
+- ✅ "the 5 pieces of being human" section explaining the biology
 - ✅ social proof stats: 67% reduction in meeting overload, 4.2hrs reclaimed, 89% more present
 - ✅ pricing section: $12/user/month Professional, custom Enterprise
-- ✅ planning page with 6 domain questions
-- ✅ interactive calendar with drag-drop protections
+- ✅ planning page for setting preferences
 - ✅ simplified onboarding (email + calendar only)
-- ✅ google calendar oauth integration
-- ✅ google calendar read and write (sync protection blocks)
+- ✅ google calendar oauth integration (read-only)
 - ✅ settings page for preferences
-- ✅ live protection preview
-- ✅ threshold detection (too many meetings, no lunch, no movement, missing buffers)
-- ✅ claude ai integration for message generation
-- ✅ email delivery system (resend)
-- ✅ suggestions page with approve/send workflow
+- ✅ pattern detection (too many meetings, no lunch, no movement, missing buffers)
+- ✅ educational insights with "why this matters", "what you can do", and "the science"
+- ✅ email insights system (resend)
+- ✅ insights page with educational content
 
 ### core integrations
-- ✅ **google calendar** - read events, detect threshold violations, sync protection blocks
-- 🔜 **slack** - send advocacy messages on behalf of team members (coming soon)
-- 🔜 **notion** - sync protection schedules with team databases (coming soon)
+- ✅ **google calendar** - read events (read-only), detect patterns, provide insights
+- 🔜 **slack** - share wellbeing insights with teams (coming soon)
+- 🔜 **notion** - track wellbeing metrics (coming soon)
 
 ### planned for v1
 - [ ] weather-aware suggestions
@@ -206,10 +200,9 @@ copy `.env.example` to `.env` and fill in the required values:
 cp .env.example .env
 ```
 
-#### required for ai advocacy:
+#### required for insights:
 ```env
-ANTHROPIC_API_KEY="sk-ant-..."       # get from console.anthropic.com
-RESEND_API_KEY="re_..."              # get from resend.com
+RESEND_API_KEY="re_..."              # get from resend.com (for email insights)
 RESEND_FROM_EMAIL="duende <hello@duende.app>"
 ```
 
@@ -237,31 +230,26 @@ visit http://localhost:3000
 ```
 duende/
 ├── app/                      # next.js app router
-│   ├── page.tsx             # landing page (enterprise + andalusian soul)
-│   ├── planning/            # planning page with calendar
-│   ├── suggestions/         # ai advocacy suggestions
+│   ├── page.tsx             # landing page (educational focus)
+│   ├── planning/            # planning page for setting preferences
+│   ├── suggestions/         # educational insights dashboard
 │   ├── onboarding/          # email + calendar connection
 │   ├── settings/            # user preferences
 │   └── api/                 # api routes
 │       ├── auth/            # google oauth
-│       ├── advocacy/        # threshold detection & message generation
-│       │   ├── analyze/     # detect calendar violations
-│       │   ├── generate-message/  # claude ai integration
-│       │   └── send-message/      # email delivery
-│       ├── calendar/        # google calendar sync
+│       ├── calendar/        # google calendar sync (read-only)
 │       ├── onboarding/      # user creation
-│       ├── planning/        # save protections
-│       ├── suggestions/     # manage suggestions
+│       ├── planning/        # save preferences
+│       ├── suggestions/     # manage insights
 │       └── user/            # user data
 ├── components/
 │   ├── ui/                  # reusable components (Card, Button, Input)
-│   └── planning/            # WeekCalendar drag-drop component
+│   └── planning/            # preference setting components
 ├── lib/
 │   ├── db.ts               # prisma client
-│   ├── google.ts           # google calendar helpers
-│   ├── threshold-detector.ts # violation detection logic
-│   ├── message-generator.ts  # claude ai for advocacy messages
-│   └── email-service.ts     # resend email sending
+│   ├── google.ts           # google calendar helpers (read-only)
+│   ├── threshold-detector.ts # pattern detection logic
+│   └── email-service.ts     # email insights delivery
 ├── prisma/
 │   └── schema.prisma       # database models
 └── docs/                   # specifications
@@ -295,54 +283,53 @@ npx prisma format
 
 ## user flow
 
-1. **landing page (/)** - see the andalusian concept, understand how duende protects humanity, view pricing
-2. **click "see demo"** → planning page
-3. **planning page (/planning)** - answer 6 questions about what matters
-4. **click "generate protections"** - see calendar blocks appear
-5. **drag to adjust timing** - fine-tune when protections happen
-6. **click "connect calendar"** → onboarding
-7. **onboarding (/onboarding)** - enter email, city, connect google calendar
-8. **settings (/settings)** - manage preferences, view calendar connection, sync protections
-9. **suggestions (/suggestions)** - view threshold violations, generate advocacy messages, send emails
+1. **landing page (/)** - learn about the 5 pieces of being human, understand the biology, view pricing
+2. **click "explore insights"** → planning page
+3. **planning page (/planning)** - set your wellbeing preferences
+4. **click "connect calendar"** → onboarding
+5. **onboarding (/onboarding)** - enter email, city, connect google calendar (read-only)
+6. **settings (/settings)** - manage preferences, view calendar connection
+7. **insights page (/suggestions)** - view calendar patterns, learn why they matter, get actionable advice
 
 ---
 
 ## philosophy
 
 ### what duende is
-- an ai advocacy layer between humans
-- a protection system for your humanity
-- threshold-based (only intervenes when needed)
-- always requires approval before sending
+- an educational platform about calendar health
+- a learning tool for understanding your biology
+- pattern-based (shows you insights about your wellbeing)
+- user-empowering (you make your own choices)
 - educational (teaches why, not just what)
-- pattern-aware (sees relationships, energy, growth, connection)
+- science-focused (neuroscience, biology, behavioral research)
 
 ### what duende is not
 - a productivity tool
 - a calendar replacement
 - a time tracker
 - a scoring system
+- an AI that acts on your behalf
 - rigid or judgmental
 
 ### key principles
 
-> **the ai takes the blame.** nobody's the bad guy. both people are protected.
+> **you learn about yourself.** understand your biology, see your patterns, make informed choices.
 
-> **teach why, not just what.** you learn your own biology rather than following orders.
+> **teach why, not just what.** learn neuroscience rather than following rules.
 
-> **see human patterns.** calendars just show meetings. duende sees relationships, energy, growth, connection. the things that actually matter.
+> **understand human needs.** movement, nutrition, relationships, buffers, and growth aren't optional - they're how your nervous system works.
 
 ---
 
-## for teams that care
+## for people who want to learn
 
-duende is built for **teams that care about their humanity and wellbeing**.
+duende is built for **individuals and teams that care about their humanity and wellbeing**.
 
 if you believe:
 - movement, real meals, connection, and space to think matter
 - people perform better when operating from wholeness
-- ai should protect what makes us human, not extract more productivity
-- nobody should have to be the bad guy for needing basic humanity
+- understanding your biology helps you make better choices
+- you should advocate for your own needs, not have AI do it for you
 
 then duende is for you.
 
